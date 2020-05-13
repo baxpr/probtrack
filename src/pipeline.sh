@@ -54,18 +54,18 @@ export yeo_dir="${src_dir}"/external/yeo_networks
 
 
 # ROI dirs for region masks in the two different geometries
-export rois_fs_dir=${out_dir}/ROIS_FS ; mkdir "${rois_fs_dir}"
+#export rois_fs_dir=${out_dir}/ROIS_FS ; mkdir "${rois_fs_dir}"
 export rois_dwi_dir=${out_dir}/ROIS_DWI ; mkdir "${rois_dwi_dir}"
 
 
 ### Extract region masks from FS-space DKT atlas
-make_fs_rois.sh
+#make_FS_rois.sh
 
 ### Coreg FS-space T1 to DWI-space b=0
-coreg_t1_to_dwi.sh
+coreg_FS_to_DWI.sh
 
 ### Extract region masks from DWI-space DKT atlas after resampling
-make_dwi_rois.sh
+make_DWI_rois.sh
 
 
 ### Warp Yeo ROI images to FS space

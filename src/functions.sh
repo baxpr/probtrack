@@ -28,6 +28,21 @@ function join_rois () {
 }
 
 
+# Join multiple ROI masks into a single one
+function combine_rois () {
+	local in_niigz="${1}"
+	local out_niigz="${2}"
+	local vals="${3}"
+	
+	addstr=""
+	for v in $vals ; do
+		fslmaths "${in_niigz}" -thr "${v}" -uthr "${v}" -bin tmp_"${v}"
+		addstr="${addstr} -add tmp_${v}"
+	done
+	fslmaths "${in_niigz}" -thr 0 -uthr 0 ${addstr} -bin "${out_niigz}"
+	rm -f tmp_*.nii.gz
+}
+
 
 # Probtrack function for single ROI
 function track () {
