@@ -30,4 +30,4 @@ pipeline.sh \
 --b0mean_niigz ${b0mean_niigz} \
 --bedpost_dir ${bedpost_dir} \
 --out_dir ${out_dir} \
---src_dir=${src_dir}
+--src_dir ${src_dir}
