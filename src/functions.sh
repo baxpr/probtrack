@@ -13,7 +13,7 @@ function combine_rois () {
 	local out_niigz="${2}"
 	local vals="${3}"
 	
-	addstr=""
+	local addstr=""
 	for v in $vals ; do
 		fslmaths "${in_niigz}" -thr "${v}" -uthr "${v}" -bin tmp_"${v}"
 		addstr="${addstr} -add tmp_${v}"
