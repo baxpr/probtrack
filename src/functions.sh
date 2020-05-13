@@ -3,7 +3,7 @@
 # Support functions
 
 
-# Join multiple ROIs into a single binary mask
+# Join multiple ROIs into a single binary mask using fslmaths
 # Usage:
 #    combine_rois <source_roi_image> <roi_name> "<values_to_include>"
 # Example:
