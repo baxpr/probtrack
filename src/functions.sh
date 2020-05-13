@@ -3,7 +3,11 @@
 # Support functions
 
 
-# Join multiple ROI masks into a single one
+# Join multiple ROIs into a single binary mask
+# Usage:
+#    combine_rois <source_roi_image> <roi_name> "<values_to_include>"
+# Example:
+#    combine_rois aparc.DKTatlas+aseg FS_MOTOR_L "1003 1017 1024"
 function combine_rois () {
 	local in_niigz="${1}"
 	local out_niigz="${2}"
