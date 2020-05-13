@@ -60,15 +60,14 @@ mkdir "${out_dir}"/OUTPUT_FS10
 mkdir "${out_dir}"/OUTPUT_YEO7
 mkdir "${out_dir}"/OUTPUT_YEO17
 
+### Extract region masks from FS-space DKT atlas
+make_fs_rois.sh
 
 ### Coreg FS-space T1 to DWI-space b=0
 coreg_t1_to_dwi.sh
 
-### Extract region masks from FS-space DKT atlas
-make_fs_rois.sh
-
-
-### Resample FS-space FS region masks to DWI space. Be sure to apply the coreg
+### Extract region masks from DWI-space DKT atlas after resampling
+make_dwi_rois.sh
 
 
 ### Warp Yeo ROI images to FS space

@@ -1,27 +1,41 @@
 #!/bin/bash
 #
-### EXTRACT L/R THALAMUS FROM WHOLE THALAMUS MASK
-### EXTRACT L/R WM FROM FREESURFER DKT ATLAS
-### EXTRACT CORTICAL REGIONS FROM FREESURFER DKT ATLAS
-### MAKE COMBINED FS_MASKS
-### MAKE AVOID MASKS
 
 echo Running ${0}
 
 
 # Set up
 source functions.sh
-cd "${rois_fs_dir}"
+cd "${rois_dwi_dir}"
+
+# Resample FS ROI images to DWI space (transform from coreg_t1_to_dwi.sh)
 mri_convert "${fs_subject_dir}/mri/aparc.DKTatlas+aseg.mgz" aparc.DKTatlas+aseg.nii.gz
-aparc_niigz=aparc.DKTatlas+aseg
+flirt \
+	-in aparc.DKTatlas+aseg \
+	-applyxfm \
+	-init "${out_dir}"/FS_to_DWI.mat \
+	-out aparc.DKTatlas+aseg_to_DWI \
+	-paddingsize 0.0 \
+	-interp nearestneighbour \
+	-ref "${out_dir}"/b0_mean.nii.gz
+flirt \
+	-in "${fs_nii_thalamus_niigz}" \
+	-applyxfm \
+	-init "${out_dir}"/FS_to_DWI.mat \
+	-out nii_thalamus_to_DWI \
+	-paddingsize 0.0 \
+	-interp nearestneighbour \
+	-ref "${out_dir}"/b0_mean.nii.gz
+
 
 
 # Create single-ROI masks for FS thalamus
-fslmaths "${fs_nii_thalamus_niigz}" -thr 8100 -uthr 8199 FS_THALAMUS_L
-fslmaths "${fs_nii_thalamus_niigz}" -thr 8200 -uthr 8299 FS_THALAMUS_R
+fslmaths nii_thalamus_to_DWI -thr 8100 -uthr 8199 FS_THALAMUS_L
+fslmaths nii_thalamus_to_DWI -thr 8200 -uthr 8299 FS_THALAMUS_R
 
 
 # Create single-ROI masks for the needed ROIs, files labeled by number
+aparc_niigz=aparc.DKTatlas+aseg_to_DWI
 for v in \
 	2 \
 	41 \

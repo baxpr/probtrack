@@ -10,35 +10,18 @@ cd "${out_dir}"
 cp "${fs_subject_dir}"/mri/{norm,nu}.mgz .
 mri_convert nu.mgz nu.nii.gz
 mri_convert norm.mgz norm.nii.gz
-
 cp "${b0mean_niigz}" ./b0_mean.nii.gz
 
+# Register b=0 to FS T1 using FS white matter mask
+# epi_reg bug means we must use the b0_mean_to_FS_fast_wmseg filename
+cp "${rois_fs_dir}"/FS_WM_LR.nii.gz b0_mean_to_FS_fast_wmseg.nii.gz
+echo epi_reg
 epi_reg \
 	--epi=b0_mean \
 	--t1=nu \
 	--t1brain=norm \
-	--out=rdwi
-	
-exit 0
-
-
-
-# Alternate approach:
-
-# Binarize and dilate aparc for inweight
-fslmaths aparc.DKTatlas+aseg -bin -dilM -dilM -dilM -dilM -dilM -bin in_mask
-
-# Same for refweight
-fslmaths b0_mask -bin -dilM -dilM -bin ref_mask
-
-# Register
-flirt \
-	-in nu \
-	-inweight in_mask \
-	-ref b0_mean \
-	-refweight ref_mask \
-	-omat fs_to_dwi.mat \
-	-out rnu \
-	-bins 256 \
-	-cost corratio \
-	-dof 6
+	--out=b0_mean_to_FS \
+	--wmseg=b0_mean_to_FS_fast_wmseg
+echo donesies
+mv b0_mean_to_FS.mat DWI_to_FS.mat
+convert_xfm -omat FS_to_DWI.mat -inverse DWI_to_FS.mat
