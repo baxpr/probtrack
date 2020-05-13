@@ -26,7 +26,7 @@ fslmaths nii_thalamus_to_DWI -thr 8200 -uthr 8299 -bin FS_THALAMUS_R
 
 
 # Re-combine aparc into the needed single-ROI masks, files labeled by ROI name
-aparc=aparc.DKTatlas+aseg
+aparc=aparc.DKTatlas+aseg_to_DWI
 
 combine_rois "${aparc}"   FS_WM_L               "2"
 combine_rois "${aparc}"   FS_WM_R               "41"
