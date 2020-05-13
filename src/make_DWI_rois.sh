@@ -198,8 +198,48 @@ fslmaths FS_PFC_R -add FS_MOTOR_R -add FS_SOMATO_R -add FS_POSTPAR_R -add FS_OCC
 	FS_CORTEX
 
 
-# Add white matter, subcortical to gray matter to make avoid masks
+# Add white matter, subcortical to gray matter to make large avoid masks
 fslmaths FS_CORTEX -add FS_WM_R -add FS_CEREBELLAR_SUBCORTICAL -bin FS_RH_LHCORTEX_AVOID
 fslmaths FS_CORTEX -add FS_WM_L -add FS_CEREBELLAR_SUBCORTICAL -bin FS_LH_RHCORTEX_AVOID
 
+
+# Avoid masks for specific seed regions
+for region in \
+  FS_PFC \
+  FS_MOTOR \
+  FS_SOMATO \
+  FS_POSTPAR \
+  FS_OCC \
+  FS_TEMP \
+  FS_MOFC \
+  FS_LPFC \
+  FS_ACC \
+  FS_PPC \
+  FS_PARDMN \
+  FS_AUD \
+  FS_ITEMP \
+; do
+	fslmaths FS_RH_LHCORTEX_AVOID -sub ${region}_L -thr 1 ${region}_L_AVOID
+	fslmaths FS_LH_RHCORTEX_AVOID -sub ${region}_R -thr 1 ${region}_R_AVOID
+done
+
+# Stop and avoid masks for hemispheres
+for hemi in L R ; do
+
+	fslmaths \
+			 FS_PFC_${hemi} \
+		-add FS_MOTOR_${hemi} \
+		-add FS_SOMATO_${hemi} \
+		-add FS_POSTPAR_${hemi} \
+		-add FS_OCC_${hemi} \
+		-add FS_TEMP_${hemi} \
+		-bin FS_${hemi}HCORTEX_STOP
+
+	fslmaths \
+			 FS_${hemi}HCORTEX_STOP \
+		-add FS_WM_${hemi} \
+		-add FS_THALAMUS_${hemi} \
+		-bin FS_${hemi}H_AVOID
+
+done
 

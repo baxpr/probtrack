@@ -14,14 +14,12 @@ export FREESURFER_HOME=/usr/local/freesurfer
 src_dir=/repo/thaltrack-whole/src
 export PATH=${src_dir}:$PATH
 
-
-
-# coreg
+# probtracks
+export bedpost_dir=${src_dir}/testdir/assessors/bedpost/BEDPOSTX
+export rois_dwi_dir=${src_dir}/testdir/OUTPUTS/ROIS_DWI
 export out_dir=${src_dir}/testdir/OUTPUTS
-export fs_subject_dir=${src_dir}/testdir/assessors/freesurfer/SUBJECT
-export b0mean_niigz=${src_dir}/testdir/assessors/dwipre/B0_MEAN/b0_mean.nii.gz
-export rois_fs_dir=${src_dir}/testdir/OUTPUTS/ROIS_FS
-coreg_t1_to_dwi.sh
+export targets_dir=${src_dir}/targets
+probtracks_FS6.sh
 
 exit 0
 
@@ -34,6 +32,19 @@ export fs_nii_thalamus_niigz=${src_dir}/testdir/assessors/freesurfer/NII_THALAMU
 make_DWI_rois.sh
 
 exit 0
+
+
+
+# coreg
+export out_dir=${src_dir}/testdir/OUTPUTS
+export fs_subject_dir=${src_dir}/testdir/assessors/freesurfer/SUBJECT
+export b0mean_niigz=${src_dir}/testdir/assessors/dwipre/B0_MEAN/b0_mean.nii.gz
+export rois_fs_dir=${src_dir}/testdir/OUTPUTS/ROIS_FS
+coreg_t1_to_dwi.sh
+
+exit 0
+
+
 
 
 # whole pipeline

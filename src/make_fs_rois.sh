@@ -128,7 +128,7 @@ fslmaths FS_PFC_L     -add FS_PFC_R       -mul 1             tmp
 fslmaths FS_MOTOR_L   -add FS_MOTOR_R     -mul 2  -add tmp   tmp
 fslmaths FS_SOMATO_L  -add FS_SOMATO_R    -mul 3  -add tmp   tmp
 fslmaths FS_POSTPAR_L -add FS_POSTPAR_R   -mul 4  -add tmp   tmp
-fslmaths FS_OCC_L      -add FS_OCC_R      -mul 5  -add tmp   tmp
+fslmaths FS_OCC_L     -add FS_OCC_R       -mul 5  -add tmp   tmp
 fslmaths FS_TEMP_L    -add FS_TEMP_R      -mul 6  -add tmp   tmp
 mv tmp.nii.gz FS_6MASKS.nii.gz
 
