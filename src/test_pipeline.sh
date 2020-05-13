@@ -28,5 +28,6 @@ pipeline.sh \
 --fs_subject_dir ${fs_subject_dir} \
 --fs_nii_thalamus_niigz ${fs_nii_thalamus_niigz} \
 --b0mean_niigz ${b0mean_niigz} \
+--bedpost_dir ${bedpost_dir} \
 --out_dir ${out_dir} \
 --src_dir=${src_dir}
