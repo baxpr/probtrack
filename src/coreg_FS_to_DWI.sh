@@ -4,6 +4,7 @@
 
 echo Running ${0}
 
+source functions.sh
 cd "${out_dir}"
 
 # Get input files from freesurfer and dwipre
