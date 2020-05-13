@@ -13,7 +13,7 @@ echo Running ${0}
 source functions.sh
 cd "${rois_fs_dir}"
 mri_convert "${fs_subject_dir}/mri/aparc.DKTatlas+aseg.mgz" aparc.DKTatlas+aseg.nii.gz
-aparc_niigz=aparc.DKTatlas+aseg
+aparc=aparc.DKTatlas+aseg
 
 
 # Create single-ROI masks for FS thalamus
@@ -59,65 +59,65 @@ for v in \
 	1006 1007 1009 1015 1016 \
 	2006 2007 2009 2015 2016 \
 ; do
-	split_roi "${aparc_niigz}" $v
+	split_roi "${aparc}" $v
 done
 
 
 
 # Re-join into the needed single-ROI masks, files labeled by ROI name
-join_rois "${aparc_niigz}"   FS_WM_L               "2"
-join_rois "${aparc_niigz}"   FS_WM_R               "41"
-join_rois "${aparc_niigz}"   FS_WM_LR              "2 41"
+join_rois "${aparc}"   FS_WM_L               "2"
+join_rois "${aparc}"   FS_WM_R               "41"
+join_rois "${aparc}"   FS_WM_LR              "2 41"
 
-join_rois "${aparc_niigz}"   FS_BRAINSTEM          "16"
+join_rois "${aparc}"   FS_BRAINSTEM          "16"
 
-join_rois "${aparc_niigz}"   FS_CEREBELLUM_L       "7 8"
-join_rois "${aparc_niigz}"   FS_CEREBELLUM_R       "46 47"
+join_rois "${aparc}"   FS_CEREBELLUM_L       "7 8"
+join_rois "${aparc}"   FS_CEREBELLUM_R       "46 47"
 
-join_rois "${aparc_niigz}"   FS_CAUD_PUT_PALL_L    "11 12 13"
-join_rois "${aparc_niigz}"   FS_CAUD_PUT_PALL_R    "50 51 52"
+join_rois "${aparc}"   FS_CAUD_PUT_PALL_L    "11 12 13"
+join_rois "${aparc}"   FS_CAUD_PUT_PALL_R    "50 51 52"
 
-join_rois "${aparc_niigz}"   FS_AMYG_HIPP_L        "17 18"
-join_rois "${aparc_niigz}"   FS_AMYG_HIPP_R        "53 54"
+join_rois "${aparc}"   FS_AMYG_HIPP_L        "17 18"
+join_rois "${aparc}"   FS_AMYG_HIPP_R        "53 54"
 	
-join_rois "${aparc_niigz}"   FS_MOTOR_L     "1003 1017 1024"
-join_rois "${aparc_niigz}"   FS_MOTOR_R     "2003 2017 2024"
+join_rois "${aparc}"   FS_MOTOR_L     "1003 1017 1024"
+join_rois "${aparc}"   FS_MOTOR_R     "2003 2017 2024"
 
-join_rois "${aparc_niigz}"   FS_OCC_L       "1005 1011 1013 1021"
-join_rois "${aparc_niigz}"   FS_OCC_R       "2005 2011 2013 2021"
+join_rois "${aparc}"   FS_OCC_L       "1005 1011 1013 1021"
+join_rois "${aparc}"   FS_OCC_R       "2005 2011 2013 2021"
 
-join_rois "${aparc_niigz}"   FS_PFC_L       "1002 1012 1014 1018 1019 1020 1026 1027 1028"
-join_rois "${aparc_niigz}"   FS_PFC_R       "2002 2012 2014 2018 2019 2020 2026 2027 2028"
+join_rois "${aparc}"   FS_PFC_L       "1002 1012 1014 1018 1019 1020 1026 1027 1028"
+join_rois "${aparc}"   FS_PFC_R       "2002 2012 2014 2018 2019 2020 2026 2027 2028"
 
-join_rois "${aparc_niigz}"   FS_POSTPAR_L   "1008 1025 1029 1010 1023 1031"
-join_rois "${aparc_niigz}"   FS_POSTPAR_R   "2008 2025 2029 2010 2023 2031"
+join_rois "${aparc}"   FS_POSTPAR_L   "1008 1025 1029 1010 1023 1031"
+join_rois "${aparc}"   FS_POSTPAR_R   "2008 2025 2029 2010 2023 2031"
 
-join_rois "${aparc_niigz}"   FS_SOMATO_L    "1022"
-join_rois "${aparc_niigz}"   FS_SOMATO_R    "2022"
+join_rois "${aparc}"   FS_SOMATO_L    "1022"
+join_rois "${aparc}"   FS_SOMATO_R    "2022"
 
-join_rois "${aparc_niigz}"   FS_TEMP_L      "1006 1007 1009 1015 1016 1030 1034"
-join_rois "${aparc_niigz}"   FS_TEMP_R      "2006 2007 2009 2015 2016 2030 2034"
+join_rois "${aparc}"   FS_TEMP_L      "1006 1007 1009 1015 1016 1030 1034"
+join_rois "${aparc}"   FS_TEMP_R      "2006 2007 2009 2015 2016 2030 2034"
 
-join_rois "${aparc_niigz}"   FS_MOFC_L      "1012 1014 1028"
-join_rois "${aparc_niigz}"   FS_MOFC_R      "2012 2014 2028"
+join_rois "${aparc}"   FS_MOFC_L      "1012 1014 1028"
+join_rois "${aparc}"   FS_MOFC_R      "2012 2014 2028"
 
-join_rois "${aparc_niigz}"   FS_LPFC_L      "1018 1019 1020 1027"
-join_rois "${aparc_niigz}"   FS_LPFC_R      "2018 2019 2020 2027"
+join_rois "${aparc}"   FS_LPFC_L      "1018 1019 1020 1027"
+join_rois "${aparc}"   FS_LPFC_R      "2018 2019 2020 2027"
 
-join_rois "${aparc_niigz}"   FS_ACC_L       "1002 1026"
-join_rois "${aparc_niigz}"   FS_ACC_R       "2002 2026"
+join_rois "${aparc}"   FS_ACC_L       "1002 1026"
+join_rois "${aparc}"   FS_ACC_R       "2002 2026"
 
-join_rois "${aparc_niigz}"   FS_PPC_L       "1008 1025 1029"
-join_rois "${aparc_niigz}"   FS_PPC_R       "2008 2025 2029"
+join_rois "${aparc}"   FS_PPC_L       "1008 1025 1029"
+join_rois "${aparc}"   FS_PPC_R       "2008 2025 2029"
 
-join_rois "${aparc_niigz}"   FS_PARDMN_L    "1010 1031"
-join_rois "${aparc_niigz}"   FS_PARDMN_R    "2010 2031"
+join_rois "${aparc}"   FS_PARDMN_L    "1010 1031"
+join_rois "${aparc}"   FS_PARDMN_R    "2010 2031"
 
-join_rois "${aparc_niigz}"   FS_AUD_L       "1030 1034"
-join_rois "${aparc_niigz}"   FS_AUD_R       "2030 2034"
+join_rois "${aparc}"   FS_AUD_L       "1030 1034"
+join_rois "${aparc}"   FS_AUD_R       "2030 2034"
 
-join_rois "${aparc_niigz}"   FS_ITEMP_L     "1006 1007 1009 1015 1016"
-join_rois "${aparc_niigz}"   FS_ITEMP_R     "2006 2007 2009 2015 2016"
+join_rois "${aparc}"   FS_ITEMP_L     "1006 1007 1009 1015 1016"
+join_rois "${aparc}"   FS_ITEMP_R     "2006 2007 2009 2015 2016"
 
 
 
@@ -188,4 +188,6 @@ fslmaths FS_PFC_R -add FS_MOTOR_R -add FS_SOMATO_R -add FS_POSTPAR_R -add FS_OCC
 fslmaths FS_CORTEX -add FS_WM_R -add FS_CEREBELLAR_SUBCORTICAL -bin FS_RH_LHCORTEX_AVOID
 fslmaths FS_CORTEX -add FS_WM_L -add FS_CEREBELLAR_SUBCORTICAL -bin FS_LH_RHCORTEX_AVOID
 
+# Clean up
+rm -f ${aparc}_*.nii.gz
 

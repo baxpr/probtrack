@@ -53,15 +53,10 @@ export targets_dir="${src_dir}"/targets
 export yeo_dir="${src_dir}"/external/yeo_networks
 
 
-# Output dirs
-# ROIS_FS, ROIS_DWI for region masks in the two different geometries
-# OUTPUT_FS6, OUTPUT_FS10, OUTPUT_YEO7, OUTPUT_YEO17 for the different ROI tracksets
+# ROI dirs for region masks in the two different geometries
 export rois_fs_dir=${out_dir}/ROIS_FS ; mkdir "${rois_fs_dir}"
 export rois_dwi_dir=${out_dir}/ROIS_DWI ; mkdir "${rois_dwi_dir}"
-mkdir "${out_dir}"/OUTPUT_FS6
-mkdir "${out_dir}"/OUTPUT_FS10
-mkdir "${out_dir}"/OUTPUT_YEO7
-mkdir "${out_dir}"/OUTPUT_YEO17
+
 
 ### Extract region masks from FS-space DKT atlas
 make_fs_rois.sh
