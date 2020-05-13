@@ -28,6 +28,8 @@ do
         export fs_nii_thalamus_niigz="$2"; shift; shift ;;
 	--b0mean_niigz)
         export b0mean_niigz="$2"; shift; shift ;;
+    --bedpost_dir)
+		export bedpost_dir="$2"; shift; shift ;;
     --out_dir)
         export out_dir="$2"; shift; shift ;;
     --src_dir)
@@ -42,6 +44,7 @@ done
 echo "${project} ${subject} ${session}"
 echo "fs_subject_dir:          ${fs_subject_dir}"
 echo "fs_nii_thalamus_niigz:   ${fs_nii_thalamus_niigz}"
+echo "bedpost_dir:             ${bedpost_dir}"
 echo "out_dir:                 ${out_dir}"
 
 
