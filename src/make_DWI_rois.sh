@@ -246,3 +246,4 @@ done
 
 # Clean up
 rm -f ${aparc}_*.nii.gz
+rm -f aparc.DKTatlas+aseg.nii.gz
