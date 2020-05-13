@@ -15,13 +15,11 @@ cp "${b0mean_niigz}" ./b0_mean.nii.gz
 # Register b=0 to FS T1 using FS white matter mask
 # epi_reg bug means we must use the b0_mean_to_FS_fast_wmseg filename
 cp "${rois_fs_dir}"/FS_WM_LR.nii.gz b0_mean_to_FS_fast_wmseg.nii.gz
-echo epi_reg
 epi_reg \
 	--epi=b0_mean \
 	--t1=nu \
 	--t1brain=norm \
 	--out=b0_mean_to_FS \
 	--wmseg=b0_mean_to_FS_fast_wmseg
-echo donesies
 mv b0_mean_to_FS.mat DWI_to_FS.mat
 convert_xfm -omat FS_to_DWI.mat -inverse DWI_to_FS.mat
