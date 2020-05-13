@@ -30,8 +30,8 @@ flirt \
 
 
 # Create single-ROI masks for FS thalamus
-fslmaths nii_thalamus_to_DWI -thr 8100 -uthr 8199 FS_THALAMUS_L
-fslmaths nii_thalamus_to_DWI -thr 8200 -uthr 8299 FS_THALAMUS_R
+fslmaths nii_thalamus_to_DWI -thr 8100 -uthr 8199 -bin FS_THALAMUS_L
+fslmaths nii_thalamus_to_DWI -thr 8200 -uthr 8299 -bin FS_THALAMUS_R
 
 
 # Create single-ROI masks for the needed ROIs, files labeled by number
