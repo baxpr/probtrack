@@ -29,16 +29,15 @@ gunzip -fk "${out_dir}"/nu.nii.gz
 "${src_dir}"/matlab/bin/run_spm.sh unwarp iy_invdef.nii nu.nii Yeo7_split.nii "${out_dir}"
 "${src_dir}"/matlab/bin/run_spm.sh unwarp iy_invdef.nii nu.nii Yeo17_split.nii "${out_dir}"
 gzip "${out_dir}"/uYeo{7,17}_split.nii
-mv uYeo{7,17}_split.nii.gz "${rois_dwi_dir}"
 
 
 # Resample Yeo FS-space ROI images to DWI space (transform obtained from coreg_t1_to_dwi.sh)
 flirtopts="-applyxfm -init ${out_dir}/FS_to_DWI.mat -paddingsize 0.0 -interp nearestneighbour -ref ${out_dir}/b0_mean.nii.gz"
 flirt ${flirtopts} \
-	-in uYeo7_split \
+	-in "${out_dir}"/uYeo7_split \
 	-out uYeo7_split_to_DWI
 flirt ${flirtopts} \
-	-in uYeo17_split \
+	-in "${out_dir}"/uYeo17_split \
 	-out uYeo17_split_to_DWI
 
 
@@ -64,15 +63,15 @@ combine_rois "${yeo7}"   Yeo7_N7_R      "207"
 
 yeo17=uYeo17_split_to_DWI
 
-combine_rois "${yeo17}"   Yeo17_N1_L      "101"
-combine_rois "${yeo17}"   Yeo17_N2_L      "102"
-combine_rois "${yeo17}"   Yeo17_N3_L      "103"
-combine_rois "${yeo17}"   Yeo17_N4_L      "104"
-combine_rois "${yeo17}"   Yeo17_N5_L      "105"
-combine_rois "${yeo17}"   Yeo17_N6_L      "106"
-combine_rois "${yeo17}"   Yeo17_N7_L      "107"
-combine_rois "${yeo17}"   Yeo17_N8_L      "108"
-combine_rois "${yeo17}"   Yeo17_N9_L      "109"
+combine_rois "${yeo17}"   Yeo17_N01_L     "101"
+combine_rois "${yeo17}"   Yeo17_N02_L     "102"
+combine_rois "${yeo17}"   Yeo17_N03_L     "103"
+combine_rois "${yeo17}"   Yeo17_N04_L     "104"
+combine_rois "${yeo17}"   Yeo17_N05_L     "105"
+combine_rois "${yeo17}"   Yeo17_N06_L     "106"
+combine_rois "${yeo17}"   Yeo17_N07_L     "107"
+combine_rois "${yeo17}"   Yeo17_N08_L     "108"
+combine_rois "${yeo17}"   Yeo17_N09_L     "109"
 combine_rois "${yeo17}"   Yeo17_N10_L     "110"
 combine_rois "${yeo17}"   Yeo17_N11_L     "111"
 combine_rois "${yeo17}"   Yeo17_N12_L     "112"
@@ -82,15 +81,15 @@ combine_rois "${yeo17}"   Yeo17_N15_L     "115"
 combine_rois "${yeo17}"   Yeo17_N16_L     "116"
 combine_rois "${yeo17}"   Yeo17_N17_L     "117"
 
-combine_rois "${yeo17}"   Yeo17_N1_R      "201"
-combine_rois "${yeo17}"   Yeo17_N2_R      "202"
-combine_rois "${yeo17}"   Yeo17_N3_R      "203"
-combine_rois "${yeo17}"   Yeo17_N4_R      "204"
-combine_rois "${yeo17}"   Yeo17_N5_R      "205"
-combine_rois "${yeo17}"   Yeo17_N6_R      "206"
-combine_rois "${yeo17}"   Yeo17_N7_R      "207"
-combine_rois "${yeo17}"   Yeo17_N8_R      "208"
-combine_rois "${yeo17}"   Yeo17_N9_R      "209"
+combine_rois "${yeo17}"   Yeo17_N01_R     "201"
+combine_rois "${yeo17}"   Yeo17_N02_R     "202"
+combine_rois "${yeo17}"   Yeo17_N03_R     "203"
+combine_rois "${yeo17}"   Yeo17_N04_R     "204"
+combine_rois "${yeo17}"   Yeo17_N05_R     "205"
+combine_rois "${yeo17}"   Yeo17_N06_R     "206"
+combine_rois "${yeo17}"   Yeo17_N07_R     "207"
+combine_rois "${yeo17}"   Yeo17_N08_R     "208"
+combine_rois "${yeo17}"   Yeo17_N09_R     "209"
 combine_rois "${yeo17}"   Yeo17_N10_R     "210"
 combine_rois "${yeo17}"   Yeo17_N11_R     "211"
 combine_rois "${yeo17}"   Yeo17_N12_R     "212"
