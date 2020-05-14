@@ -16,9 +16,9 @@ tag="FS6"
 source_regions="FS_THALAMUS"
 target_regions="FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP"
 
+
 # Options for all tracking
 trackopts="-P ${probtrack_samples} -l --onewaycondition --verbose=0 --forcedir --modeuler --pd --os2t --s2tastext --opd --ompl"
-
 
 # Help out the log file with a little extra info
 echo Running ${0}
