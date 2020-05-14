@@ -9,9 +9,7 @@
 #     FS_PFC_L.nii.gz
 #     FS_PFC_R.nii.gz
 #     ...
-# The ROI files must be in the same voxel/world geometry as the BEDPOST images. The
-# format of this list (short ROI names followed by one space each) is critical for some
-# assumptions that are made below.
+# The ROI files must be in the same voxel/world geometry as the BEDPOST images.
 source_regions="FS_THALAMUS"
 target_regions="FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP"
 
@@ -27,6 +25,10 @@ track_dir=${out_dir}/PROBTRACK_FS6_LOOPS
 
 # Include a couple necessary functions from another file
 source functions.sh
+
+# Clean up our region lists to get correct spaces for how we'll use them later
+source_regions="$(echo "${source_regions}" | xargs ) "
+target_regions="$(echo "${target_regions}" | xargs ) "
 
 
 # Track each source to each individual target cortical region, in each hemisphere. This uses
@@ -44,7 +46,7 @@ done
 # Create multiple targets files for L and R. These are text files with the 
 # "short" region names e.g. FS_PFC_L and so on that probtrack can map to
 # the corresponding ROI files e.g. FS_PFC_L.nii.gz. We get this by replacing
-# some characters in the supplied targets list.
+# the spaces in the supplied targets list.
 echo "${target_regions}" | sed $'s/ /_L\\\n/g' > ${track_dir}/TARGETS_L.txt
 echo "${target_regions}" | sed $'s/ /_R\\\n/g' > ${track_dir}/TARGETS_R.txt
 
@@ -89,7 +91,7 @@ for LR in L R ; do
 		> "${csv_file}"
 		for target in ${target_regions} ; do
 			let ind+=1
-			echo "${ind},${target}\n" >> csv_file
+			echo "${ind},${target}" >> "${csv_file}"
 			fslmaths \
 				"BIGGEST_INDIV_${source}"/seg_all_${LR} \
 				-thr ${ind} -uthr ${ind} -bin \
