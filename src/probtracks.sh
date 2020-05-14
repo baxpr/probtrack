@@ -45,6 +45,8 @@ echo "    Dir:     ${track_dir}"
 
 
 # Track each source to each individual target cortical region, in each hemisphere.
+# probtrack is run from the ROI directory to simplify the command here.
+cd "${rois_dwi_dir}"
 for source in ${source_regions} ; do
 	for target in ${target_regions} ; do
 		for LR in L R ; do
@@ -52,11 +54,11 @@ for source in ${source_regions} ; do
 			probtrackx2 \
 				-s "${bedpost_dir}"/merged \
 				-m "${bedpost_dir}"/nodif_brain_mask \
-				-x "${rois_dwi_dir}"/"${source}" \
-				--targetmasks="${rois_dwi_dir}"/"${target}" \
-				--stop="${rois_dwi_dir}"/"${target}" \
-				--avoid="${rois_dwi_dir}"/"${target}"_AVOID \
-				--dir="${track_dir}"/"${source}"_to_"${target}" \
+				-x "${source}_${LR}" \
+				--targetmasks="${target}_${LR}" \
+				--stop="${target}_${LR}" \
+				--avoid="${target}_${LR}"_AVOID \
+				--dir="${track_dir}/${source}_${LR}_to_${target}_${LR}" \
 				${trackopts}
 				
 		done
@@ -64,10 +66,10 @@ for source in ${source_regions} ; do
 done
 
 
-# Create multiple targets files for L and R. These are text files with the 
+# Create multiple-targets files for L and R. These are text files with the 
 # "short" region names e.g. FS_PFC_L and so on that probtrack can map to
 # the corresponding ROI files e.g. FS_PFC_L.nii.gz. We get this by replacing
-# the spaces in the supplied targets list.
+# the spaces in the supplied targets list with e.g. "_L\n"
 echo "${target_regions}" | sed $'s/ /_L\\\n/g' > ${track_dir}/TARGETS_L.txt
 echo "${target_regions}" | sed $'s/ /_R\\\n/g' > ${track_dir}/TARGETS_R.txt
 
@@ -77,6 +79,7 @@ echo "${target_regions}" | sed $'s/ /_R\\\n/g' > ${track_dir}/TARGETS_R.txt
 cd "${rois_dwi_dir}"
 for source in ${source_regions} ; do
 	for LR in L R ; do
+		
 		RL=$(swapLR ${LR})
 		probtrackx2 \
 			-s "${bedpost_dir}"/merged \
@@ -87,6 +90,7 @@ for source in ${source_regions} ; do
 			--avoid=FS_${RL}H_AVOID \
 			--dir="${track_dir}"/${source}_${LR}_to_TARGETS_${LR} \
 			${trackopts}
+
 	done
 done
 
