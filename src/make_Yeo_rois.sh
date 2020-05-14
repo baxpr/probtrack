@@ -31,7 +31,7 @@ gunzip -fk "${out_dir}"/nu.nii.gz
 gzip "${out_dir}"/uYeo{7,17}_split.nii
 mv "${out_dir}"/uYeo{7,17}_split.nii.gz "${rois_fs_dir}"
 
-# Resample Yeo FS-space ROI images to DWI space (transform obtained from coreg_t1_to_dwi.sh)
+# Resample Yeo FS-space ROI images to DWI space (transform obtained from coreg_FS_to_DWI.sh)
 flirtopts="-applyxfm -init ${out_dir}/FS_to_DWI.mat -paddingsize 0.0 -interp nearestneighbour -ref ${out_dir}/b0_mean.nii.gz"
 flirt ${flirtopts} \
 	-in "${rois_fs_dir}"/uYeo7_split \
