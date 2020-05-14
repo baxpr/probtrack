@@ -16,6 +16,16 @@ export PATH=${src_dir}:$PATH
 
 
 
+# Yeo ROIs
+export rois_dwi_dir=${src_dir}/testdir/OUTPUTS/ROIS_DWI
+export yeo_dir=${src_dir}/external/yeo_networks
+export out_dir=${src_dir}/testdir/OUTPUTS
+export invdef_niigz=${src_dir}/testdir/assessors/cat12/DEF_INV/iy_t1.nii.gz
+make_Yeo_rois.sh
+
+exit 0
+
+
 # probtracks loops
 export probtrack_samples=100
 export bedpost_dir=${src_dir}/testdir/assessors/bedpost/BEDPOSTX

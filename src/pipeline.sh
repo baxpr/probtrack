@@ -31,6 +31,8 @@ do
 			export b0mean_niigz="$2"; shift; shift ;;
 		--bedpost_dir)
 			export bedpost_dir="$2"; shift; shift ;;
+		--invdef_niigz)
+			export invdef_niigz="$2"; shift; shift ;;
 		--probtrack_samples)
 			export probtrack_samples="$2"; shift; shift ;;
 		--out_dir)
@@ -49,6 +51,7 @@ echo "fs_subject_dir:          ${fs_subject_dir}"
 echo "fs_nii_thalamus_niigz:   ${fs_nii_thalamus_niigz}"
 echo "b0mean_niigz:            ${b0mean_niigz}"
 echo "bedpost_dir:             ${bedpost_dir}"
+echo "invdef_niigz:            ${invdef_niigz}"
 echo "probtrack_samples:       ${probtrack_samples}"
 echo "out_dir:                 ${out_dir}"
 
@@ -65,20 +68,17 @@ export rois_dwi_dir=${out_dir}/ROIS_DWI ; mkdir "${rois_dwi_dir}"
 ### Extract region masks from FS-space DKT atlas
 #make_FS_rois.sh
 
+
 ### Coreg FS-space T1 to DWI-space b=0
 coreg_FS_to_DWI.sh
+
 
 ### Extract region masks from DWI-space DKT atlas after resampling
 make_FS_rois.sh
 
 
-### Warp Yeo ROI images to FS space
-
-
-### Extract region masks from FS-space Yeo atlases
-
-
-### Resample FS-space Yeo region masks to DWI space. Be sure to apply the coreg
+### Warp Yeo ROI images to DWI space and extract individual ROIs
+make_Yeo_rois.sh
 
 
 ### Probtracks for various ROI sets
