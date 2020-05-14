@@ -20,21 +20,14 @@
 #     ...
 # These ROI files must be in the same voxel/world geometry as the BEDPOST images.
 dirname_tag="${1}"
-source_regions="${2}"
-target_regions="${3}"
-
-echo "Tracking for ${dirname_tag}:"
-echo "    Sources: ${source_regions}"
-echo "    Targets: ${target_regions}"
+export source_regions="${2}"
+export target_regions="${3}"
 
 # Options for all tracking
 trackopts="-P ${probtrack_samples} -l --onewaycondition --verbose=0 --forcedir --modeuler --pd --os2t --s2tastext --opd --ompl"
 
-# Help out the log file with a little extra info
-echo Running ${0}
-
 # Root dir for all tracking output folders
-track_dir=${out_dir}/"PROBTRACK_${dirname_tag}"
+export track_dir=${out_dir}/"PROBTRACK_${dirname_tag}"
 
 # Include a couple necessary functions from another file
 source functions.sh
@@ -42,6 +35,13 @@ source functions.sh
 # Clean up our region lists to get correct spaces for how we'll use them later
 source_regions="$(echo "${source_regions}" | xargs ) "
 target_regions="$(echo "${target_regions}" | xargs ) "
+
+# Help out the log file with a little extra info
+echo Running ${0}
+echo "Tracking for ${dirname_tag}:"
+echo "    Sources: ${source_regions}"
+echo "    Targets: ${target_regions}"
+echo "    Dir:     ${track_dir}"
 
 
 # Track each source to each individual target cortical region, in each hemisphere. This 
@@ -64,8 +64,8 @@ echo "${target_regions}" | sed $'s/ /_L\\\n/g' > ${track_dir}/TARGETS_L.txt
 echo "${target_regions}" | sed $'s/ /_R\\\n/g' > ${track_dir}/TARGETS_R.txt
 
 
-# Track each source to all targets, for each hemisphere. This tracking is done 
-# in the ROI directory so we don't need pathnames in the targets.txt files.
+# Track each source to all targets, for each hemisphere. probtrack is run 
+# from the ROI directory so we don't need pathnames in the targets.txt files.
 cd "${rois_dwi_dir}"
 for source in ${source_regions} ; do
 	for LR in L R ; do
@@ -83,78 +83,10 @@ for source in ${source_regions} ; do
 done
 
 
-# Segmentation for all targets, for each combo of source+hemisphere. Here
-# using the results from the individual probtrack runs
-cd "${track_dir}"
-for source in ${source_regions} ; do
-	mkdir "BIGGEST_INDIV_${source}"
-	for LR in L R ; do
+# Segmentation for all targets, for each combo of source+hemisphere. First
+# using the results from the individual probtrack runs, then using the result
+# from the multi-target run. Because we exported source_regions, target_regions,
+# and track_dir above, they will be available in the subshell here.
+do_biggest.sh INDIV
+do_biggest.sh MULTI
 
-		bigstr=""
-		for target in ${target_regions} ; do
-			bigstr="${bigstr} ${source}_${LR}_to_${target}_${LR}/seeds_to_${target}_${LR}"
-		done
-		find_the_biggest ${bigstr} "BIGGEST_INDIV_${source}"/seg_all_${LR}
-	done
-done
-
-# Make separate ROI images from segmentation, and make label file for seg_all
-for source in ${source_regions} ; do
-	csv_file="BIGGEST_INDIV_${source}/seg_all-label.csv"
-	let ind=0
-	> "${csv_file}"
-	for target in ${target_regions} ; do
-		let ind+=1
-		echo "${ind},${target}" >> "${csv_file}"
-		for LR in L R ; do
-			fslmaths \
-				"BIGGEST_INDIV_${source}"/seg_all_${LR} \
-				-thr ${ind} -uthr ${ind} -bin \
-				"BIGGEST_INDIV_${source}/seg_${target}_${LR}"
-		done
-	done
-done
-
-# Combine left and right segs for each source in the multi-target runs
-for source in ${source_regions} ; do
-	cd "${track_dir}/BIGGEST_INDIV_${source}"
-	fslmaths seg_all_L -add seg_all_R seg_all_LR
-done
-
-
-# Repeat the above segmentation, but use the results from the multi-target
-# probtrack run. The only difference is the inputs to find_the_biggest.
-cd "${track_dir}"
-for source in ${source_regions} ; do
-	mkdir "BIGGEST_MULTI_${source}"
-	for LR in L R ; do
-		bigstr=""
-		for target in ${target_regions} ; do
-			bigstr="${bigstr} ${source}_${LR}_to_TARGETS_${LR}/seeds_to_${target}_${LR}"
-		done
-		find_the_biggest ${bigstr} "BIGGEST_MULTI_${source}"/seg_all_${LR}
-	done
-done
-
-for source in ${source_regions} ; do
-	csv_file="BIGGEST_MULTI_${source}/seg_all-label.csv"
-	let ind=0
-	> "${csv_file}"
-	for target in ${target_regions} ; do
-		let ind+=1
-		echo "${ind},${target}" >> "${csv_file}"
-		for LR in L R ; do
-			fslmaths \
-				"BIGGEST_MULTI_${source}"/seg_all_${LR} \
-				-thr ${ind} -uthr ${ind} -bin \
-				"BIGGEST_MULTI_${source}/seg_${target}_${LR}"
-		done
-	done
-done
-
-
-# Combine left and right segs for each source in the multi-target runs
-for source in ${source_regions} ; do
-	cd "${track_dir}/BIGGEST_MULTI_${source}"
-	fslmaths seg_all_L -add seg_all_R seg_all_LR
-done

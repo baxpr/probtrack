@@ -9,6 +9,10 @@ function swapLR () {
       echo R ;;
     R)
       echo L ;;
+	*)
+	  echo "Unknown LR in swapLR"
+	  exit 1
+	  ;;
   esac
 }
 
