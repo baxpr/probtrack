@@ -18,3 +18,7 @@ matlabbatch{1}.spm.util.defs.out{1}.pull.mask = 0;
 matlabbatch{1}.spm.util.defs.out{1}.pull.fwhm = [0 0 0];
 matlabbatch{1}.spm.util.defs.out{1}.pull.prefix = 'u';
 spm_jobman('run',matlabbatch)
+
+if is_deployed
+	exit
+end
