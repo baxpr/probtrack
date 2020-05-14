@@ -105,3 +105,19 @@ done
 do_biggest.sh INDIV
 do_biggest.sh MULTI
 
+
+# Leave a single-volume indexed ROI image in the roi directory with this
+# set of targets in it, named by the dirname_tag. Assumes the target masks
+# do not overlap.
+cd "${rois_dwi_dir}"
+csv_file="${dirname_tag}_allrois-label.csv"
+fslmaths "${bedpost_dir}"/nodif_brain_mask -thr 0 -uthr 0 tmp
+let ind=0
+> "${csv_file}"
+for target in ${target_regions} ; do
+	let ind+=1
+	echo "${ind},${target}" >> "${csv_file}"
+	fslmaths ${target}_L -add ${target}_R -bin -mul ${ind} -add tmp tmp
+done
+mv tmp.nii.gz ${dirname_tag}_allrois.nii.gz
+

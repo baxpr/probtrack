@@ -81,10 +81,12 @@ make_DWI_rois.sh
 ### Resample FS-space Yeo region masks to DWI space. Be sure to apply the coreg
 
 
-### Probtracks for FS6 set
-#probtracks_FS6.sh
-
+### Probtracks for various ROI sets
 probtracks.sh "FS6" \
 	"FS_THALAMUS" \
 	"FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP"
+
+probtracks.sh "FS10" \
+	"FS_THALAMUS" \
+	"FS_MOFC FS_LPFC FS_ACC FS_PPC FS_PARDMN FS_AUD FS_ITEMP FS_MOTOR FS_SOMATO FS_OCC"
 
