@@ -12,7 +12,7 @@
 #
 # dirname_tag is used to name the output directory
 # source_roi_list and target_roi_list are space-separated. Corresponding files must 
-# exist in ${rois_dwi_dir} as created by make_DWI_rois.sh, e.g.
+# exist in ${rois_dwi_dir} as created by make_FS_rois.sh, e.g.
 #     FS_THALAMUS_L.nii.gz
 #     FS_THALAMUS_R.nii.gz
 #     FS_PFC_L.nii.gz

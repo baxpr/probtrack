@@ -79,7 +79,7 @@ export rois_dwi_dir=${src_dir}/testdir/OUTPUTS/ROIS_DWI
 export fs_subject_dir=${src_dir}/testdir/assessors/freesurfer/SUBJECT
 export out_dir=${src_dir}/testdir/OUTPUTS
 export fs_nii_thalamus_niigz=${src_dir}/testdir/assessors/freesurfer/NII_THALAMUS/ThalamicNuclei.v10.T1.FSvoxelSpace.nii.gz
-make_DWI_rois.sh
+make_FS_rois.sh
 
 exit 0
 

@@ -69,7 +69,7 @@ export rois_dwi_dir=${out_dir}/ROIS_DWI ; mkdir "${rois_dwi_dir}"
 coreg_FS_to_DWI.sh
 
 ### Extract region masks from DWI-space DKT atlas after resampling
-make_DWI_rois.sh
+make_FS_rois.sh
 
 
 ### Warp Yeo ROI images to FS space
