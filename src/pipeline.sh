@@ -54,7 +54,6 @@ echo "out_dir:                 ${out_dir}"
 
 
 # Dirs in the container we need to access
-export targets_dir="${src_dir}"/targets
 export yeo_dir="${src_dir}"/external/yeo_networks
 
 
