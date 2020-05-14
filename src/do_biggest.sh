@@ -6,6 +6,7 @@
 # multi-target probtrack result, respectively
 bigtag="${1}"
 
+
 # Info output
 echo "Running ${0} for ${bigtag}"
 echo "   Sources: ${source_regions}"
@@ -13,7 +14,9 @@ echo "   Targets: ${target_regions}"
 echo "   Dir:     ${track_dir}"
 
 
-# Segmentation for all targets, for each combo of source+hemisphere.
+# Segmentation for all targets, for each combo of source+hemisphere. We build a
+# command line (bigstr) for find_the_biggest one target region at a time, 
+# then we call it.
 cd "${track_dir}"
 for source in ${source_regions} ; do
 	mkdir "BIGGEST_${bigtag}_${source}"
@@ -35,7 +38,8 @@ for source in ${source_regions} ; do
 	done
 done
 
-# Make separate ROI images from segmentation, and make label file for seg_all
+# Make separate binary ROI images for each target from the segmentation.
+# Also make a text file mapping the numbers in seg_all*.nii.gz to regions.
 for source in ${source_regions} ; do
 	csv_file="BIGGEST_${bigtag}_${source}/seg_all-label.csv"
 	let ind=0
@@ -52,7 +56,7 @@ for source in ${source_regions} ; do
 	done
 done
 
-# Combine left and right segs for each source
+# Combine left and right segs for each source into a single L+R image.
 for source in ${source_regions} ; do
 	cd "${track_dir}/BIGGEST_${bigtag}_${source}"
 	fslmaths seg_all_L -add seg_all_R seg_all_LR
