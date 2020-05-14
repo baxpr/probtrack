@@ -18,6 +18,7 @@ export PATH=${src_dir}:$PATH
 
 # Yeo ROIs
 export rois_dwi_dir=${src_dir}/testdir/OUTPUTS/ROIS_DWI
+export rois_fs_dir=${src_dir}/testdir/OUTPUTS/ROIS_FS
 export yeo_dir=${src_dir}/external/yeo_networks
 export out_dir=${src_dir}/testdir/OUTPUTS
 export invdef_niigz=${src_dir}/testdir/assessors/cat12/DEF_INV/iy_t1.nii.gz
