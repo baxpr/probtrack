@@ -2,6 +2,9 @@
 #
 # Probtracks for specified sets of source and target ROIs
 
+# Text tag that will mark this specific set of sources/targets
+tag="FS6"
+
 # Source and target region names as space-separated lists. Corresponding files must 
 # exist in ${rois_dwi_dir} as created by make_DWI_rois.sh, e.g.
 #     FS_THALAMUS_L.nii.gz
@@ -21,7 +24,7 @@ trackopts="-P ${probtrack_samples} -l --onewaycondition --verbose=0 --forcedir -
 echo Running ${0}
 
 # Root dir for all tracking output folders
-track_dir=${out_dir}/PROBTRACK_FS6_LOOPS
+track_dir=${out_dir}/"PROBTRACK_${tag}"
 
 # Include a couple necessary functions from another file
 source functions.sh
