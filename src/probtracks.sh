@@ -24,7 +24,7 @@ export source_regions="${2}"
 export target_regions="${3}"
 
 # Options for all tracking
-trackopts="-P ${probtrack_samples} -l --onewaycondition --verbose=0 --forcedir --modeuler --pd --os2t --s2tastext --opd --ompl"
+trackopts="--nsamples=${probtrack_samples} --loopcheck --onewaycondition --verbose=0 --forcedir --modeuler --pd --os2t --s2tastext --opd --ompl"
 
 # Root dir for all tracking output folders
 export track_dir=${out_dir}/"PROBTRACK_${dirname_tag}"
