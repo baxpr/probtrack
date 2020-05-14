@@ -21,8 +21,8 @@ export probtrack_samples=100
 export bedpost_dir=${src_dir}/testdir/assessors/bedpost/BEDPOSTX
 export rois_dwi_dir=${src_dir}/testdir/OUTPUTS/ROIS_DWI
 export out_dir=${src_dir}/testdir/OUTPUTS
-probtracks.sh "FS6" \
-	"FS_THALAMUS" \
+probtracks.sh "FStest" \
+	"FS_THALAMUS FS_AMYG_HIPP" \
 	"FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP"
 
 
