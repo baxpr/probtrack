@@ -16,6 +16,18 @@ export PATH=${src_dir}:$PATH
 
 
 
+# whole pipeline
+pipeline.sh \
+--fs_subject_dir ${src_dir}/testdir/assessors/freesurfer/SUBJECT \
+--fs_nii_thalamus_niigz ${src_dir}/testdir/assessors/freesurfer/NII_THALAMUS/ThalamicNuclei.v10.T1.FSvoxelSpace.nii.gz \
+--b0mean_niigz ${src_dir}/testdir/assessors/dwipre/B0_MEAN/b0_mean.nii.gz \
+--bedpost_dir ${src_dir}/testdir/assessors/bedpost/BEDPOSTX \
+--probtrack_samples=100 \
+--out_dir ${src_dir}/testdir/OUTPUTS
+
+exit 0
+
+
 # probtracks
 export probtrack_samples=100
 export bedpost_dir=${src_dir}/testdir/assessors/bedpost/BEDPOSTX
@@ -47,16 +59,6 @@ cp "${targets_dir}"/TARGETS_FS6_L.txt ${track_dir}/FS_THALAMUS_L_to_TARGETS_L
 
 exit 0
 
-
-# whole pipeline
-pipeline.sh \
---fs_subject_dir ${src_dir}/testdir/assessors/freesurfer/SUBJECT \
---fs_nii_thalamus_niigz ${src_dir}/testdir/assessors/freesurfer/NII_THALAMUS/ThalamicNuclei.v10.T1.FSvoxelSpace.nii.gz \
---b0mean_niigz ${src_dir}/testdir/assessors/dwipre/B0_MEAN/b0_mean.nii.gz \
---bedpost_dir ${src_dir}/testdir/assessors/bedpost/BEDPOSTX \
---out_dir ${src_dir}/testdir/OUTPUTS
-
-exit 0
 
 
 # dwi rois

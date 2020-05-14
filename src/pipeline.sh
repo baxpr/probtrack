@@ -47,7 +47,9 @@ done
 echo "${project} ${subject} ${session}"
 echo "fs_subject_dir:          ${fs_subject_dir}"
 echo "fs_nii_thalamus_niigz:   ${fs_nii_thalamus_niigz}"
+echo "b0mean_niigz:            ${b0mean_niigz}"
 echo "bedpost_dir:             ${bedpost_dir}"
+echo "probtrack_samples:       ${probtrack_samples}"
 echo "out_dir:                 ${out_dir}"
 
 
