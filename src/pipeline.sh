@@ -15,31 +15,31 @@ export probtrack_samples=5000
 # Parse options
 while [[ $# -gt 0 ]]
 do
-  key="$1"
-  case $key in
-    --project)
-        export project="$2"; shift; shift ;;
-    --subject)
-        export subject="$2"; shift; shift ;;
-    --session)
-        export session="$2"; shift; shift ;;
-    --fs_subject_dir)
-        export fs_subject_dir="$2"; shift; shift ;;
-    --fs_nii_thalamus_niigz)
-        export fs_nii_thalamus_niigz="$2"; shift; shift ;;
-	--b0mean_niigz)
-        export b0mean_niigz="$2"; shift; shift ;;
-    --bedpost_dir)
-		export bedpost_dir="$2"; shift; shift ;;
-	--probtrack_samples)
-		export probtrack_samples="$2"; shift; shift ;;
-    --out_dir)
-        export out_dir="$2"; shift; shift ;;
-    --src_dir)
-        export src_dir="$2"; shift; shift ;;
-    *)
-        shift ;;
-  esac
+	key="$1"
+	case $key in
+		--project)
+			export project="$2"; shift; shift ;;
+		--subject)
+			export subject="$2"; shift; shift ;;
+		--session)
+			export session="$2"; shift; shift ;;
+		--fs_subject_dir)
+			export fs_subject_dir="$2"; shift; shift ;;
+		--fs_nii_thalamus_niigz)
+			export fs_nii_thalamus_niigz="$2"; shift; shift ;;
+		--b0mean_niigz)
+			export b0mean_niigz="$2"; shift; shift ;;
+		--bedpost_dir)
+			export bedpost_dir="$2"; shift; shift ;;
+		--probtrack_samples)
+			export probtrack_samples="$2"; shift; shift ;;
+		--out_dir)
+			export out_dir="$2"; shift; shift ;;
+		--src_dir)
+			export src_dir="$2"; shift; shift ;;
+		*)
+			shift ;;
+	esac
 done
 
 
