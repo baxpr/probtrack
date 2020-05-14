@@ -9,9 +9,9 @@ function unwarp(invdef_nii,nu_nii,mniimg_nii,out_dir)
 %   out_dir       Location of files
 
 clear matlabbatch
-matlabbatch{1}.spm.util.defs.comp{1}.def = {fullfile(outdir,invdef_nii)};
-matlabbatch{1}.spm.util.defs.comp{2}.id.space = {fullfile(outdir,nu_nii)};
-matlabbatch{1}.spm.util.defs.out{1}.pull.fnames = {fullfile(outdir,mniimg_nii)};
+matlabbatch{1}.spm.util.defs.comp{1}.def = {fullfile(out_dir,invdef_nii)};
+matlabbatch{1}.spm.util.defs.comp{2}.id.space = {fullfile(out_dir,nu_nii)};
+matlabbatch{1}.spm.util.defs.out{1}.pull.fnames = {fullfile(out_dir,mniimg_nii)};
 matlabbatch{1}.spm.util.defs.out{1}.pull.savedir.saveusr = {out_dir};
 matlabbatch{1}.spm.util.defs.out{1}.pull.interp = 0;
 matlabbatch{1}.spm.util.defs.out{1}.pull.mask = 0;
