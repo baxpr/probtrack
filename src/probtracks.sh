@@ -86,9 +86,10 @@ done
 # Segmentation for all targets, for each combo of source+hemisphere. Here
 # using the results from the individual probtrack runs
 cd "${track_dir}"
-for LR in L R ; do
-	for source in ${source_regions} ; do
-		mkdir "BIGGEST_INDIV_${source}"
+for source in ${source_regions} ; do
+	mkdir "BIGGEST_INDIV_${source}"
+	for LR in L R ; do
+
 		bigstr=""
 		for target in ${target_regions} ; do
 			bigstr="${bigstr} ${source}_${LR}_to_${target}_${LR}/seeds_to_${target}_${LR}"
@@ -124,9 +125,9 @@ done
 # Repeat the above segmentation, but use the results from the multi-target
 # probtrack run. The only difference is the inputs to find_the_biggest.
 cd "${track_dir}"
-for LR in L R ; do
-	for source in ${source_regions} ; do
-		mkdir "BIGGEST_MULTI_${source}"
+for source in ${source_regions} ; do
+	mkdir "BIGGEST_MULTI_${source}"
+	for LR in L R ; do
 		bigstr=""
 		for target in ${target_regions} ; do
 			bigstr="${bigstr} ${source}_${LR}_to_TARGETS_${LR}/seeds_to_${target}_${LR}"
