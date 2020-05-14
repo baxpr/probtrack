@@ -70,7 +70,8 @@ for source in ${source_regions} ; do
 done
 
 
-# Segmentation for all targets, for each combo of source+hemisphere
+# Segmentation for all targets, for each combo of source+hemisphere. Here
+# using the results from the individual probtrack runs
 cd "${track_dir}"
 for LR in L R ; do
 	for source in ${source_regions} ; do
@@ -104,5 +105,41 @@ done
 # Combine left and right segs for each source in the multi-target runs
 for source in ${source_regions} ; do
 	cd "${track_dir}/BIGGEST_INDIV_${source}"
+	fslmaths seg_all_L -add seg_all_R seg_all_LR
+done
+
+
+# Repeat the above segmentation, but use the results from the multi-target
+# probtrack run. The only difference is the inputs to find_the_biggest.
+cd "${track_dir}"
+for LR in L R ; do
+	for source in ${source_regions} ; do
+		mkdir "BIGGEST_MULTI_${source}"
+		bigstr=""
+		for target in ${target_regions} ; do
+			bigstr="${bigstr} ${source}_${LR}_to_TARGETS_${LR}/seeds_to_${target}_${LR}"
+		done
+		find_the_biggest ${bigstr} "BIGGEST_MULTI_${source}"/seg_all_${LR}
+	done
+done
+
+for LR in L R ; do
+	for source in ${source_regions} ; do
+		let ind=0
+		csv_file="BIGGEST_MULTI_${source}/seg_${target}_${LR}-label.csv"
+		> "${csv_file}"
+		for target in ${target_regions} ; do
+			let ind+=1
+			echo "${ind},${target}" >> "${csv_file}"
+			fslmaths \
+				"BIGGEST_MULTI_${source}"/seg_all_${LR} \
+				-thr ${ind} -uthr ${ind} -bin \
+				"BIGGEST_MULTI_${source}/seg_${target}_${LR}"
+		done
+	done
+done
+
+for source in ${source_regions} ; do
+	cd "${track_dir}/BIGGEST_MULTI_${source}"
 	fslmaths seg_all_L -add seg_all_R seg_all_LR
 done
