@@ -10,6 +10,7 @@ export subject=NO_SUBJ
 export session=NO_SESS
 #export src_dir=/opt/thaltrack-whole/src
 export src_dir=/repo/thaltrack-whole/src
+export probtrack_samples=5000
 
 # Parse options
 while [[ $# -gt 0 ]]
@@ -30,6 +31,8 @@ do
         export b0mean_niigz="$2"; shift; shift ;;
     --bedpost_dir)
 		export bedpost_dir="$2"; shift; shift ;;
+	--probtrack_samples)
+		export probtrack_samples="$2"; shift; shift ;;
     --out_dir)
         export out_dir="$2"; shift; shift ;;
     --src_dir)

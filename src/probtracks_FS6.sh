@@ -13,7 +13,7 @@ track_dir=${out_dir}/PROBTRACK_FS6
 
 
 # Options for all tracking
-trackopts="-l --onewaycondition --verbose=0 --forcedir --modeuler --pd --os2t --s2tastext --opd --ompl"
+trackopts="-P ${probtrack_samples} -l --onewaycondition --verbose=0 --forcedir --modeuler --pd --os2t --s2tastext --opd --ompl"
 
 
 # Thalamus to individual cortical regions
