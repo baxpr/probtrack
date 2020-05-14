@@ -83,6 +83,9 @@ make_DWI_rois.sh
 
 
 ### Probtracks for FS6 set
-probtracks_FS6.sh
+#probtracks_FS6.sh
 
+probtracks.sh "FS6" \
+	"FS_THALAMUS" \
+	"FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP"
 

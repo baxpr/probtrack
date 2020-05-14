@@ -1,21 +1,31 @@
 #!/bin/bash
 #
 # Probtracks for specified sets of source and target ROIs
-
-# Text tag that will mark this specific set of sources/targets
-tag="FS6"
-
-# Source and target region names as space-separated lists. Corresponding files must 
+#
+# Call as
+#    probtracks.sh <dirname_tag> <source_roi_list> <target_roi_list>
+#
+# Example (the quotes are critical):
+#    probtracks.sh FS6 \
+#        "FS_THALAMUS" \
+#        "FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP"
+#
+# dirname_tag is used to name the output directory
+# source_roi_list and target_roi_list are space-separated. Corresponding files must 
 # exist in ${rois_dwi_dir} as created by make_DWI_rois.sh, e.g.
 #     FS_THALAMUS_L.nii.gz
 #     FS_THALAMUS_R.nii.gz
 #     FS_PFC_L.nii.gz
 #     FS_PFC_R.nii.gz
 #     ...
-# The ROI files must be in the same voxel/world geometry as the BEDPOST images.
-source_regions="FS_THALAMUS"
-target_regions="FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP"
+# These ROI files must be in the same voxel/world geometry as the BEDPOST images.
+dirname_tag="${1}"
+source_regions="${2}"
+target_regions="${3}"
 
+echo "Tracking for ${dirname_tag}:"
+echo "    Sources: ${source_regions}"
+echo "    Targets: ${target_regions}"
 
 # Options for all tracking
 trackopts="-P ${probtrack_samples} -l --onewaycondition --verbose=0 --forcedir --modeuler --pd --os2t --s2tastext --opd --ompl"
@@ -24,7 +34,7 @@ trackopts="-P ${probtrack_samples} -l --onewaycondition --verbose=0 --forcedir -
 echo Running ${0}
 
 # Root dir for all tracking output folders
-track_dir=${out_dir}/"PROBTRACK_${tag}"
+track_dir=${out_dir}/"PROBTRACK_${dirname_tag}"
 
 # Include a couple necessary functions from another file
 source functions.sh
