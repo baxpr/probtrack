@@ -2,6 +2,16 @@
 #
 # Support functions
 
+# Sometimes in a loop we need R when we have L and vice versa
+function swapLR () {
+  case $1 in
+    L)
+      echo R ;;
+    R)
+      echo L ;;
+  esac
+}
+
 
 # Join multiple ROIs into a single binary mask using fslmaths
 # Usage:
