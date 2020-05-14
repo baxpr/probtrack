@@ -32,7 +32,9 @@ export track_dir=${out_dir}/"PROBTRACK_${dirname_tag}"
 # Include a couple necessary functions from another file
 source functions.sh
 
-# Clean up our region lists to get correct spaces for how we'll use them later
+# Clean up our region lists. Later on we need exactly one space between
+# region names, and one space following the last one, so that we'll get the
+# correct format in the target.txt files.
 source_regions="$(echo "${source_regions}" | xargs ) "
 target_regions="$(echo "${target_regions}" | xargs ) "
 
