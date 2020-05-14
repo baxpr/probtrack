@@ -61,7 +61,7 @@ export yeo_dir="${src_dir}"/external/yeo_networks
 
 
 # ROI dirs for region masks in the two different geometries
-#export rois_fs_dir=${out_dir}/ROIS_FS ; mkdir "${rois_fs_dir}"
+export rois_fs_dir=${out_dir}/ROIS_FS ; mkdir "${rois_fs_dir}"
 export rois_dwi_dir=${out_dir}/ROIS_DWI ; mkdir "${rois_dwi_dir}"
 
 

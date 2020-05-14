@@ -29,15 +29,15 @@ gunzip -fk "${out_dir}"/nu.nii.gz
 "${src_dir}"/matlab/bin/run_spm.sh unwarp iy_invdef.nii nu.nii Yeo7_split.nii "${out_dir}"
 "${src_dir}"/matlab/bin/run_spm.sh unwarp iy_invdef.nii nu.nii Yeo17_split.nii "${out_dir}"
 gzip "${out_dir}"/uYeo{7,17}_split.nii
-
+mv "${out_dir}"/uYeo{7,17}_split.nii.gz "${rois_fs_dir}"
 
 # Resample Yeo FS-space ROI images to DWI space (transform obtained from coreg_t1_to_dwi.sh)
 flirtopts="-applyxfm -init ${out_dir}/FS_to_DWI.mat -paddingsize 0.0 -interp nearestneighbour -ref ${out_dir}/b0_mean.nii.gz"
 flirt ${flirtopts} \
-	-in "${out_dir}"/uYeo7_split \
+	-in "${rois_fs_dir}"/uYeo7_split \
 	-out uYeo7_split_to_DWI
 flirt ${flirtopts} \
-	-in "${out_dir}"/uYeo17_split \
+	-in "${rois_fs_dir}"/uYeo17_split \
 	-out uYeo17_split_to_DWI
 
 

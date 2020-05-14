@@ -147,5 +147,6 @@ done
 
 
 # Clean up
-rm -f aparc.DKTatlas+aseg.nii.gz
+mv aparc.DKTatlas+aseg.nii.gz "${rois_fs_dir}"
+cp "${fs_nii_thalamus_niigz}" "${rois_fs_dir}"
 
