@@ -37,13 +37,14 @@ echo "${target_regions}" | sed $'s/ /_R\\\n/g' > ${track_dir}/TARGETS_R.txt
 cd "${rois_dwi_dir}"
 for source in ${source_regions} ; do
 	for LR in L R ; do
+		RL=$(swapLR ${LR})
 		probtrackx2 \
 			-s "${bedpost_dir}"/merged \
 			-m "${bedpost_dir}"/nodif_brain_mask \
 			-x ${source}_${LR} \
 			--targetmasks=${track_dir}/TARGETS_${LR}.txt \
 			--stop=FS_${LR}HCORTEX_STOP \
-			--avoid=FS_$(swapLR ${LR})H_AVOID \
+			--avoid=FS_${RL}H_AVOID \
 			--dir="${track_dir}"/${source}_${LR}_to_TARGETS_${LR} \
 			${trackopts}
 	done
