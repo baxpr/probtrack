@@ -22,7 +22,7 @@ pipeline.sh \
 --fs_nii_thalamus_niigz ${src_dir}/testdir/assessors/freesurfer/NII_THALAMUS/ThalamicNuclei.v10.T1.FSvoxelSpace.nii.gz \
 --b0mean_niigz ${src_dir}/testdir/assessors/dwipre/B0_MEAN/b0_mean.nii.gz \
 --bedpost_dir ${src_dir}/testdir/assessors/bedpost/BEDPOSTX \
---probtrack_samples=100 \
+--probtrack_samples 100 \
 --out_dir ${src_dir}/testdir/OUTPUTS
 
 exit 0

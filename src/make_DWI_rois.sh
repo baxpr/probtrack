@@ -173,22 +173,22 @@ for region in \
 done
 
 # Stop and avoid masks for hemispheres
-for hemi in L R ; do
+for LR in L R ; do
 
 	fslmaths \
-			 FS_PFC_${hemi} \
-		-add FS_MOTOR_${hemi} \
-		-add FS_SOMATO_${hemi} \
-		-add FS_POSTPAR_${hemi} \
-		-add FS_OCC_${hemi} \
-		-add FS_TEMP_${hemi} \
-		-bin FS_${hemi}HCORTEX_STOP
+			 FS_PFC_${LR} \
+		-add FS_MOTOR_${LR} \
+		-add FS_SOMATO_${LR} \
+		-add FS_POSTPAR_${LR} \
+		-add FS_OCC_${LR} \
+		-add FS_TEMP_${LR} \
+		-bin FS_${LR}HCORTEX_STOP
 
 	fslmaths \
-			 FS_${hemi}HCORTEX_STOP \
-		-add FS_WM_${hemi} \
-		-add FS_THALAMUS_${hemi} \
-		-bin FS_${hemi}H_AVOID
+			 FS_${LR}HCORTEX_STOP \
+		-add FS_WM_${LR} \
+		-add FS_THALAMUS_${LR} \
+		-bin FS_${LR}H_AVOID
 
 done
 
