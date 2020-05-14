@@ -88,36 +88,35 @@ done
 cd "${track_dir}"
 for LR in L R ; do
 	for source in ${source_regions} ; do
-		mkdir "BIGGEST_INDIV_${source}_${LR}"
+		mkdir "BIGGEST_INDIV_${source}"
 		bigstr=""
 		for target in ${target_regions} ; do
 			bigstr="${bigstr} ${source}_${LR}_to_${target}_${LR}/seeds_to_${target}_${LR}"
 		done
-		find_the_biggest ${bigstr} "BIGGEST_INDIV_${source}_${LR}"/seg_all_${LR}
+		find_the_biggest ${bigstr} "BIGGEST_INDIV_${source}"/seg_all_${LR}
 	done
 done
 
 # Make separate ROI images from segmentation, and make label file for seg_all
-for LR in L R ; do
-	for source in ${source_regions} ; do
-		let ind=0
-		csv_file="BIGGEST_INDIV_${source}_${LR}/seg_${target}_${LR}-label.csv"
-		> "${csv_file}"
-		for target in ${target_regions} ; do
-			let ind+=1
-			echo "${ind},${target}" >> "${csv_file}"
+for source in ${source_regions} ; do
+	csv_file="BIGGEST_INDIV_${source}/seg_all-label.csv"
+	let ind=0
+	> "${csv_file}"
+	for target in ${target_regions} ; do
+		let ind+=1
+		echo "${ind},${target}" >> "${csv_file}"
+		for LR in L R ; do
 			fslmaths \
-				"BIGGEST_INDIV_${source}_${LR}"/seg_all_${LR} \
+				"BIGGEST_INDIV_${source}"/seg_all_${LR} \
 				-thr ${ind} -uthr ${ind} -bin \
-				"BIGGEST_INDIV_${source}_${LR}/seg_${target}_${LR}"
+				"BIGGEST_INDIV_${source}/seg_${target}_${LR}"
 		done
 	done
 done
 
-
 # Combine left and right segs for each source in the multi-target runs
 for source in ${source_regions} ; do
-	cd "${track_dir}/BIGGEST_INDIV_${source}_${LR}"
+	cd "${track_dir}/BIGGEST_INDIV_${source}"
 	fslmaths seg_all_L -add seg_all_R seg_all_LR
 done
 
@@ -127,32 +126,34 @@ done
 cd "${track_dir}"
 for LR in L R ; do
 	for source in ${source_regions} ; do
-		mkdir "BIGGEST_MULTI_${source}_${LR}"
+		mkdir "BIGGEST_MULTI_${source}"
 		bigstr=""
 		for target in ${target_regions} ; do
 			bigstr="${bigstr} ${source}_${LR}_to_TARGETS_${LR}/seeds_to_${target}_${LR}"
 		done
-		find_the_biggest ${bigstr} "BIGGEST_MULTI_${source}_${LR}"/seg_all_${LR}
-	done
-done
-
-for LR in L R ; do
-	for source in ${source_regions} ; do
-		let ind=0
-		csv_file="BIGGEST_MULTI_${source}_${LR}/seg_${target}_${LR}-label.csv"
-		> "${csv_file}"
-		for target in ${target_regions} ; do
-			let ind+=1
-			echo "${ind},${target}" >> "${csv_file}"
-			fslmaths \
-				"BIGGEST_MULTI_${source}_${LR}"/seg_all_${LR} \
-				-thr ${ind} -uthr ${ind} -bin \
-				"BIGGEST_MULTI_${source}_${LR}/seg_${target}_${LR}"
-		done
+		find_the_biggest ${bigstr} "BIGGEST_MULTI_${source}"/seg_all_${LR}
 	done
 done
 
 for source in ${source_regions} ; do
-	cd "${track_dir}/BIGGEST_MULTI_${source}_${LR}"
+	csv_file="BIGGEST_MULTI_${source}/seg_all-label.csv"
+	let ind=0
+	> "${csv_file}"
+	for target in ${target_regions} ; do
+		let ind+=1
+		echo "${ind},${target}" >> "${csv_file}"
+		for LR in L R ; do
+			fslmaths \
+				"BIGGEST_MULTI_${source}"/seg_all_${LR} \
+				-thr ${ind} -uthr ${ind} -bin \
+				"BIGGEST_MULTI_${source}/seg_${target}_${LR}"
+		done
+	done
+done
+
+
+# Combine left and right segs for each source in the multi-target runs
+for source in ${source_regions} ; do
+	cd "${track_dir}/BIGGEST_MULTI_${source}"
 	fslmaths seg_all_L -add seg_all_R seg_all_LR
 done
