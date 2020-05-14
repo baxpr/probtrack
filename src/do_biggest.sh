@@ -34,7 +34,8 @@ for source in ${source_regions} ; do
 					;;
 			esac
 		done
-		find_the_biggest ${bigstr} "BIGGEST_${bigtag}_${source}"/seg_all_${LR}
+		find_the_biggest ${bigstr} "BIGGEST_${bigtag}_${source}"/seg_all_${LR} \
+			> "BIGGEST_${bigtag}_${source}"/find_the_biggest_${LR}.log
 	done
 done
 
