@@ -44,13 +44,21 @@ echo "    Targets: ${target_regions}"
 echo "    Dir:     ${track_dir}"
 
 
-# Track each source to each individual target cortical region, in each hemisphere. This 
-# uses the track function from functions.sh
+# Track each source to each individual target cortical region, in each hemisphere.
 for source in ${source_regions} ; do
 	for target in ${target_regions} ; do
 		for LR in L R ; do
-			track ${bedpost_dir} ${rois_dwi_dir} ${track_dir} "${trackopts}" \
-				${source}_${LR} ${target}_${LR}
+
+			probtrackx2 \
+				-s "${bedpost_dir}"/merged \
+				-m "${bedpost_dir}"/nodif_brain_mask \
+				-x "${rois_dwi_dir}"/"${source}" \
+				--targetmasks="${rois_dwi_dir}"/"${target}" \
+				--stop="${rois_dwi_dir}"/"${target}" \
+				--avoid="${rois_dwi_dir}"/"${target}"_AVOID \
+				--dir="${track_dir}"/"${source}"_to_"${target}" \
+				${trackopts}
+				
 		done
 	done
 done
