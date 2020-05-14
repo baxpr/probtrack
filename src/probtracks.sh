@@ -42,6 +42,7 @@ echo "Tracking for ${dirname_tag}:"
 echo "    Sources: ${source_regions}"
 echo "    Targets: ${target_regions}"
 echo "    Dir:     ${track_dir}"
+echo "    Opts:    ${trackopts}"
 
 
 # Track each source to each individual target cortical region, in each hemisphere.
