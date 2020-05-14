@@ -22,6 +22,8 @@ b0mean_niigz=/path/to/dwipre/b0_mean.nii.gz
 bedpost_dir=/path/to/bedpost/BEDPOSTX
 out_dir=/path/to/where/you/want/outputs
 
+# Less samples for testing
+probtrack_samples=100
 
 # Run whole pipeline
 pipeline.sh \
@@ -29,5 +31,6 @@ pipeline.sh \
 --fs_nii_thalamus_niigz ${fs_nii_thalamus_niigz} \
 --b0mean_niigz ${b0mean_niigz} \
 --bedpost_dir ${bedpost_dir} \
+--probtrack_samples ${probtrack_samples} \
 --out_dir ${out_dir} \
 --src_dir ${src_dir}
