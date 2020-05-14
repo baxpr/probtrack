@@ -13,8 +13,7 @@ echo "   Targets: ${target_regions}"
 echo "   Dir:     ${track_dir}"
 
 
-# Segmentation for all targets, for each combo of source+hemisphere. Here
-# using the results from the individual probtrack runs
+# Segmentation for all targets, for each combo of source+hemisphere.
 cd "${track_dir}"
 for source in ${source_regions} ; do
 	mkdir "BIGGEST_${bigtag}_${source}"
@@ -53,7 +52,7 @@ for source in ${source_regions} ; do
 	done
 done
 
-# Combine left and right segs for each source in the multi-target runs
+# Combine left and right segs for each source
 for source in ${source_regions} ; do
 	cd "${track_dir}/BIGGEST_${bigtag}_${source}"
 	fslmaths seg_all_L -add seg_all_R seg_all_LR

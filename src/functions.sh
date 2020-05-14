@@ -4,16 +4,16 @@
 
 # Sometimes in a loop we need R when we have L and vice versa
 function swapLR () {
-  case $1 in
-    L)
-      echo R ;;
-    R)
-      echo L ;;
-	*)
-	  echo "Unknown LR in swapLR"
-	  exit 1
-	  ;;
-  esac
+ 	case $1 in
+		L)
+			echo R ;;
+		R)
+			echo L ;;
+		*)
+			echo "Unknown LR in swapLR"
+			exit 1
+			;;
+		esac
 }
 
 
