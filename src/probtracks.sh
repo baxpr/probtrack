@@ -52,9 +52,9 @@ for source in ${source_regions} ; do
 		for LR in L R ; do
 
 			probtrackx2 \
-				-s "${bedpost_dir}"/merged \
-				-m "${bedpost_dir}"/nodif_brain_mask \
-				-x "${source}_${LR}" \
+				--samples="${bedpost_dir}"/merged \
+				--mask="${bedpost_dir}"/nodif_brain_mask \
+				--seed="${source}_${LR}" \
 				--targetmasks="${target}_${LR}" \
 				--stop="${target}_${LR}" \
 				--avoid="${target}_${LR}"_AVOID \
@@ -82,9 +82,9 @@ for source in ${source_regions} ; do
 		
 		RL=$(swapLR ${LR})
 		probtrackx2 \
-			-s "${bedpost_dir}"/merged \
-			-m "${bedpost_dir}"/nodif_brain_mask \
-			-x ${source}_${LR} \
+			--samples="${bedpost_dir}"/merged \
+			--mask="${bedpost_dir}"/nodif_brain_mask \
+			--seed=${source}_${LR} \
 			--targetmasks=${track_dir}/TARGETS_${LR}.txt \
 			--stop=FS_${LR}HCORTEX_STOP \
 			--avoid=FS_${RL}H_AVOID \
