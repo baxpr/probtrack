@@ -31,13 +31,13 @@ source_regions="$(echo "${source_regions}" | xargs ) "
 target_regions="$(echo "${target_regions}" | xargs ) "
 
 
-# Track each source to each individual target cortical region, in each hemisphere. This uses
-# the track function from functions.sh
-trackcmd="track ${bedpost_dir} ${rois_dwi_dir} ${track_dir}"
+# Track each source to each individual target cortical region, in each hemisphere. This 
+# uses the track function from functions.sh
 for source in ${source_regions} ; do
 	for target in ${target_regions} ; do
 		for LR in L R ; do
-			${trackcmd} "${trackopts}" ${source}_${LR} ${target}_${LR}
+			track ${bedpost_dir} ${rois_dwi_dir} ${track_dir} "${trackopts}" \
+				${source}_${LR} ${target}_${LR}
 		done
 	done
 done
