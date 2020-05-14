@@ -51,35 +51,37 @@ for source in ${source_regions} ; do
 done
 
 
-exit 0
-
-#FIXME Make the below work for arbitrary number/name of target regions
-# Then loop that over source regions
-# Need a counter in the loop to get ROI value for fslmaths, and also
-# append to label file with ROI name at the same time
-
-# Segmentation
+# Segmentation for all targets, for each combo of source+hemisphere
 cd "${track_dir}"
-mkdir BIGGEST
 for LR in L R ; do
-
-	find_the_biggest \
-		FS_THALAMUS_${LR}_to_FS_PFC_${LR}/seeds_to_FS_PFC_${LR} \
-		FS_THALAMUS_${LR}_to_FS_MOTOR_${LR}/seeds_to_FS_MOTOR_${LR} \
-		FS_THALAMUS_${LR}_to_FS_SOMATO_${LR}/seeds_to_FS_SOMATO_${LR} \
-		FS_THALAMUS_${LR}_to_FS_POSTPAR_${LR}/seeds_to_FS_POSTPAR_${LR} \
-		FS_THALAMUS_${LR}_to_FS_OCC_${LR}/seeds_to_FS_OCC_${LR} \
-		FS_THALAMUS_${LR}_to_FS_TEMP_${LR}/seeds_to_FS_TEMP_${LR} \
-		BIGGEST/seg_all_${LR}
-		
-	fslmaths BIGGEST/seg_all_${LR} -thr 1 -uthr 1 -bin BIGGEST/seg_FS_PFC_${LR}
-	fslmaths BIGGEST/seg_all_${LR} -thr 2 -uthr 2 -bin BIGGEST/seg_FS_MOTOR_${LR}
-	fslmaths BIGGEST/seg_all_${LR} -thr 3 -uthr 3 -bin BIGGEST/seg_FS_SOMATO_${LR}
-	fslmaths BIGGEST/seg_all_${LR} -thr 4 -uthr 4 -bin BIGGEST/seg_FS_POSTPAR_${LR}
-	fslmaths BIGGEST/seg_all_${LR} -thr 5 -uthr 5 -bin BIGGEST/seg_FS_OCC_${LR}
-	fslmaths BIGGEST/seg_all_${LR} -thr 6 -uthr 6 -bin BIGGEST/seg_FS_TEMP_${LR}
-
+	for source in ${source_regions} ; do
+		mkdir "BIGGEST_INDIV_${source}"
+		bigstr=""
+		for target in ${target_regions} ; do
+			bigstr="${bigstr} ${source}_${LR}_to_${target}_${LR}/seeds_to_${target}_${LR}"
+		done
+		find_the_biggest ${bigstr} "BIGGEST_INDIV_${source}"/seg_all_${LR}
+	done
 done
+
+# Make separate ROI images from segmentation, and make label file for seg_all
+for LR in L R ; do
+	for source in ${source_regions} ; do
+		let ind=0
+		csv_file="BIGGEST_INDIV_${source}/seg_${target}_${LR}-label.csv"
+		> "${csv_file}"
+		for target in ${target_regions} ; do
+			let ind+=1
+			echo "${ind},${target}\n" >> csv_file
+			fslmaths \
+				"BIGGEST_INDIV_${source}"/seg_all_${LR} \
+				-thr ${ind} -uthr ${ind} -bin \
+				"BIGGEST_INDIV_${source}/seg_${target}_${LR}"
+		done
+	done
+done
+
+
 
 # Combine left and right
 fslmaths BIGGEST/seg_all_L -add BIGGEST/seg_all_R BIGGEST/seg_all_LR
