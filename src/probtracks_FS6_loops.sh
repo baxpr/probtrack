@@ -1,11 +1,17 @@
 #!/bin/bash
+#
+# Probtracks for specified sets of source and target ROIs
 
-echo Running ${0}
-
-# Root dir for all tracking output folders
-track_dir=${out_dir}/PROBTRACK_FS6_LOOPS
-
-# Source and target regions
+# Source and target region names as space-separated lists. Corresponding files must 
+# exist in ${rois_dwi_dir} as created by make_DWI_rois.sh, e.g.
+#     FS_THALAMUS_L.nii.gz
+#     FS_THALAMUS_R.nii.gz
+#     FS_PFC_L.nii.gz
+#     FS_PFC_R.nii.gz
+#     ...
+# The ROI files must be in the same voxel/world geometry as the BEDPOST images. The
+# format of this list (short ROI names followed by one space each) is critical for some
+# assumptions that are made below.
 source_regions="FS_THALAMUS"
 target_regions="FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP"
 
@@ -13,11 +19,18 @@ target_regions="FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP"
 trackopts="-P ${probtrack_samples} -l --onewaycondition --verbose=0 --forcedir --modeuler --pd --os2t --s2tastext --opd --ompl"
 
 
-# Need some functions
+# Help out the log file with a little extra info
+echo Running ${0}
+
+# Root dir for all tracking output folders
+track_dir=${out_dir}/PROBTRACK_FS6_LOOPS
+
+# Include a couple necessary functions from another file
 source functions.sh
 
 
-# Sources to individual target cortical regions
+# Track each source to each individual target cortical region, in each hemisphere. This uses
+# the track function from functions.sh
 trackcmd="track ${bedpost_dir} ${rois_dwi_dir} ${track_dir}"
 for source in ${source_regions} ; do
 	for target in ${target_regions} ; do
@@ -28,12 +41,16 @@ for source in ${source_regions} ; do
 done
 
 
-# Create multiple targets files for L and R
+# Create multiple targets files for L and R. These are text files with the 
+# "short" region names e.g. FS_PFC_L and so on that probtrack can map to
+# the corresponding ROI files e.g. FS_PFC_L.nii.gz. We get this by replacing
+# some characters in the supplied targets list.
 echo "${target_regions}" | sed $'s/ /_L\\\n/g' > ${track_dir}/TARGETS_L.txt
 echo "${target_regions}" | sed $'s/ /_R\\\n/g' > ${track_dir}/TARGETS_R.txt
 
 
-# Track all sources to all targets
+# Track each source to all targets, for each hemisphere. This tracking is done 
+# in the ROI directory so we don't need pathnames in the targets.txt files.
 cd "${rois_dwi_dir}"
 for source in ${source_regions} ; do
 	for LR in L R ; do
@@ -82,17 +99,8 @@ for LR in L R ; do
 done
 
 
-
-# Combine left and right
-fslmaths BIGGEST/seg_all_L -add BIGGEST/seg_all_R BIGGEST/seg_all_LR
-
-# Make label list for segmentations
-cat > BIGGEST/seg_all-labels.csv <<HERE
-1,FS_PFC
-2,FS_MOTOR
-3,FS_SOMATO
-4,FS_POSTPAR
-5,FS_OCC
-6,FS_TEMP
-HERE
-
+# Combine left and right segs for each source in the multi-target runs
+for source in ${source_regions} ; do
+	cd "${track_dir}/BIGGEST_INDIV_${source}"
+	fslmaths seg_all_L -add seg_all_R seg_all_LR
+done

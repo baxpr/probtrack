@@ -21,7 +21,6 @@ export probtrack_samples=100
 export bedpost_dir=${src_dir}/testdir/assessors/bedpost/BEDPOSTX
 export rois_dwi_dir=${src_dir}/testdir/OUTPUTS/ROIS_DWI
 export out_dir=${src_dir}/testdir/OUTPUTS
-export targets_dir=${src_dir}/targets
 probtracks_FS6_loops.sh
 
 exit 0
