@@ -16,6 +16,20 @@ export PATH=${src_dir}:$PATH
 
 
 
+# whole pipeline
+pipeline.sh \
+--fs_subject_dir ${src_dir}/testdir/assessors/freesurfer/SUBJECT \
+--fs_nii_thalamus_niigz ${src_dir}/testdir/assessors/freesurfer/NII_THALAMUS/ThalamicNuclei.v10.T1.FSvoxelSpace.nii.gz \
+--b0mean_niigz ${src_dir}/testdir/assessors/dwipre/B0_MEAN/b0_mean.nii.gz \
+--invdef_niigz ${src_dir}/testdir/assessors/cat12/DEF_INV/iy_t1.nii.gz \
+--bedpost_dir ${src_dir}/testdir/assessors/bedpost/BEDPOSTX \
+--probtrack_samples 100 \
+--out_dir ${src_dir}/testdir/OUTPUTS
+
+exit 0
+
+
+
 # Yeo ROIs
 export rois_dwi_dir=${src_dir}/testdir/OUTPUTS/ROIS_DWI
 export rois_fs_dir=${src_dir}/testdir/OUTPUTS/ROIS_FS
@@ -36,18 +50,6 @@ probtracks.sh "FS6" \
 	"FS_THALAMUS" \
 	"FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP"
 
-
-exit 0
-
-
-# whole pipeline
-pipeline.sh \
---fs_subject_dir ${src_dir}/testdir/assessors/freesurfer/SUBJECT \
---fs_nii_thalamus_niigz ${src_dir}/testdir/assessors/freesurfer/NII_THALAMUS/ThalamicNuclei.v10.T1.FSvoxelSpace.nii.gz \
---b0mean_niigz ${src_dir}/testdir/assessors/dwipre/B0_MEAN/b0_mean.nii.gz \
---bedpost_dir ${src_dir}/testdir/assessors/bedpost/BEDPOSTX \
---probtrack_samples 100 \
---out_dir ${src_dir}/testdir/OUTPUTS
 
 exit 0
 

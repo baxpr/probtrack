@@ -100,5 +100,6 @@ combine_rois "${yeo17}"   Yeo17_N16_R     "216"
 combine_rois "${yeo17}"   Yeo17_N17_R     "217"
 
 
+# FIXME we need AVOID ROIs etc also
 
 
