@@ -100,6 +100,47 @@ combine_rois "${yeo17}"   Yeo17_N16_R     "216"
 combine_rois "${yeo17}"   Yeo17_N17_R     "217"
 
 
-# FIXME we need AVOID ROIs etc also
+# Whole brain gray matter mask. Note that Yeo7 and Yeo17 cover the same voxels
+fslmaths uYeo7_split_to_DWI -bin Yeo_CORTEX
 
+
+# Add white matter, subcortical to gray matter to make large avoid masks
+# Pull in the white matter, cerebellum, subcortical regions from make_FS_rois.sh 
+# because Yeo does not provide these 
+fslmaths Yeo_CORTEX -add FS_WM_R -add FS_CEREBELLAR_SUBCORTICAL -bin Yeo_RH_LHCORTEX_AVOID
+fslmaths Yeo_CORTEX -add FS_WM_L -add FS_CEREBELLAR_SUBCORTICAL -bin Yeo_LH_RHCORTEX_AVOID
+
+
+# Avoid masks for all Yeo seed regions
+for region in \
+  Yeo7_N1 Yeo7_N2 Yeo7_N3 Yeo7_N4 Yeo7_N5 Yeo7_N6 Yeo7_N7 \
+  Yeo17_N01 Yeo17_N02 Yeo17_N03 Yeo17_N04 Yeo17_N05 Yeo17_N06 \
+  Yeo17_N07 Yeo17_N08 Yeo17_N09 Yeo17_N10 Yeo17_N11 Yeo17_N12 \
+  Yeo17_N13 Yeo17_N14 Yeo17_N15 Yeo17_N16 Yeo17_N17 \
+; do
+	fslmaths Yeo_RH_LHCORTEX_AVOID -sub ${region}_L -thr 1 -bin ${region}_L_AVOID
+	fslmaths Yeo_LH_RHCORTEX_AVOID -sub ${region}_R -thr 1 -bin ${region}_R_AVOID
+done
+
+
+# Stop and avoid masks for hemispheres
+for LR in L R ; do
+
+	fslmaths \
+			 Yeo7_N1_${LR} \
+		-add Yeo7_N2_${LR} \
+		-add Yeo7_N3_${LR} \
+		-add Yeo7_N4_${LR} \
+		-add Yeo7_N5_${LR} \
+		-add Yeo7_N6_${LR} \
+		-add Yeo7_N7_${LR} \
+		-bin Yeo_${LR}HCORTEX_STOP
+
+	fslmaths \
+			 Yeo_${LR}HCORTEX_STOP \
+		-add FS_WM_${LR} \
+		-add FS_THALAMUS_${LR} \
+		-bin Yeo_${LR}H_AVOID
+
+done
 
