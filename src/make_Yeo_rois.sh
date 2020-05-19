@@ -26,8 +26,8 @@ gunzip -fk "${out_dir}"/nu.nii.gz
 
 # Call the compiled matlab unwarping function, zip the results,
 # move to ROI dir
-"${src_dir}"/../matlab/bin/run_spm.sh unwarp iy_invdef.nii nu.nii Yeo7_split.nii "${out_dir}"
-"${src_dir}"/../matlab/bin/run_spm.sh unwarp iy_invdef.nii nu.nii Yeo17_split.nii "${out_dir}"
+"${matlab_dir}"/run_spm.sh unwarp iy_invdef.nii nu.nii Yeo7_split.nii "${out_dir}"
+"${matlab_dir}"/run_spm.sh unwarp iy_invdef.nii nu.nii Yeo17_split.nii "${out_dir}"
 gzip "${out_dir}"/uYeo{7,17}_split.nii
 mv "${out_dir}"/uYeo{7,17}_split.nii.gz "${rois_fs_dir}"
 

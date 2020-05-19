@@ -8,8 +8,8 @@ echo Running ${0}
 export project=NO_PROJ
 export subject=NO_SUBJ
 export session=NO_SESS
-#export src_dir=/opt/thaltrack-whole/src
-export src_dir=/repo/thaltrack-whole/src
+export src_dir=/opt/thaltrack-whole/src
+export matlab_dir=/opt/thaltrack-whole/matlab/bin
 export probtrack_samples=5000
 
 # Parse options
@@ -39,6 +39,8 @@ do
 			export out_dir="$2"; shift; shift ;;
 		--src_dir)
 			export src_dir="$2"; shift; shift ;;
+		--matlab_dir)
+			export matlab_dir="$2"; shift; shift ;;
 		*)
 			shift ;;
 	esac
@@ -63,10 +65,6 @@ export yeo_dir="${src_dir}"/external/yeo_networks
 # ROI dirs for region masks in the two different geometries
 export rois_fs_dir=${out_dir}/ROIS_FS ; mkdir "${rois_fs_dir}"
 export rois_dwi_dir=${out_dir}/ROIS_DWI ; mkdir "${rois_dwi_dir}"
-
-
-### Extract region masks from FS-space DKT atlas
-#make_FS_rois.sh
 
 
 ### Coreg FS-space T1 to DWI-space b=0

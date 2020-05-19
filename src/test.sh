@@ -15,6 +15,26 @@ export src_dir=/repo/thaltrack-whole/src
 export PATH=${src_dir}:$PATH
 
 
+
+# whole pipeline
+pipeline.sh \
+--fs_subject_dir ${src_dir}/testdir/assessors/freesurfer/SUBJECT \
+--fs_nii_thalamus_niigz ${src_dir}/testdir/assessors/freesurfer/NII_THALAMUS/ThalamicNuclei.v10.T1.FSvoxelSpace.nii.gz \
+--b0mean_niigz ${src_dir}/testdir/assessors/dwipre/B0_MEAN/b0_mean.nii.gz \
+--invdef_niigz ${src_dir}/testdir/assessors/cat12/DEF_INV/iy_t1.nii.gz \
+--bedpost_dir ${src_dir}/testdir/assessors/bedpost/BEDPOSTX \
+--probtrack_samples 100 \
+--out_dir ${src_dir}/testdir/OUTPUTS \
+--src_dir ${src_dir} \
+--matlab_dir ${src_dir}/../matlab/bin_mac
+
+
+exit 0
+
+
+
+
+
 export out_dir=${src_dir}/testdir/OUTPUTS
 export fs_subject_dir=${src_dir}/testdir/assessors/freesurfer/SUBJECT
 export b0mean_niigz=${src_dir}/testdir/assessors/dwipre/B0_MEAN/b0_mean.nii.gz
@@ -25,6 +45,7 @@ export invdef_niigz=${src_dir}/testdir/assessors/cat12/DEF_INV/iy_t1.nii.gz
 export fs_nii_thalamus_niigz=${src_dir}/testdir/assessors/freesurfer/NII_THALAMUS/ThalamicNuclei.v10.T1.FSvoxelSpace.nii.gz
 export probtrack_samples=100
 export bedpost_dir=${src_dir}/testdir/assessors/bedpost/BEDPOSTX
+
 
 
 
@@ -65,20 +86,6 @@ probtracks.sh "Yeo17" \
 "FS_THALAMUS" \
 "Yeo17_N01 Yeo17_N02 Yeo17_N03 Yeo17_N04 Yeo17_N05 Yeo17_N06 Yeo17_N07 Yeo17_N08 Yeo17_N09 \
 Yeo17_N10 Yeo17_N11 Yeo17_N12 Yeo17_N13 Yeo17_N14 Yeo17_N15 Yeo17_N16 Yeo17_N17"
-
-exit 0
-
-
-
-# whole pipeline
-pipeline.sh \
---fs_subject_dir ${src_dir}/testdir/assessors/freesurfer/SUBJECT \
---fs_nii_thalamus_niigz ${src_dir}/testdir/assessors/freesurfer/NII_THALAMUS/ThalamicNuclei.v10.T1.FSvoxelSpace.nii.gz \
---b0mean_niigz ${src_dir}/testdir/assessors/dwipre/B0_MEAN/b0_mean.nii.gz \
---invdef_niigz ${src_dir}/testdir/assessors/cat12/DEF_INV/iy_t1.nii.gz \
---bedpost_dir ${src_dir}/testdir/assessors/bedpost/BEDPOSTX \
---probtrack_samples 100 \
---out_dir ${src_dir}/testdir/OUTPUTS
 
 exit 0
 
