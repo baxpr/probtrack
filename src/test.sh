@@ -11,11 +11,10 @@ export FREESURFER_HOME=/usr/local/freesurfer
 . $FREESURFER_HOME/SetUpFreeSurfer.sh
 
 
-src_dir=/repo/thaltrack-whole/src
+export src_dir=/repo/thaltrack-whole/src
 export PATH=${src_dir}:$PATH
 
 
-# Just through ROIs
 export out_dir=${src_dir}/testdir/OUTPUTS
 export fs_subject_dir=${src_dir}/testdir/assessors/freesurfer/SUBJECT
 export b0mean_niigz=${src_dir}/testdir/assessors/dwipre/B0_MEAN/b0_mean.nii.gz
@@ -26,13 +25,49 @@ export invdef_niigz=${src_dir}/testdir/assessors/cat12/DEF_INV/iy_t1.nii.gz
 export fs_nii_thalamus_niigz=${src_dir}/testdir/assessors/freesurfer/NII_THALAMUS/ThalamicNuclei.v10.T1.FSvoxelSpace.nii.gz
 export probtrack_samples=100
 export bedpost_dir=${src_dir}/testdir/assessors/bedpost/BEDPOSTX
+
+
+
+
+# One probtracks
+probtracks.sh "Yeo7" \
+"FS_THALAMUS" \
+"Yeo7_N1 Yeo7_N2 Yeo7_N3 Yeo7_N4 Yeo7_N5 Yeo7_N6 Yeo7_N7"
+
+exit 0
+
+
+# Just through ROIs
 mkdir "${rois_fs_dir}"
 mkdir "${rois_dwi_dir}"
-coreg_FS_to_DWI.sh
-make_FS_rois.sh
+#coreg_FS_to_DWI.sh
+#make_FS_rois.sh
 make_Yeo_rois.sh
 
 exit 0
+
+
+
+# All probtracks
+probtracks.sh "FS6" \
+"FS_THALAMUS" \
+"FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP"
+
+probtracks.sh "FS10" \
+"FS_THALAMUS" \
+"FS_MOFC FS_LPFC FS_ACC FS_PPC FS_PARDMN FS_AUD FS_ITEMP FS_MOTOR FS_SOMATO FS_OCC"
+
+probtracks.sh "Yeo7" \
+"FS_THALAMUS" \
+"Yeo7_N1 Yeo7_N2 Yeo7_N3 Yeo7_N4 Yeo7_N5 Yeo7_N6 Yeo7_N7"
+
+probtracks.sh "Yeo17" \
+"FS_THALAMUS" \
+"Yeo17_N01 Yeo17_N02 Yeo17_N03 Yeo17_N04 Yeo17_N05 Yeo17_N06 Yeo17_N07 Yeo17_N08 Yeo17_N09 \
+Yeo17_N10 Yeo17_N11 Yeo17_N12 Yeo17_N13 Yeo17_N14 Yeo17_N15 Yeo17_N16 Yeo17_N17"
+
+exit 0
+
 
 
 # whole pipeline
@@ -47,74 +82,4 @@ pipeline.sh \
 
 exit 0
 
-
-
-# Yeo ROIs
-export rois_dwi_dir=${src_dir}/testdir/OUTPUTS/ROIS_DWI
-export rois_fs_dir=${src_dir}/testdir/OUTPUTS/ROIS_FS
-export yeo_dir=${src_dir}/external/yeo_networks
-export out_dir=${src_dir}/testdir/OUTPUTS
-export invdef_niigz=${src_dir}/testdir/assessors/cat12/DEF_INV/iy_t1.nii.gz
-make_Yeo_rois.sh
-
-exit 0
-
-
-# probtracks loops
-export probtrack_samples=100
-export bedpost_dir=${src_dir}/testdir/assessors/bedpost/BEDPOSTX
-export rois_dwi_dir=${src_dir}/testdir/OUTPUTS/ROIS_DWI
-export out_dir=${src_dir}/testdir/OUTPUTS
-probtracks.sh "FS6" \
-	"FS_THALAMUS" \
-	"FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP"
-
-
-exit 0
-
-
-
-# targets probtrack
-export rois_dwi_dir=${src_dir}/testdir/OUTPUTS/ROIS_DWI
-export bedpost_dir=${src_dir}/testdir/assessors/bedpost/BEDPOSTX
-export targets_dir=${src_dir}/targets
-export track_dir=${src_dir}/testdir/OUTPUTS/PROBTRACK_FS6
-trackopts="-l --onewaycondition --verbose=0 --forcedir --modeuler --pd --os2t --s2tastext --opd --ompl"
-cd "${rois_dwi_dir}"
-probtrackx2 \
-	-s "${bedpost_dir}"/merged \
-	-m "${bedpost_dir}"/nodif_brain_mask \
-	-x FS_THALAMUS_L \
-	--targetmasks="${targets_dir}"/TARGETS_FS6_L.txt \
-	--stop=FS_LHCORTEX_STOP \
-	--avoid=FS_RH_AVOID \
-	--dir="${track_dir}"/FS_THALAMUS_L_to_TARGETS_L \
-	${trackopts}
-cp "${targets_dir}"/TARGETS_FS6_L.txt ${track_dir}/FS_THALAMUS_L_to_TARGETS_L
-
-exit 0
-
-
-
-# dwi rois
-export rois_dwi_dir=${src_dir}/testdir/OUTPUTS/ROIS_DWI
-export fs_subject_dir=${src_dir}/testdir/assessors/freesurfer/SUBJECT
-export out_dir=${src_dir}/testdir/OUTPUTS
-export fs_nii_thalamus_niigz=${src_dir}/testdir/assessors/freesurfer/NII_THALAMUS/ThalamicNuclei.v10.T1.FSvoxelSpace.nii.gz
-make_FS_rois.sh
-
-exit 0
-
-
-
-
-# coreg
-export out_dir=${src_dir}/testdir/OUTPUTS
-export fs_subject_dir=${src_dir}/testdir/assessors/freesurfer/SUBJECT
-export b0mean_niigz=${src_dir}/testdir/assessors/dwipre/B0_MEAN/b0_mean.nii.gz
-export rois_fs_dir=${src_dir}/testdir/OUTPUTS/ROIS_FS
-coreg_t1_to_dwi.sh
-
-
-exit 0
 

@@ -26,18 +26,21 @@ gunzip -fk "${out_dir}"/nu.nii.gz
 
 # Call the compiled matlab unwarping function, zip the results,
 # move to ROI dir
-"${src_dir}"/matlab/bin/run_spm.sh unwarp iy_invdef.nii nu.nii Yeo7_split.nii "${out_dir}"
-"${src_dir}"/matlab/bin/run_spm.sh unwarp iy_invdef.nii nu.nii Yeo17_split.nii "${out_dir}"
+"${src_dir}"/../matlab/bin/run_spm.sh unwarp iy_invdef.nii nu.nii Yeo7_split.nii "${out_dir}"
+"${src_dir}"/../matlab/bin/run_spm.sh unwarp iy_invdef.nii nu.nii Yeo17_split.nii "${out_dir}"
 gzip "${out_dir}"/uYeo{7,17}_split.nii
 mv "${out_dir}"/uYeo{7,17}_split.nii.gz "${rois_fs_dir}"
 
 # Resample Yeo FS-space ROI images to DWI space (transform obtained from coreg_FS_to_DWI.sh)
+# Force to short datatype to avoid rounding error that affects later -thr and -uthr
 flirtopts="-applyxfm -init ${out_dir}/FS_to_DWI.mat -paddingsize 0.0 -interp nearestneighbour -ref ${out_dir}/b0_mean.nii.gz"
 flirt ${flirtopts} \
 	-in "${rois_fs_dir}"/uYeo7_split \
+	-datatype short \
 	-out uYeo7_split_to_DWI
 flirt ${flirtopts} \
 	-in "${rois_fs_dir}"/uYeo17_split \
+	-datatype short \
 	-out uYeo17_split_to_DWI
 
 
