@@ -26,8 +26,8 @@ pipeline.sh \
 --probtrack_samples 100 \
 --out_dir ${src_dir}/testdir/OUTPUTS \
 --src_dir ${src_dir} \
---matlab_dir ${src_dir}/../matlab/bin_mac
-
+--matlab_dir ${src_dir}/../matlab/bin_mac \
+--mcr_dir 
 
 exit 0
 

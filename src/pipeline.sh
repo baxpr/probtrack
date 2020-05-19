@@ -10,6 +10,7 @@ export subject=NO_SUBJ
 export session=NO_SESS
 export src_dir=/opt/thaltrack-whole/src
 export matlab_dir=/opt/thaltrack-whole/matlab/bin
+export mcr_dir=/usr/local/MATLAB/MATLAB_Runtime/v92
 export probtrack_samples=5000
 
 # Parse options
@@ -41,6 +42,8 @@ do
 			export src_dir="$2"; shift; shift ;;
 		--matlab_dir)
 			export matlab_dir="$2"; shift; shift ;;
+		--mcr_dir)
+			export mcr_dir="$2"; shift; shift ;;
 		*)
 			shift ;;
 	esac
