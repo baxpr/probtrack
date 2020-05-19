@@ -15,6 +15,25 @@ src_dir=/repo/thaltrack-whole/src
 export PATH=${src_dir}:$PATH
 
 
+# Just through ROIs
+export out_dir=${src_dir}/testdir/OUTPUTS
+export fs_subject_dir=${src_dir}/testdir/assessors/freesurfer/SUBJECT
+export b0mean_niigz=${src_dir}/testdir/assessors/dwipre/B0_MEAN/b0_mean.nii.gz
+export rois_fs_dir=${src_dir}/testdir/OUTPUTS/ROIS_FS
+export rois_dwi_dir=${src_dir}/testdir/OUTPUTS/ROIS_DWI
+export yeo_dir=${src_dir}/external/yeo_networks
+export invdef_niigz=${src_dir}/testdir/assessors/cat12/DEF_INV/iy_t1.nii.gz
+export fs_nii_thalamus_niigz=${src_dir}/testdir/assessors/freesurfer/NII_THALAMUS/ThalamicNuclei.v10.T1.FSvoxelSpace.nii.gz
+export probtrack_samples=100
+export bedpost_dir=${src_dir}/testdir/assessors/bedpost/BEDPOSTX
+mkdir "${rois_fs_dir}"
+mkdir "${rois_dwi_dir}"
+coreg_FS_to_DWI.sh
+make_FS_rois.sh
+make_Yeo_rois.sh
+
+exit 0
+
 
 # whole pipeline
 pipeline.sh \
@@ -53,16 +72,6 @@ probtracks.sh "FS6" \
 
 exit 0
 
-
-# probtracks
-export probtrack_samples=100
-export bedpost_dir=${src_dir}/testdir/assessors/bedpost/BEDPOSTX
-export rois_dwi_dir=${src_dir}/testdir/OUTPUTS/ROIS_DWI
-export out_dir=${src_dir}/testdir/OUTPUTS
-export targets_dir=${src_dir}/targets
-probtracks_FS6.sh
-
-exit 0
 
 
 # targets probtrack
