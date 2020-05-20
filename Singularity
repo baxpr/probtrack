@@ -95,7 +95,7 @@ From: ubuntu:18.04
   wget -nv -P /opt/thaltrack-whole/matlab/bin https://github.com/baxpr/thaltrack-whole/raw/master/matlab/bin/spm12.ctf
 
   # Also need a "dry run" of SPM executable to avoid directory creation errors later.
-  /opt/thaltrack-whole/bin/run_spm12.sh ${mcr_dir} quit
+  /opt/thaltrack-whole/matlab/bin/run_spm12.sh ${mcr_dir} quit
  
   # Headless X11 support
   apt-get install -y xvfb
