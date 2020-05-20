@@ -63,7 +63,11 @@ for source in ${source_regions} ; do
 				--avoid="${target}_${LR}"_AVOID \
 				--dir="${track_dir}/${source}_${LR}_to_${target}_${LR}" \
 				${trackopts}
-				
+
+			fdt="${track_dir}/${source}_${LR}_to_${target}_${LR}/fdt_paths"
+			thresh=$(fslstats "${fdt}" -P 75)
+			fslmaths "${fdt}" -thr $thresh "${fdt}"_75pct
+
 		done
 	done
 done
@@ -93,6 +97,10 @@ for source in ${source_regions} ; do
 			--avoid=FS_${RL}H_AVOID \
 			--dir="${track_dir}"/${source}_${LR}_to_TARGETS_${LR} \
 			${trackopts}
+
+			fdt="${track_dir}/${source}_${LR}_to_TARGETS_${LR}/fdt_paths"
+			thresh=$(fslstats "${fdt}" -P 75)
+			fslmaths "${fdt}" -thr $thresh "${fdt}"_75pct
 
 	done
 done
