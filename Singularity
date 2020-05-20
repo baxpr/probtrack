@@ -19,12 +19,27 @@ From: ubuntu:18.04
 %post
 
   apt-get update
-  apt-get -y install zip unzip wget
-
+  
+  apt-get install -y zip unzip wget             # Misc tools
+  apt-get install -y binutils xz-utils          # For workaround below
+  apt-get install -y xvfb                       # Headless X11 support
+  apt-get install -y ghostscript imagemagick    # PNG and PDF tools
+  apt-get install -y openjdk-8-jre              # Matlab
+  
+  # FSL dependencies incl for fsleyes, h/t https://github.com/MPIB/singularity-fsl
+  #    debian vs ubuntu:
+  #            libjpeg62-turbo ->  libjpeg-turbo8
+  #            libmng1         ->  libmng2
+  apt-get install -y python-minimal libgomp1 ca-certificates \
+					 libglu1-mesa libgl1-mesa-glx libsm6 libice6 libxt6 \
+					 libjpeg-turbo8 libpng16-16 libxrender1 libxcursor1 \
+					 libxinerama1 libfreetype6 libxft2 libxrandr2 libmng2 \
+					 libgtk2.0-0 libpulse0 libasound2 libcaca0 libopenblas-base \
+					 bzip2 dc bc language-pack-en
+  
   # Workaround for filename case collision in linux-libc-dev
   # https://stackoverflow.com/questions/15599592/compiling-linux-kernel-error-xt-connmark-h
   # https://superuser.com/questions/1238903/cant-install-linux-libc-dev-in-ubuntu-on-windows
-  apt-get install -y binutils xz-utils 
   mkdir pkgtemp && cd pkgtemp
   apt-get download linux-libc-dev
   ar x linux-libc-dev*deb
@@ -33,18 +48,6 @@ From: ubuntu:18.04
   ar rcs linux-libc-dev*.deb debian-binary control.tar.xz data.tar.xz
   dpkg -i linux-libc-dev*.deb
   cd .. && rm -r pkgtemp
-
-  # FSL dependencies, h/t https://github.com/MPIB/singularity-fsl
-  #    debian vs ubuntu:
-  #            libjpeg62-turbo ->  libjpeg-turbo8
-  #            libmng1         ->  libmng2
-  apt-get -y install python-minimal libgomp1 ca-certificates \
-          libglu1-mesa libgl1-mesa-glx libsm6 libice6 libxt6 \
-          libjpeg-turbo8 libpng16-16 libxrender1 libxcursor1 \
-          libxinerama1 libfreetype6 libxft2 libxrandr2 libmng2 \
-          libgtk2.0-0 libpulse0 libasound2 libcaca0 libopenblas-base \
-          bzip2 dc bc
-  apt-get -y install language-pack-en
 
   # Get and install main FSL package
   fsl_version=5.0.11
@@ -96,13 +99,7 @@ From: ubuntu:18.04
 
   # Also need a "dry run" of SPM executable to avoid directory creation errors later.
   /opt/thaltrack-whole/matlab/bin/run_spm12.sh ${mcr_dir} quit
- 
-  # Headless X11 support
-  apt-get install -y xvfb
-  
-  # PNG and PDF tools
-  apt-get install -y ghostscript imagemagick
-  
+   
   # Fix imagemagick policy to allow PDF output. See https://usn.ubuntu.com/3785-1/
   sed -i 's/rights="none" pattern="PDF"/rights="read | write" pattern="PDF"/' \
     /etc/ImageMagick-6/policy.xml
