@@ -74,6 +74,7 @@ From: ubuntu:18.04
   /MCR/MCR_R2017a_glnxa64_installer/install -mode silent -agreeToLicense yes
   rm -r /MCR/MCR_R2017a_glnxa64_installer /MCR/MCR_R2017a_glnxa64_installer.zip
   rmdir /MCR
+  mcr_dir=/usr/local/MATLAB/MATLAB_Runtime/v92
 
   # Install Freesurfer. We just need mri_convert
   fs_version=7.1.0
@@ -93,7 +94,7 @@ From: ubuntu:18.04
   wget -nv -P /opt/thaltrack-whole/matlab/bin https://github.com/baxpr/thaltrack-whole/raw/master/matlab/bin/spm12.ctf
 
   # Also need a "dry run" of SPM executable to avoid directory creation errors later.
-  /opt/thaltrack-whole/bin/run_spm12.sh /usr/local/MATLAB/MATLAB_Runtime/v92 quit
+  /opt/thaltrack-whole/bin/run_spm12.sh ${mcr_dir} quit
  
   # Headless X11 support
   apt-get install -y xvfb
@@ -119,8 +120,11 @@ From: ubuntu:18.04
   . ${FSLDIR}/etc/fslconf/fsl.sh
   export PATH=${FSLDIR}/bin:/usr/local/fsl6/fslpython/envs/fslpython/bin:${PATH}
 
- # Freesurfer
- export FREESURFER_HOME=/usr/local/freesurfer
+  # Freesurfer
+  export FREESURFER_HOME=/usr/local/freesurfer
+ 
+  # Matlab MCR
+  export MCR_DIR=/usr/local/MATLAB/MATLAB_Runtime/v92
 
   # Pipeline
   export PATH=/opt/thaltrack-whole/src:${PATH}
