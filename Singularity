@@ -19,7 +19,7 @@ From: ubuntu:18.04
 %post
 
   apt-get update
-  apt-get install zip unzip wget
+  apt-get -y install zip unzip wget
 
   # Workaround for filename case collision in linux-libc-dev
   # https://stackoverflow.com/questions/15599592/compiling-linux-kernel-error-xt-connmark-h
