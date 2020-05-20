@@ -44,8 +44,6 @@ do
 			export matlab_dir="$2"; shift; shift ;;
 		--mcr_dir)
 			export mcr_dir="$2"; shift; shift ;;
-		--freesurfer_license)
-			export freesurfer_license="$2"; shift; shift ;;
 		*)
 			echo Unknown input "${1}"; shift ;;
 	esac
