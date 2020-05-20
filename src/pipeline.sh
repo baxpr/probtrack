@@ -44,8 +44,10 @@ do
 			export matlab_dir="$2"; shift; shift ;;
 		--mcr_dir)
 			export mcr_dir="$2"; shift; shift ;;
+		--freesurfer_license)
+			export freesurfer_license="$2"; shift; shift ;;
 		*)
-			shift ;;
+			echo Unknown input "${1}"; shift ;;
 	esac
 done
 
@@ -63,6 +65,10 @@ echo "out_dir:                 ${out_dir}"
 
 # Dirs in the container we need to access
 export yeo_dir="${src_dir}"/external/yeo_networks
+
+
+# Set up Freesurfer
+source ${FREESURFER_HOME}/SetUpFreeSurfer.sh
 
 
 # ROI dirs for region masks in the two different geometries
