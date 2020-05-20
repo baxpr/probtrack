@@ -19,6 +19,7 @@ From: ubuntu:18.04
 %post
 
   apt-get update
+  apt-get install zip unzip wget
 
   # Workaround for filename case collision in linux-libc-dev
   # https://stackoverflow.com/questions/15599592/compiling-linux-kernel-error-xt-connmark-h
@@ -37,7 +38,7 @@ From: ubuntu:18.04
   #    debian vs ubuntu:
   #            libjpeg62-turbo ->  libjpeg-turbo8
   #            libmng1         ->  libmng2
-  apt-get -y install wget python-minimal libgomp1 ca-certificates \
+  apt-get -y install python-minimal libgomp1 ca-certificates \
           libglu1-mesa libgl1-mesa-glx libsm6 libice6 libxt6 \
           libjpeg-turbo8 libpng16-16 libxrender1 libxcursor1 \
           libxinerama1 libfreetype6 libxft2 libxrandr2 libmng2 \
