@@ -65,7 +65,7 @@ From: ubuntu:18.04
   rm -r ${FSLDIR}/bin/fsleyes ${FSLDIR}/bin/FSLeyes
 
   # Run the edited FSL 6 python installer to get fsleyes in /usr/local/fsl6/fslpython/envs/fslpython/bin/fsleyes
-  /opt/src/fslconf6/fslpython_install_local.sh
+  /opt/thaltrack-whole/src/fslconf6/fslpython_install_local.sh
 
   # Download the Matlab Compiled Runtime installer, install, clean up
   mkdir /MCR
