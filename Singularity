@@ -3,22 +3,20 @@ From: ubuntu:18.04
 
 
 %setup
-  mkdir -p ${SINGULARITY_ROOTFS}/opt/fsthalconnMNI
+  mkdir -p ${SINGULARITY_ROOTFS}/opt/thaltrack-whole
 
 
 %files
-  bin                          /opt/fsthalconnMNI
-  src                          /opt/fsthalconnMNI
-  build                        /opt/fsthalconnMNI
-  README.md                    /opt/fsthalconnMNI
+  matlab                       /opt/thaltrack-whole
+  src                          /opt/thaltrack-whole
+  README.md                    /opt/thaltrack-whole
 
  
 %labels
   Maintainer baxter.rogers@vanderbilt.edu
 
-%post
 
-  fsl_version=5.0.11
+%post
 
   apt-get update
 
@@ -48,13 +46,15 @@ From: ubuntu:18.04
   apt-get -y install language-pack-en
 
   # Get and install main FSL package
+  fsl_version=5.0.11
   cd /usr/local
   wget -q https://fsl.fmrib.ox.ac.uk/fsldownloads/fsl-${fsl_version}-centos7_64.tar.gz
   tar zxf fsl-${fsl_version}-centos7_64.tar.gz
   rm fsl-${fsl_version}-centos7_64.tar.gz
+  mv fsl fsl5
   
   # FSL setup
-  export FSLDIR=/usr/local/fsl
+  export FSLDIR=/usr/local/fsl5
   . ${FSLDIR}/etc/fslconf/fsl.sh
   export PATH=${FSLDIR}/bin:${PATH}
 
@@ -62,13 +62,10 @@ From: ubuntu:18.04
   ${FSLDIR}/etc/fslconf/fslpython_install.sh
   
   # Remove non-working old fsleyes
-  rm -r $FSLDIR/bin/fsleyes $FSLDIR/bin/FSLeyes
+  rm -r ${FSLDIR}/bin/fsleyes ${FSLDIR}/bin/FSLeyes
 
-  # Run the 6.0.2 python installer to get fsleyes in /usr/local/fsl-6.0.2/fslpython/envs/fslpython/bin/fsleyes
-  /opt/src/fslconf-local/fslpython_install_local.sh
-  
-  # Update fsleyes per https://users.fmrib.ox.ac.uk/~paulmc/fsleyes/userdoc/latest/install.html
-  #/usr/local/fsl-6.0.2/fslpython/bin/conda install -n fslpython -c conda-forge fsleyes
+  # Run the edited FSL 6 python installer to get fsleyes in /usr/local/fsl6/fslpython/envs/fslpython/bin/fsleyes
+  /opt/src/fslconf6/fslpython_install_local.sh
 
   # Download the Matlab Compiled Runtime installer, install, clean up
   mkdir /MCR
@@ -79,26 +76,24 @@ From: ubuntu:18.04
   rmdir /MCR
 
   # Install Freesurfer. We just need mri_convert
-  wget -nv -P /usr/local https://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/dev/freesurfer-linux-centos7_x86_64-dev.tar.gz
+  fs_version=7.1.0
+  fs_tgz=freesurfer-linux-centos7_x86_64-${fs_version}.tar.gz
+  wget -nv -P /usr/local https://surfer.nmr.mgh.harvard.edu/pub/dist/freesurfer/${fs_version}/${fs_tgz}
   cd /usr/local
-  tar -zxf freesurfer-linux-centos7_x86_64-dev.tar.gz
-  rm freesurfer-linux-centos7_x86_64-dev.tar.gz
-  mkdir -p /usr/local/fstemp/bin
-  cp /usr/local/freesurfer/bin/mri_convert      /usr/local/fstemp/bin
-  cp /usr/local/freesurfer/build-stamp.txt      /usr/local/fstemp
-  cp /usr/local/freesurfer/SetUpFreeSurfer.sh   /usr/local/fstemp
-  cp /usr/local/freesurfer/FreeSurferEnv.sh     /usr/local/fstemp
-  rm -fr /usr/local/freesurfer
-  mv /usr/local/fstemp /usr/local/freesurfer
+  tar -zxf ${fs_tgz} freesurfer/bin/mri_convert
+  tar -zxf ${fs_tgz} freesurfer/build-stamp.txt
+  tar -zxf ${fs_tgz} freesurfer/SetUpFreeSurfer.sh
+  tar -zxf ${fs_tgz} freesurfer/FreeSurferEnv.sh
+  rm ${fs_tgz}
 
   # Singularity-hub doesn't work with github LFS (it gets the pointer info instead 
   # of the actual file) so we get the compiled matlab executable via direct download.
   # Not needed for local build.
-  rm /opt/fsthalconnMNI/bin/spm12.ctf
-  wget -nv -P /opt/fsthalconnMNI/bin https://github.com/baxpr/fsthalconnMNI/raw/master/bin/spm12.ctf
+  rm /opt/thaltrack-whole/matlab/bin/spm12.ctf
+  wget -nv -P /opt/thaltrack-whole/matlab/bin https://github.com/baxpr/thaltrack-whole/raw/master/matlab/bin/spm12.ctf
 
   # Also need a "dry run" of SPM executable to avoid directory creation errors later.
-  /opt/fsthalconnMNI/bin/run_spm12.sh /usr/local/MATLAB/MATLAB_Runtime/v92 quit
+  /opt/thaltrack-whole/bin/run_spm12.sh /usr/local/MATLAB/MATLAB_Runtime/v92 quit
  
   # Headless X11 support
   apt-get install -y xvfb
@@ -116,20 +111,22 @@ From: ubuntu:18.04
   # Clean up
   apt-get clean && apt-get -y autoremove
 
+
 %environment
 
-  # FSL
-  export FSLDIR=/usr/local/fsl
+  # FSL, including the FSL6 python bin dir for fsleyes but at lower precedence
+  export FSLDIR=/usr/local/fsl5
   . ${FSLDIR}/etc/fslconf/fsl.sh
-  export PATH=${FSLDIR}/bin:/usr/local/fsl-6.0.2/fslpython/envs/fslpython/bin/:${PATH}
+  export PATH=${FSLDIR}/bin:/usr/local/fsl6/fslpython/envs/fslpython/bin:${PATH}
 
  # Freesurfer
  export FREESURFER_HOME=/usr/local/freesurfer
 
   # Pipeline
-  export PATH=/opt/src:${PATH}
+  export PATH=/opt/thaltrack-whole/src:${PATH}
 
 
 %runscript
+
   xwrapper.sh "$@"
 
