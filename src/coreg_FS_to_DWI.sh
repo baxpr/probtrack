@@ -28,3 +28,10 @@ epi_reg \
 	--wmseg=b0_mean_to_FS_fast_wmseg
 mv b0_mean_to_FS.mat DWI_to_FS.mat
 convert_xfm -omat FS_to_DWI.mat -inverse DWI_to_FS.mat
+
+
+# Resample norm to DWI space
+flirtopts="-applyxfm -init ${out_dir}/FS_to_DWI.mat -paddingsize 0.0 -interp nearestneighbour -ref ${out_dir}/b0_mean.nii.gz"
+flirt ${flirtopts} \
+	-in norm \
+	-out norm_to_DWI
