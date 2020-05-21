@@ -184,5 +184,5 @@ for source in ${source_regions} ; do
 		  -gravity NorthWest -pointsize 48 -annotate +50+50 "${project} ${subject} ${session}" \
 		  "tracts_${dirname_tag}_${source}_to_${target}.png"
 
+	  done
 done
-
