@@ -68,6 +68,8 @@ for source in ${source_regions} ; do
 			thresh=$(fslstats "${fdt}" -P 75)
 			fslmaths "${fdt}" -thr $thresh "${fdt}"_75pct
 
+			warp.sh "${track_dir}/${source}_${LR}_to_${target}_${LR}"
+
 		done
 	done
 done
@@ -101,6 +103,8 @@ for source in ${source_regions} ; do
 			fdt="${track_dir}/${source}_${LR}_to_TARGETS_${LR}/fdt_paths"
 			thresh=$(fslstats "${fdt}" -P 75)
 			fslmaths "${fdt}" -thr $thresh "${fdt}"_75pct
+
+			warp.sh "${track_dir}/${source}_${LR}_to_TARGETS_${LR}"
 
 	done
 done
