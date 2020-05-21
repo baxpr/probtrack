@@ -9,6 +9,55 @@ mkdir "${wkdir}"
 cd "${wkdir}"
 
 
+
+
+# Slices of tracts
+pdir="${out_dir}"/PROBTRACK_FS6
+for tgt in FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP ; do
+	fsleyes render --outfile tracts_${tgt}.png \
+		--scene lightbox --displaySpace world \
+		--size 800 1200 --hideCursor \
+		--sliceSpacing 5 --ncols 3 --nrows 4 \
+		"${out_dir}"/norm_to_DWI --interpolation none \
+		"${rois_dwi_dir}"/${tgt}_L --cmap blue \
+		"${rois_dwi_dir}"/${tgt}_R --cmap blue \
+		"${pdir}"/FS_THALAMUS_L_to_${tgt}_L/fdt_paths_75pct --cmap red-yellow \
+		"${pdir}"/FS_THALAMUS_R_to_${tgt}_R/fdt_paths_75pct --cmap red-yellow
+done
+	
+
+exit 0
+
+
+
+# Make an overlay ROI for coreg check
+fslmaths \
+	     "${rois_dwi_dir}"/FS_THALAMUS_L \
+	-add "${rois_dwi_dir}"/FS_THALAMUS_R \
+	-mul 2 \
+	-add "${rois_dwi_dir}"/FS_CORTEX \
+	coregmask
+
+
+# Coreg verification - outline of FS cortex ROI on mean b=0 DWI
+fsleyes render --outfile coreg.png \
+	--size 1000 1000 \
+	--hideCursor --layout grid \
+	--xzoom 1000 --yzoom 1000 --zzoom 1000 \
+	"${out_dir}"/b0_mean --displayRange 0 "99%" \
+	coregmask --overlayType label --outline --outlineWidth 2 --lut harvard-oxford-cortical
+
+
+
+
+
+
+
+
+### 3d view efforts below have been a failure
+exit 0
+
+
 # Test tracts, copied directly from fsleyes
 pdir="${out_dir}"/PROBTRACK_FS6
 fsleyes render --outfile tracts.png \
@@ -25,45 +74,18 @@ fsleyes render --outfile tracts.png \
 --displayRange 0.0 30000.0 --clippingRange 5000.0 35641.385 --cmapResolution 256 --interpolation linear --numSteps 500 \
 --blendFactor 0.5 --resolution 100 --numInnerSteps 10 --clipMode intersection --volume 0
 
-exit 0
 
-
-
-
-# Make an overlay ROI for coreg check
-fslmaths \
-	     "${rois_dwi_dir}"/FS_THALAMUS_L \
-	-add "${rois_dwi_dir}"/FS_THALAMUS_R \
-	-mul 2 \
-	-add "${rois_dwi_dir}"/FS_CORTEX \
-	coregmask
-
-# Coreg verification - outline of FS cortex ROI on mean b=0 DWI
-fsleyes render --outfile coreg.pdf \
-	--size 1000 1000 \
-	--displaySpace world \
-	--hideCursor --layout grid \
-	--xzoom 1000 --yzoom 1000 --zzoom 1000 \
-	"${out_dir}"/b0_mean --displayRange 0 "99%" \
-	coregmask --overlayType label --outline --outlineWidth 2 --lut harvard-oxford-cortical
-
-
-
-# View some tracts
 pdir="${out_dir}"/PROBTRACK_FS6
 nopts="--interpolation linear --clipMode intersection --clipPlane 55 0 0 --clipPlane 50 -90 90 --blendFactor 0.5 --numSteps 500"
-copts="--interpolation linear --displayRange 25 99.9% --blendFactor 0.5 --numSteps 500"
+copts="--interpolation linear --unlinkLowRanges --displayRange 0 99% --clippingRange 25 99% --blendFactor 0.5 --numSteps 500"
 fsleyes render --outfile tracts.png \
 	--size 600 600 --zoom 100 --bgColour 0 0 0 \
 	--scene 3d --cameraRotation -70 -5 -5 \
 	--hideCursor --hideLegend \
 	"${pdir}"/FS_THALAMUS_L_to_FS_PFC_L/fdt_paths ${copts} --cmap red \
-	"${out_dir}"/norm ${nopts}
+	"${pdir}"/FS_THALAMUS_L_to_FS_POSTPAR_L/fdt_paths ${copts} --cmap blue \
 
-
-
-#	FS_THALAMUS_L_to_FS_MOTOR_L
-#	FS_THALAMUS_L_to_FS_SOMATO_L
-#	FS_THALAMUS_L_to_FS_POSTPAR_L
-#	FS_THALAMUS_L_to_FS_TEMP_L
-#	FS_THALAMUS_L_to_FS_OCC_L
+#	"${pdir}"/FS_THALAMUS_L_to_FS_MOTOR_L/fdt_paths ${copts} --cmap green \
+#	"${pdir}"/FS_THALAMUS_L_to_FS_SOMATO_L/fdt_paths ${copts} --cmap pink \
+#	"${pdir}"/FS_THALAMUS_L_to_FS_TEMP_L/fdt_paths ${copts} --cmap copper \
+#	"${pdir}"/FS_THALAMUS_L_to_FS_OCC_L/fdt_paths ${copts} --cmap yellow
