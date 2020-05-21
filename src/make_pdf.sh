@@ -6,12 +6,34 @@ echo Running ${0}
 thedate=$(date)
 
 wkdir="${out_dir}"/makepdf
-mkdir "${wkdir}"
+mkdir -p "${wkdir}"
 cd "${wkdir}"
 
 
+# Make an overlay ROI for coreg check
+fslmaths \
+	     "${rois_dwi_dir}"/FS_THALAMUS_L \
+	-add "${rois_dwi_dir}"/FS_THALAMUS_R \
+	-mul 2 \
+	-add "${rois_dwi_dir}"/FS_CORTEX \
+	coregmask
 
-# Coronal slices of tracts
+
+# Coreg verification - outline of FS cortex ROI on mean b=0 DWI
+fsleyes render --outfile coreg.png \
+	--size 1000 1000 \
+	--hideCursor --layout grid \
+	--xzoom 1000 --yzoom 1000 --zzoom 1000 \
+	"${out_dir}"/b0_mean --displayRange 0 "99%" \
+	coregmask --overlayType label --outline --outlineWidth 2 --lut harvard-oxford-cortical
+
+
+
+
+
+
+exit 0
+# Coronal slices of tracts (now in probtracks.sh)
 pdir="${out_dir}"/PROBTRACK_FS6
 vx=$(get_com.py x "${rois_dwi_dir}"/FS_CORTEX.nii.gz)
 vy=$(get_com.py y "${rois_dwi_dir}"/FS_CORTEX.nii.gz)
@@ -54,31 +76,6 @@ done
 
 
 exit 0
-
-
-
-# Make an overlay ROI for coreg check
-fslmaths \
-	     "${rois_dwi_dir}"/FS_THALAMUS_L \
-	-add "${rois_dwi_dir}"/FS_THALAMUS_R \
-	-mul 2 \
-	-add "${rois_dwi_dir}"/FS_CORTEX \
-	coregmask
-
-
-# Coreg verification - outline of FS cortex ROI on mean b=0 DWI
-fsleyes render --outfile coreg.png \
-	--size 1000 1000 \
-	--hideCursor --layout grid \
-	--xzoom 1000 --yzoom 1000 --zzoom 1000 \
-	"${out_dir}"/b0_mean --displayRange 0 "99%" \
-	coregmask --overlayType label --outline --outlineWidth 2 --lut harvard-oxford-cortical
-
-
-
-
-
-
 
 
 ### Efforts below have been a failure

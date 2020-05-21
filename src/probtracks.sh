@@ -139,3 +139,50 @@ for source in ${source_regions} ; do
 	fslmaths ${source}_L -add ${source}_R -bin -mul ${ind} -add tmp tmp
 done
 mv tmp.nii.gz ${dirname_tag}_sourcerois.nii.gz
+
+
+# Make PDF pages for this set of tracks, coronal slices
+wkdir="${out_dir}"/makepdf
+mkdir -p "${wkdir}"
+cd "${wkdir}"
+
+pdir="${out_dir}"/PROBTRACK_"${dirname_tag}"
+vx=$(get_com.py x "${rois_dwi_dir}"/FS_CORTEX.nii.gz)
+vy=$(get_com.py y "${rois_dwi_dir}"/FS_CORTEX.nii.gz)
+vz=$(get_com.py z "${rois_dwi_dir}"/FS_CORTEX.nii.gz)
+deltas="-75 -65 -55 -45 -35 -25 -15 -05 +05 +15 +25 +35 +45 +55 +65 +75"
+for source in ${source_regions} ; do
+	for target in ${target_regions} ; do
+
+		mstr=""
+		for delta in ${deltas} ; do
+
+			of="tracts_${dirname_tag}_${source}_to_${target}_${delta}.png"
+
+			fsleyes render --outfile "${of}" \
+				--displaySpace world \
+				--size 600 600 --hideCursor --hideLabels --hidex --hidez --yzoom 1200 \
+				--worldLoc ${vx} $((${vy}+${delta})) ${vz} \
+				"${out_dir}/norm_to_DWI" --interpolation none \
+				"${rois_dwi_dir}/${target}_L" --cmap blue \
+				"${rois_dwi_dir}/${target}_R" --cmap blue \
+				"${pdir}/${source}_L_to_${target}_L/fdt_paths_75pct" --cmap red-yellow \
+				"${pdir}/${source}_R_to_${target}_R/fdt_paths_75pct" --cmap red-yellow
+
+			mstr="${mstr} ${of}"
+
+		done
+
+		montage -mode concatenate ${mstr} -tile 4x4 -quality 100 -background black -gravity center \
+			-resize 600x "tracts_${dirname_tag}_${source}_to_${target}.png"
+		rm ${mstr}
+		convert \
+		  -size 2600x3365 xc:white \
+		  -gravity center \( "tracts_${source}_to_${target}.png" -resize 2400x \) -geometry +0+0 -composite \
+		  -gravity North -pointsize 48 -annotate +0+150 "FS_THALAMUS to ${tgt}" \
+		  -gravity SouthEast -pointsize 48 -annotate +50+50 "${thedate}" \
+		  -gravity NorthWest -pointsize 48 -annotate +50+50 "${project} ${subject} ${session}" \
+		  "tracts_${dirname_tag}_${source}_to_${target}.png"
+
+done
+
