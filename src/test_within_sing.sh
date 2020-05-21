@@ -3,7 +3,7 @@
 
 export PATH=/wkdir/src:$PATH
 
-xwrapper.sh \
+xwrapper.sh pipeline.sh \
 	--fs_subject_dir /INPUTS/SUBJECT \
 	--fs_nii_thalamus_niigz /INPUTS/ThalamicNuclei.v10.T1.FSvoxelSpace.nii.gz \
 	--b0mean_niigz /INPUTS/b0_mean.nii.gz \
