@@ -3,6 +3,7 @@
 # Generate PDF for QA
 
 echo Running ${0}
+thedate=$(date)
 
 wkdir="${out_dir}"/makepdf
 mkdir "${wkdir}"
@@ -10,21 +11,47 @@ cd "${wkdir}"
 
 
 
-
-# Slices of tracts
+# Coronal slices of tracts
 pdir="${out_dir}"/PROBTRACK_FS6
-for tgt in FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP ; do
-	fsleyes render --outfile tracts_${tgt}.png \
-		--scene lightbox --displaySpace world \
-		--size 800 1200 --hideCursor \
-		--sliceSpacing 5 --ncols 3 --nrows 4 \
-		"${out_dir}"/norm_to_DWI --interpolation none \
-		"${rois_dwi_dir}"/${tgt}_L --cmap blue \
-		"${rois_dwi_dir}"/${tgt}_R --cmap blue \
-		"${pdir}"/FS_THALAMUS_L_to_${tgt}_L/fdt_paths_75pct --cmap red-yellow \
-		"${pdir}"/FS_THALAMUS_R_to_${tgt}_R/fdt_paths_75pct --cmap red-yellow
-done
+vi=$(get_com.py i "${rois_dwi_dir}"/FS_CORTEX.nii.gz)
+vj=$(get_com.py j "${rois_dwi_dir}"/FS_CORTEX.nii.gz)
+vk=$(get_com.py k "${rois_dwi_dir}"/FS_CORTEX.nii.gz)
+tgts="FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP"
+#tgts="FS_PFC"
+deltas="-35 -30 -25 -20 -15 -10 -05 +00 +05 +10 +15 +20 +25 +30 +35"
+for tgt in ${tgts} ; do
+
+	mstr=""
+	for delta in ${deltas} ; do
+
+		of=tracts_${tgt}_${delta}.png
+
+		fsleyes render --outfile ${of} \
+			--displaySpace world \
+			--size 600 600 --hideCursor --hideLabels --hidex --hidez --yzoom 1200 \
+			--voxelLoc ${vi} $((${vj}+${delta})) ${vk} \
+			"${out_dir}"/norm_to_DWI --interpolation none \
+			"${rois_dwi_dir}"/${tgt}_L --cmap blue \
+			"${rois_dwi_dir}"/${tgt}_R --cmap blue \
+			"${pdir}"/FS_THALAMUS_L_to_${tgt}_L/fdt_paths_75pct --cmap red-yellow \
+			"${pdir}"/FS_THALAMUS_R_to_${tgt}_R/fdt_paths_75pct --cmap red-yellow
+
+		mstr="${mstr} ${of}"
+
+	done
 	
+	montage -mode concatenate ${mstr} -tile 4x4 -quality 100 -background black -gravity center \
+		-resize 600x tracts_${tgt}.png
+	convert \
+	  -size 2600x3365 xc:white \
+	  -gravity center \( tracts_${tgt}.png -resize 2400x \) -geometry +0+0 -composite \
+	  -gravity North -pointsize 48 -annotate +0+150 "FS_THALAMUS to ${tgt}" \
+	  -gravity SouthEast -pointsize 48 -annotate +50+50 "${thedate}" \
+	  -gravity NorthWest -pointsize 48 -annotate +50+50 "${project} ${subject} ${session}" \
+	  tracts_${tgt}.png
+
+done
+
 
 exit 0
 
@@ -54,9 +81,27 @@ fsleyes render --outfile coreg.png \
 
 
 
-### 3d view efforts below have been a failure
+### Efforts below have been a failure
 exit 0
 
+
+
+
+# Slices of tracts with lightbox - impossible to get right
+pdir="${out_dir}"/PROBTRACK_FS6
+#for tgt in FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP ; do
+for tgt in FS_PFC ; do
+	fsleyes render --outfile tracts_${tgt}.png \
+		--scene lightbox --displaySpace world \
+		--size 800 1200 --hideCursor \
+		--zaxis Y --sliceSpacing 11 --zrange -75 60 --ncols 3 --nrows 4 \
+		"${out_dir}"/norm_to_DWI --interpolation none \
+		"${rois_dwi_dir}"/${tgt}_L --cmap blue \
+		"${rois_dwi_dir}"/${tgt}_R --cmap blue \
+		"${pdir}"/FS_THALAMUS_L_to_${tgt}_L/fdt_paths_75pct --cmap red-yellow \
+		"${pdir}"/FS_THALAMUS_R_to_${tgt}_R/fdt_paths_75pct --cmap red-yellow
+done
+	
 
 # Test tracts, copied directly from fsleyes
 pdir="${out_dir}"/PROBTRACK_FS6
