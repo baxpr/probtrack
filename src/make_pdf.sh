@@ -13,12 +13,11 @@ cd "${wkdir}"
 
 # Coronal slices of tracts
 pdir="${out_dir}"/PROBTRACK_FS6
-vi=$(get_com.py i "${rois_dwi_dir}"/FS_CORTEX.nii.gz)
-vj=$(get_com.py j "${rois_dwi_dir}"/FS_CORTEX.nii.gz)
-vk=$(get_com.py k "${rois_dwi_dir}"/FS_CORTEX.nii.gz)
+vx=$(get_com.py x "${rois_dwi_dir}"/FS_CORTEX.nii.gz)
+vy=$(get_com.py y "${rois_dwi_dir}"/FS_CORTEX.nii.gz)
+vz=$(get_com.py z "${rois_dwi_dir}"/FS_CORTEX.nii.gz)
 tgts="FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP"
-#tgts="FS_PFC"
-deltas="-35 -30 -25 -20 -15 -10 -05 +00 +05 +10 +15 +20 +25 +30 +35"
+deltas="-75 -65 -55 -45 -35 -25 -15 -05 +05 +15 +25 +35 +45 +55 +65 +75"
 for tgt in ${tgts} ; do
 
 	mstr=""
@@ -29,7 +28,7 @@ for tgt in ${tgts} ; do
 		fsleyes render --outfile ${of} \
 			--displaySpace world \
 			--size 600 600 --hideCursor --hideLabels --hidex --hidez --yzoom 1200 \
-			--voxelLoc ${vi} $((${vj}+${delta})) ${vk} \
+			--worldLoc ${vx} $((${vy}+${delta})) ${vz} \
 			"${out_dir}"/norm_to_DWI --interpolation none \
 			"${rois_dwi_dir}"/${tgt}_L --cmap blue \
 			"${rois_dwi_dir}"/${tgt}_R --cmap blue \
