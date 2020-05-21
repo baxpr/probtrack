@@ -41,6 +41,7 @@ for tgt in ${tgts} ; do
 	
 	montage -mode concatenate ${mstr} -tile 4x4 -quality 100 -background black -gravity center \
 		-resize 600x tracts_${tgt}.png
+	rm ${mstr}
 	convert \
 	  -size 2600x3365 xc:white \
 	  -gravity center \( tracts_${tgt}.png -resize 2400x \) -geometry +0+0 -composite \
