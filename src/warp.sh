@@ -10,5 +10,7 @@ cd "${towarp_dir}"
 flirtopts="-applyxfm -init ${out_dir}/DWI_to_FS.mat -paddingsize 0.0 -interp nearestneighbour -ref ${out_dir}/norm.nii.gz"
 for f in *.nii.gz ; do
 	flirt ${flirtopts} -in "${f}" -out "r${f}"
-	"${matlab_dir}"/run_spm12.sh "${mcr_dir}" function warp "${out_dir}"/iy_invdef.nii "${towarp_dir}/${f}"
+	gunzip "r${f}"
+	"${matlab_dir}"/run_spm12.sh "${mcr_dir}" function warp "${out_dir}"/iy_invdef.nii "${towarp_dir}/r$(basename ${f} .gz)"
+	gzip "wr$(basename ${f} .gz)"
 done
