@@ -84,6 +84,10 @@ combine_rois "${aparc}"   FS_ITEMP_R     "2006 2007 2009 2015 2016"
 
 
 
+# "Anti-brain" ROI for probtrack exclusion mask
+fslmaths "${bedpost_dir}"/nodif_brain_mask -mul -1 -add 1 anti_brain_mask
+
+
 # Subcortical mask
 fslmaths \
 	FS_BRAINSTEM \
@@ -101,8 +105,8 @@ fslmaths FS_PFC_R -add FS_MOTOR_R -add FS_SOMATO_R -add FS_POSTPAR_R -add FS_OCC
 
 
 # Add white matter, subcortical to gray matter to make large avoid masks
-fslmaths FS_CORTEX -add FS_WM_R -add FS_CEREBELLAR_SUBCORTICAL -bin FS_RH_LHCORTEX_AVOID
-fslmaths FS_CORTEX -add FS_WM_L -add FS_CEREBELLAR_SUBCORTICAL -bin FS_LH_RHCORTEX_AVOID
+fslmaths FS_CORTEX -add FS_WM_R -add FS_CEREBELLAR_SUBCORTICAL -add anti_brain_mask -bin FS_RH_LHCORTEX_AVOID
+fslmaths FS_CORTEX -add FS_WM_L -add FS_CEREBELLAR_SUBCORTICAL -add anti_brain_mask -bin FS_LH_RHCORTEX_AVOID
 
 
 # Avoid masks for specific seed regions
@@ -141,6 +145,7 @@ for LR in L R ; do
 			 FS_${LR}HCORTEX_STOP \
 		-add FS_WM_${LR} \
 		-add FS_THALAMUS_${LR} \
+		-add anti_brain_mask \
 		-bin FS_${LR}H_AVOID
 
 done
