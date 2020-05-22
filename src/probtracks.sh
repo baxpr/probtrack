@@ -100,8 +100,9 @@ for source in ${source_regions} ; do
 			--mask="${bedpost_dir}"/nodif_brain_mask \
 			--seed=${source}_${LR} \
 			--targetmasks=${track_dir}/TARGETS_${LR}.txt \
-			--stop=FS_${LR}HCORTEX_STOP \
-			--avoid=FS_${RL}H_AVOID \
+			--waypoints=${dirname_tag}_${LR}HCORTEX_STOP \
+			--stop=${dirname_tag}_${LR}HCORTEX_STOP \
+			--avoid=${dirname_tag}_${RL}H_AVOID \
 			--dir="${track_dir}"/${source}_${LR}_to_TARGETS_${LR} \
 			${trackopts}
 
