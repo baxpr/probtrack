@@ -5,12 +5,6 @@
 
 towarp_dir="${1}"
 
-
-# Get the deformation image
-cp "${fwddef_niigz}" "${out_dir}"/y_fwddef.nii.gz
-gunzip -f "${out_dir}"/y_fwddef.nii.gz
-
-
 # Affine to FS space with DWI_to_FS.mat, then SPM12 warp
 cd "${towarp_dir}"
 flirtopts="-applyxfm -init ${out_dir}/DWI_to_FS.mat -paddingsize 0.0 -interp nearestneighbour -ref ${out_dir}/norm.nii.gz"

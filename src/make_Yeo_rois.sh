@@ -15,11 +15,6 @@ cp "${yeo_dir}"/Yeo{7,17}_split.nii.gz "${out_dir}"
 gunzip -f "${out_dir}"/Yeo{7,17}_split.nii.gz
 
 
-# Same for the deformation image
-cp "${invdef_niigz}" "${out_dir}"/iy_invdef.nii.gz
-gunzip -f "${out_dir}"/iy_invdef.nii.gz
-
-
 # Make unzipped copy of nu for SPM
 gunzip -fk "${out_dir}"/nu.nii.gz
 

@@ -77,6 +77,13 @@ export rois_fs_dir=${out_dir}/ROIS_FS ; mkdir "${rois_fs_dir}"
 export rois_dwi_dir=${out_dir}/ROIS_DWI ; mkdir "${rois_dwi_dir}"
 
 
+# Prep the deformation images for SPM
+cp "${fwddef_niigz}" "${out_dir}"/y_fwddef.nii.gz
+cp "${invdef_niigz}" "${out_dir}"/iy_invdef.nii.gz
+gunzip -f "${out_dir}"/y_fwddef.nii.gz
+gunzip -f "${out_dir}"/iy_invdef.nii.gz
+
+
 ### Coreg FS-space T1 to DWI-space b=0
 coreg_FS_to_DWI.sh
 
