@@ -63,6 +63,7 @@ for source in ${source_regions} ; do
 				--mask="${bedpost_dir}"/nodif_brain_mask \
 				--seed="${source}_${LR}" \
 				--targetmasks="${target}_${LR}" \
+				--waypoints="${target}_${LR}" \
 				--stop="${target}_${LR}" \
 				--avoid="${target}_${LR}"_AVOID \
 				--dir="${track_dir}/${source}_${LR}_to_${target}_${LR}" \
