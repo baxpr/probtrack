@@ -1,6 +1,8 @@
 #!/bin/bash
 
-out_dir=/wkdir/src/testdir/OUTPUTS
+export PATH=/wkdir/src:$PATH
+export out_dir=/wkdir/src/testdir/OUTPUTS
+export matlab_dir=/wkdir/matlab/bin
+export mcr_dir=/usr/local/MATLAB/MATLAB_Runtime/v92
 
-/wkdir/matlab/bin/run_spm12.sh /usr/local/MATLAB/MATLAB_Runtime/v92 function warp ${out_dir}/PROBTRACK_FS6/FS_THALAMUS_L_to_FS_MOTOR_L
-
+warp.sh ${out_dir}/PROBTRACK_FS6/FS_THALAMUS_L_to_FS_MOTOR_L
