@@ -28,6 +28,7 @@ trackopts="--nsamples=${probtrack_samples} --loopcheck --onewaycondition --verbo
 
 # Root dir for all tracking output folders
 export track_dir=${out_dir}/"PROBTRACK_${dirname_tag}"
+mkdir -p "${track_dir}"
 
 # Copy some helpful info to the track dir
 cp "${src_dir}"/README_probtrack_results.txt "${track_dir}"
