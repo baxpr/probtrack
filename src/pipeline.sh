@@ -32,6 +32,8 @@ do
 			export b0mean_niigz="$2"; shift; shift ;;
 		--bedpost_dir)
 			export bedpost_dir="$2"; shift; shift ;;
+		--fwddef_niigz)
+			export fwddef_niigz="$2"; shift; shift ;;
 		--invdef_niigz)
 			export invdef_niigz="$2"; shift; shift ;;
 		--probtrack_samples)
@@ -56,6 +58,7 @@ echo "fs_subject_dir:          ${fs_subject_dir}"
 echo "fs_nii_thalamus_niigz:   ${fs_nii_thalamus_niigz}"
 echo "b0mean_niigz:            ${b0mean_niigz}"
 echo "bedpost_dir:             ${bedpost_dir}"
+echo "fwddef_niigz:            ${fwddef_niigz}"
 echo "invdef_niigz:            ${invdef_niigz}"
 echo "probtrack_samples:       ${probtrack_samples}"
 echo "out_dir:                 ${out_dir}"
