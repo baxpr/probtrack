@@ -4,6 +4,7 @@
 # FS-to-DWI coreg. Second step, SPM12 warp.
 
 towarp_dir="${1}"
+echo Warping in "${towarp_dir}"
 
 # Affine to FS space with DWI_to_FS.mat, then SPM12 warp
 cd "${towarp_dir}"
