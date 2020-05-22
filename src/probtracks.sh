@@ -186,7 +186,7 @@ for source in ${source_regions} ; do
 		rm ${mstr}
 		convert \
 		  -size 2600x3365 xc:white \
-		  -gravity center \( "tracts_${source}_to_${target}.png" -resize 2400x \) -geometry +0+0 -composite \
+		  -gravity center \( "tracts_${dirname_tag}_${source}_to_${target}.png" -resize 2400x \) -geometry +0+0 -composite \
 		  -gravity North -pointsize 48 -annotate +0+150 "FS_THALAMUS to ${tgt}" \
 		  -gravity SouthEast -pointsize 48 -annotate +50+50 "${thedate}" \
 		  -gravity NorthWest -pointsize 48 -annotate +50+50 "${project} ${subject} ${session}" \
