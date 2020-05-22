@@ -14,7 +14,9 @@ xwrapper.sh pipeline.sh \
 	--project TESTPROJ \
 	--subject TESTSUBJ \
 	--session TESTSESS \
-	--out_dir /OUTPUTS
+	--out_dir /OUTPUTS \
+	--src_dir /wkdir/src \
+	--matlab_dir /wkdir/matlab/bin
 
 
 exit 0
