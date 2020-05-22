@@ -5,6 +5,7 @@
 
 towarp_dir="${1}"
 
+
 # Get the deformation image
 cp "${fwddef_niigz}" "${out_dir}"/y_fwddef.nii.gz
 gunzip -f "${out_dir}"/y_fwddef.nii.gz

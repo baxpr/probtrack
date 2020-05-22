@@ -29,6 +29,9 @@ trackopts="--nsamples=${probtrack_samples} --loopcheck --onewaycondition --verbo
 # Root dir for all tracking output folders
 export track_dir=${out_dir}/"PROBTRACK_${dirname_tag}"
 
+# Copy some helpful info to the track dir
+cp "${src_dir}"/README_probtrack_results.txt "${track_dir}"
+
 # Include a couple necessary functions from another file
 source functions.sh
 
@@ -69,7 +72,7 @@ for source in ${source_regions} ; do
 			fslmaths "${fdt}" -thr $thresh "${fdt}"_75pct
 
 			warp.sh "${track_dir}/${source}_${LR}_to_${target}_${LR}"
-
+			
 		done
 	done
 done
