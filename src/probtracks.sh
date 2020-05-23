@@ -78,24 +78,40 @@ fslmaths emptymask ${alltgtRstr} -bin all_tgt_R
 
 # Avoid masks for single target
 #   All tgt in this hemisphere except current target;
-#   All src, tgt, WM, CERSUBC in opposite hemisphere
+#   All src, tgt, WM in opposite hemisphere
+#   All CERSUBC, brainstem in both hemispheres
 for source in ${source_regions} ; do
 	for target in ${target_regions} ; do
 		for LR in L R ; do
 			RL=$(swapLR ${LR})
 			fslmaths \
 				all_tgt_${LR} -sub "${rois_dwi_dir}"/"${target}_${LR}" -bin \
-				-add all_src_tgt_${RL} -add "${rois_dwi_dir}"/FS_WM_${RL} -add "${rois_dwi_dir}"/FS_CERSUBC_${RL} -bin \
+				-add all_src_tgt_${RL} -add "${rois_dwi_dir}"/FS_WM_${RL} \
+				-add "${rois_dwi_dir}"/FS_CERSUBC_${LR} \
+				-add "${rois_dwi_dir}"/FS_CERSUBC_${RL} \
+				-add "${rois_dwi_dir}"/FS_BRAINSTEM \
+				-bin \
 				"${source}_${LR}_to_${target}_${LR}_AVOID"
 		done
 	done
 done
 
-# Stop, waypoint masks for multi target are just all the targets.
+# Stop, waypoint masks for multi target are just all the targets, all_tgt_{L,R}
 
-# Avoid masks for multi are all src, tgt, WM, CERSUBC in the opposite hemisphere
-fslmaths all_src_tgt_L -add "${rois_dwi_dir}"/FS_WM_L -add "${rois_dwi_dir}"/FS_CERSUBC_L -bin multi_L_AVOID
-fslmaths all_src_tgt_R -add "${rois_dwi_dir}"/FS_WM_R -add "${rois_dwi_dir}"/FS_CERSUBC_R -bin multi_R_AVOID
+# Avoid masks for multi are all src, tgt, WM in the opposite hemisphere
+# and CERSUBC, brainstem in both hemispheres
+fslmaths all_src_tgt_L \
+	-add "${rois_dwi_dir}"/FS_WM_L \
+	-add "${rois_dwi_dir}"/FS_CERSUBC_L \
+	-add "${rois_dwi_dir}"/FS_CERSUBC_R \
+	-add "${rois_dwi_dir}"/FS_BRAINSTEM \
+	-bin multi_L_AVOID
+fslmaths all_src_tgt_R \
+	-add "${rois_dwi_dir}"/FS_WM_R \
+	-add "${rois_dwi_dir}"/FS_CERSUBC_L \
+	-add "${rois_dwi_dir}"/FS_CERSUBC_R \
+	-add "${rois_dwi_dir}"/FS_BRAINSTEM \
+	-bin multi_R_AVOID
 
 
 # Work in the ROI dir for tracking

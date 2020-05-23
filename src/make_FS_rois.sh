@@ -84,7 +84,7 @@ combine_rois "${aparc}"   FS_ITEMP_R     "2006 2007 2009 2015 2016"
 
 
 
-# Subcortical mask
+# Cerebellum/subcortical mask
 for LR in L R ; do
 	fslmaths \
 			 FS_CEREBELLUM_${LR} \
@@ -96,55 +96,55 @@ done
 
 
 # FIXME not using Whole brain gray matter mask
-fslmaths FS_PFC_R -add FS_MOTOR_R -add FS_SOMATO_R -add FS_POSTPAR_R -add FS_OCC_R -add FS_TEMP_R \
-	-add FS_PFC_L -add FS_MOTOR_L -add FS_SOMATO_L -add FS_POSTPAR_L -add FS_OCC_L -add FS_TEMP_L \
-	FS_CORTEX
+#fslmaths FS_PFC_R -add FS_MOTOR_R -add FS_SOMATO_R -add FS_POSTPAR_R -add FS_OCC_R -add FS_TEMP_R \
+#	-add FS_PFC_L -add FS_MOTOR_L -add FS_SOMATO_L -add FS_POSTPAR_L -add FS_OCC_L -add FS_TEMP_L \
+#	FS_CORTEX
 
 
 # FIXME not using Add white matter, subcortical to gray matter to make large avoid masks
-fslmaths FS_CORTEX -add FS_WM_R -add FS_CEREBELLAR_SUBCORTICAL -bin FS_RH_LHCORTEX_AVOID
-fslmaths FS_CORTEX -add FS_WM_L -add FS_CEREBELLAR_SUBCORTICAL -bin FS_LH_RHCORTEX_AVOID
+#fslmaths FS_CORTEX -add FS_WM_R -add FS_CEREBELLAR_SUBCORTICAL -bin FS_RH_LHCORTEX_AVOID
+#fslmaths FS_CORTEX -add FS_WM_L -add FS_CEREBELLAR_SUBCORTICAL -bin FS_LH_RHCORTEX_AVOID
 
 
 # FIXME not using Avoid masks for specific seed regions
-for region in \
-  FS_PFC \
-  FS_MOTOR \
-  FS_SOMATO \
-  FS_POSTPAR \
-  FS_OCC \
-  FS_TEMP \
-  FS_MOFC \
-  FS_LPFC \
-  FS_ACC \
-  FS_PPC \
-  FS_PARDMN \
-  FS_AUD \
-  FS_ITEMP \
-; do
-	fslmaths FS_RH_LHCORTEX_AVOID -sub ${region}_L -thr 1 -bin ${region}_L_AVOID
-	fslmaths FS_LH_RHCORTEX_AVOID -sub ${region}_R -thr 1 -bin ${region}_R_AVOID
-done
+#for region in \
+#  FS_PFC \
+#  FS_MOTOR \
+#  FS_SOMATO \
+#  FS_POSTPAR \
+#  FS_OCC \
+#  FS_TEMP \
+#  FS_MOFC \
+#  FS_LPFC \
+#  FS_ACC \
+#  FS_PPC \
+#  FS_PARDMN \
+#  FS_AUD \
+#  FS_ITEMP \
+#; do
+#	fslmaths FS_RH_LHCORTEX_AVOID -sub ${region}_L -thr 1 -bin ${region}_L_AVOID
+#	fslmaths FS_LH_RHCORTEX_AVOID -sub ${region}_R -thr 1 -bin ${region}_R_AVOID
+#done
 
 # FIXME not using Stop and avoid masks for hemispheres
-for LR in L R ; do
-
-	fslmaths \
-			 FS_PFC_${LR} \
-		-add FS_MOTOR_${LR} \
-		-add FS_SOMATO_${LR} \
-		-add FS_POSTPAR_${LR} \
-		-add FS_OCC_${LR} \
-		-add FS_TEMP_${LR} \
-		-bin FS_${LR}HCORTEX_STOP
-
-	fslmaths \
-			 FS_${LR}HCORTEX_STOP \
-		-add FS_WM_${LR} \
-		-add FS_THALAMUS_${LR} \
-		-bin FS_${LR}H_AVOID
-
-done
+#for LR in L R ; do
+#
+#	fslmaths \
+#			 FS_PFC_${LR} \
+#		-add FS_MOTOR_${LR} \
+#		-add FS_SOMATO_${LR} \
+#		-add FS_POSTPAR_${LR} \
+#		-add FS_OCC_${LR} \
+#		-add FS_TEMP_${LR} \
+#		-bin FS_${LR}HCORTEX_STOP
+#
+#	fslmaths \
+#			 FS_${LR}HCORTEX_STOP \
+#		-add FS_WM_${LR} \
+#		-add FS_THALAMUS_${LR} \
+#		-bin FS_${LR}H_AVOID
+#
+#done
 
 
 # Clean up

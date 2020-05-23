@@ -1,9 +1,0 @@
-
-Move stop/avoid mask creation to specific source/target set, and store them in the probtracks subdir under TRACKMASKS or something instead of injecting the FS6 etc into the filename
-
-Make generic mask with all sources and targets
-  Add subcortical, brainstem, opposite hemisphere white matter to get hemi-specific avoid masks
-  Subtract target to get target avoid mask
-  Subtract all targets to get multi avoid mask
-
-Add all targets to each other to get multi stop/waypoint mask
