@@ -115,6 +115,10 @@ probtracks.sh "Yeo7" \
 #Yeo17_N10 Yeo17_N11 Yeo17_N12 Yeo17_N13 Yeo17_N14 Yeo17_N15 Yeo17_N16 Yeo17_N17"
 
 
+### Transform all the DWI space ROIs we used to FS and MNI geometry
+warp.sh "${rois_dwi_dir}"
+
+
 ### PDF
 make_pdf.sh
 

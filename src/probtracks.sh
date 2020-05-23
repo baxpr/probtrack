@@ -148,8 +148,6 @@ for source in ${source_regions} ; do
 			fdt="${track_dir}/${source}_${LR}_to_${target}_${LR}/fdt_paths"
 			thresh=$(fslstats "${fdt}" -P 75)
 			fslmaths "${fdt}" -thr $thresh "${fdt}"_75pct
-
-			warp.sh "${track_dir}/${source}_${LR}_to_${target}_${LR}"
 			
 		done
 	done
@@ -186,8 +184,6 @@ for source in ${source_regions} ; do
 			thresh=$(fslstats "${fdt}" -P 75)
 			fslmaths "${fdt}" -thr $thresh "${fdt}"_75pct
 
-			warp.sh "${track_dir}/${source}_${LR}_to_TARGETS_${LR}"
-
 	done
 done
 
@@ -202,6 +198,19 @@ do_biggest.sh MULTI
 
 # Probmaps for the multi-target probtrack run, using proj_thresh
 do_probmaps.sh
+
+
+# Transform all probtrack output images to FS and MNI geometry
+for source in ${source_regions} ; do
+	for LR in L R ; do
+		for target in ${target_regions} ; do
+			warp.sh "${track_dir}/${source}_${LR}_to_${target}_${LR}"
+		done
+		warp.sh "${track_dir}/${source}_${LR}_to_TARGETS_${LR}"
+		warp.sh "${track_dir}/BIGGEST_INDIV_${source}"
+		warp.sh "${track_dir}/BIGGEST_MULTI_${source}"
+	done
+done
 
 
 # Leave a single-volume indexed ROI image in the roi directory with this
