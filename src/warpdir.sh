@@ -14,4 +14,4 @@ for f in *.nii.gz ; do
 done
 
 # SPM12 warp for entire directory (all r*.nii.gz files)
-"${matlab_dir}"/run_spm12.sh "${mcr_dir}" function warpdir "${out_dir}"/y_fwddef.nii "${towarp_dir}"
+"${matlab_dir}"/run_spm12.sh "${mcr_dir}" function warpdir "${towarp_dir}" "${out_dir}"
