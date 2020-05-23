@@ -76,6 +76,8 @@ fslmaths emptymask ${alltgtLstr} -bin all_tgt_L
 fslmaths emptymask ${alltgtRstr} -bin all_tgt_R
 fslmaths all_tgt_L -add all_tgt_R -bin all_tgt_LR
 
+rm emptymask.nii.gz
+
 
 # Avoid masks for single target
 #   All tgt in this hemisphere except current target;
@@ -200,7 +202,7 @@ do_biggest.sh MULTI
 do_probmaps.sh
 
 
-# Transform all probtrack output images to FS and MNI geometry
+# Transform all probtrack related images to FS and MNI geometry
 for source in ${source_regions} ; do
 	for LR in L R ; do
 		for target in ${target_regions} ; do
@@ -211,6 +213,7 @@ for source in ${source_regions} ; do
 		warp.sh "${track_dir}/BIGGEST_MULTI_${source}"
 	done
 done
+warp.sh "${track_dir}/TRACKMASKS"
 
 
 # Leave a single-volume indexed ROI image in the roi directory with this
