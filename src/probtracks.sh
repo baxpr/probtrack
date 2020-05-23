@@ -206,14 +206,14 @@ do_probmaps.sh
 for source in ${source_regions} ; do
 	for LR in L R ; do
 		for target in ${target_regions} ; do
-			warp.sh "${track_dir}/${source}_${LR}_to_${target}_${LR}"
+			warpdir.sh "${track_dir}/${source}_${LR}_to_${target}_${LR}"
 		done
-		warp.sh "${track_dir}/${source}_${LR}_to_TARGETS_${LR}"
-		warp.sh "${track_dir}/BIGGEST_INDIV_${source}"
-		warp.sh "${track_dir}/BIGGEST_MULTI_${source}"
+		warpdir.sh "${track_dir}/${source}_${LR}_to_TARGETS_${LR}"
+		warpdir.sh "${track_dir}/BIGGEST_INDIV_${source}"
+		warpdir.sh "${track_dir}/BIGGEST_MULTI_${source}"
 	done
 done
-warp.sh "${track_dir}/TRACKMASKS"
+warpdir.sh "${track_dir}/TRACKMASKS"
 
 
 # Leave a single-volume indexed ROI image in the roi directory with this
