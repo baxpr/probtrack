@@ -57,44 +57,45 @@ cd "${track_dir}"/TRACKMASKS
 
 fslmaths "${bedpost_dir}"/nodif_brain_mask -mul 0 emptymask
 
-allsrcL=""
-allsrcR=""
+allsrcLstr=""
+allsrcRstr=""
 for source in ${source_regions} ; do
-	allsrcL="${allsrcL} -add ${rois_dwi_dir}/${source}_L"
-	allsrcR="${allsrcR} -add ${rois_dwi_dir}/${source}_R"
+	allsrcLstr="${allsrcL} -add ${rois_dwi_dir}/${source}_L"
+	allsrcRstr="${allsrcR} -add ${rois_dwi_dir}/${source}_R"
 done
-alltgtL=""
-alltgtR=""
+alltgtLstr=""
+alltgtRstr=""
 for target in ${target_regions} ; do
-	alltgtL="${alltgtL} -add ${rois_dwi_dir}/${target}_L"
-	alltgtR="${alltgtR} -add ${rois_dwi_dir}/${target}_R"
+	alltgtLstr="${alltgtL} -add ${rois_dwi_dir}/${target}_L"
+	alltgtRstr="${alltgtR} -add ${rois_dwi_dir}/${target}_R"
 done
 
+fslmaths emptymask ${allsrcLstr} ${alltgtLstr} -bin all_src_tgt_L
+fslmaths emptymask ${allsrcRstr} ${alltgtRstr} -bin all_src_tgt_R
+fslmaths emptymask ${alltgtLstr} -bin all_tgt_L
+fslmaths emptymask ${alltgtRstr} -bin all_tgt_R
 
-fslmaths emptymask ${allsrcL} ${alltgtL} ${allsrcR} ${alltgtR} -bin all_src_tgt
-
-fslmaths all_src_tgt -add FS_WM_L -bin all_src_tgt_avoid_forR
-fslmaths all_src_tgt -add FS_WM_R -bin all_src_tgt_avoid_forL
 
 # Avoid masks for single target
+#   All tgt in this hemisphere except current target;
+#   All src, tgt, WM in opposite hemisphere
 for source in ${source_regions} ; do
 	for target in ${target_regions} ; do
 		for LR in L R ; do
-			fslmaths all_src_tgt_avoid_for${LR} \
-				-sub "${source}_${LR}" -bin \
-				-sub "${target}_${LR}" -bin \
-				"${source}_${target}_${LR}"_AVOID
+			RL=$(swapLR ${LR})
+			fslmaths \
+				all_tgt_${LR} -sub "${target}_${LR}" -bin \
+				-add all_src_tgt_${RL} -add "${rois_dwi_dir}"/FS_WM_${RL} \
+				"${source}_to_${target}_${LR}"_AVOID
 		done
 	done
 done
 
-# Stop masks for multi target are just all the targets
-fslmaths emptymask ${alltgtL} -bin multi_L_STOP
-fslmaths emptymask ${alltgtR} -bin multi_R_STOP
+# Stop, waypoint masks for multi target are just all the targets.
 
-# Avoid masks for multi are the opposite hemisphere
-fslmaths emptymask ${allsrcL} ${alltgtL} -add FS_WM_L -bin multi_forR_AVOID
-fslmaths emptymask ${allsrcR} ${alltgtR} -add FS_WM_R -bin multi_forL_AVOID
+# Avoid masks for multi are all src, tgt, WM in the opposite hemisphere
+fslmaths all_src_tgt_L -add "${rois_dwi_dir}"/FS_WM_L -bin multi_L_AVOID
+fslmaths all_src_tgt_R -add "${rois_dwi_dir}"/FS_WM_R -bin multi_R_AVOID
 
 
 # Work in the ROI dir for tracking
@@ -110,11 +111,11 @@ for source in ${source_regions} ; do
 			probtrackx2 \
 				--samples="${bedpost_dir}"/merged \
 				--mask="${bedpost_dir}"/nodif_brain_mask \
-				--seed="${source}_${LR}" \
-				--targetmasks="${target}_${LR}" \
-				--waypoints="${target}_${LR}" \
-				--stop="${target}_${LR}" \
-				--avoid="${source}_${target}_${LR}"_AVOID \
+				--seed="${rois_dwi_dir}"/"${source}_${LR}" \
+				--targetmasks="${rois_dwi_dir}"/"${target}_${LR}" \
+				--waypoints="${rois_dwi_dir}"/"${target}_${LR}" \
+				--stop="${rois_dwi_dir}"/"${target}_${LR}" \
+				--avoid="${track_dir}"/TRACKMASKS/"${source}_to_${target}_${LR}"_AVOID \
 				--dir="${track_dir}/${source}_${LR}_to_${target}_${LR}" \
 				${trackopts}
 
@@ -149,9 +150,9 @@ for source in ${source_regions} ; do
 			--mask="${bedpost_dir}"/nodif_brain_mask \
 			--seed=${source}_${LR} \
 			--targetmasks=${track_dir}/TARGETS_${LR}.txt \
-			--waypoints=${dirname_tag}_${LR}HCORTEX_STOP \
-			--stop=${dirname_tag}_${LR}HCORTEX_STOP \
-			--avoid=${dirname_tag}_${RL}H_AVOID \
+			--waypoints="${track_dir}"/TRACKMASKS/all_tgt_${LR} \
+			--stop="${track_dir}"/TRACKMASKS/all_tgt_${LR} \
+			--avoid="${track_dir}"/TRACKMASKS/multi_${RL}_AVOID \
 			--dir="${track_dir}"/${source}_${LR}_to_TARGETS_${LR} \
 			${trackopts}
 
