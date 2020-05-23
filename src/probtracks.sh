@@ -93,7 +93,7 @@ done
 
 # Stop, waypoint masks for multi target are just all the targets.
 
-# Avoid masks for multi are all src, tgt, WM in the opposite hemisphere
+# Avoid masks for multi are all src, tgt, WM, CERSUBC in the opposite hemisphere
 fslmaths all_src_tgt_L -add "${rois_dwi_dir}"/FS_WM_L -add "${rois_dwi_dir}"/FS_CERSUBC_L -bin multi_L_AVOID
 fslmaths all_src_tgt_R -add "${rois_dwi_dir}"/FS_WM_R -add "${rois_dwi_dir}"/FS_CERSUBC_R -bin multi_R_AVOID
 
