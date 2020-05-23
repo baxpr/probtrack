@@ -85,27 +85,28 @@ combine_rois "${aparc}"   FS_ITEMP_R     "2006 2007 2009 2015 2016"
 
 
 # Subcortical mask
-fslmaths \
-	FS_BRAINSTEM \
-	-add FS_CEREBELLUM_L    -add FS_CEREBELLUM_R \
-	-add FS_CAUD_PUT_PALL_L -add FS_CAUD_PUT_PALL_R \
-	-add FS_AMYG_HIPP_L     -add FS_AMYG_HIPP_R \
-	-bin \
-	FS_CEREBELLAR_SUBCORTICAL
+for LR in L R ; do
+	fslmaths \
+			 FS_CEREBELLUM_${LR} \
+		-add FS_CAUD_PUT_PALL_${LR} \
+		-add FS_AMYG_HIPP_${LR} \
+		-bin \
+		FS_CERSUBC_${LR}
+done
 
 
-# Whole brain gray matter mask
+# FIXME not using Whole brain gray matter mask
 fslmaths FS_PFC_R -add FS_MOTOR_R -add FS_SOMATO_R -add FS_POSTPAR_R -add FS_OCC_R -add FS_TEMP_R \
 	-add FS_PFC_L -add FS_MOTOR_L -add FS_SOMATO_L -add FS_POSTPAR_L -add FS_OCC_L -add FS_TEMP_L \
 	FS_CORTEX
 
 
-# Add white matter, subcortical to gray matter to make large avoid masks
+# FIXME not using Add white matter, subcortical to gray matter to make large avoid masks
 fslmaths FS_CORTEX -add FS_WM_R -add FS_CEREBELLAR_SUBCORTICAL -bin FS_RH_LHCORTEX_AVOID
 fslmaths FS_CORTEX -add FS_WM_L -add FS_CEREBELLAR_SUBCORTICAL -bin FS_LH_RHCORTEX_AVOID
 
 
-# Avoid masks for specific seed regions
+# FIXME not using Avoid masks for specific seed regions
 for region in \
   FS_PFC \
   FS_MOTOR \
@@ -125,7 +126,7 @@ for region in \
 	fslmaths FS_LH_RHCORTEX_AVOID -sub ${region}_R -thr 1 -bin ${region}_R_AVOID
 done
 
-# Stop and avoid masks for hemispheres
+# FIXME not using Stop and avoid masks for hemispheres
 for LR in L R ; do
 
 	fslmaths \
