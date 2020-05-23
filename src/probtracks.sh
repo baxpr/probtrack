@@ -74,7 +74,7 @@ fslmaths emptymask ${allsrcLstr} ${alltgtLstr} -bin all_src_tgt_L
 fslmaths emptymask ${allsrcRstr} ${alltgtRstr} -bin all_src_tgt_R
 fslmaths emptymask ${alltgtLstr} -bin all_tgt_L
 fslmaths emptymask ${alltgtRstr} -bin all_tgt_R
-
+fslmaths all_tgt_L all_tgt_R all_tgt_LR
 
 # Avoid masks for single target
 #   All tgt in this hemisphere except current target;
@@ -226,15 +226,16 @@ done
 mv tmp.nii.gz ${dirname_tag}_sourcerois.nii.gz
 
 
-# Make PDF pages for this set of tracks, coronal slices
+# Make PDF pages for this set of tracks, coronal slices around the
+# center of mass of the target ROIs
 wkdir="${out_dir}"/makepdf
 mkdir -p "${wkdir}"
 cd "${wkdir}"
 
 pdir="${out_dir}"/PROBTRACK_"${dirname_tag}"
-vx=$(get_com.py x "${rois_dwi_dir}"/FS_CORTEX.nii.gz)
-vy=$(get_com.py y "${rois_dwi_dir}"/FS_CORTEX.nii.gz)
-vz=$(get_com.py z "${rois_dwi_dir}"/FS_CORTEX.nii.gz)
+vx=$(get_com.py x "${track_dir}"/TRACKMASKS/all_tgt_LR.nii.gz)
+vy=$(get_com.py y "${track_dir}"/TRACKMASKS/all_tgt_LR.nii.gz)
+vz=$(get_com.py z "${track_dir}"/TRACKMASKS/all_tgt_LR.nii.gz)
 deltas="-75 -65 -55 -45 -35 -25 -15 -05 +05 +15 +25 +35 +45 +55 +65 +75"
 for source in ${source_regions} ; do
 	for target in ${target_regions} ; do
