@@ -92,8 +92,6 @@ for source in ${source_regions} ; do
 				-add all_src_tgt_${RL} -add "${rois_dwi_dir}"/FS_WM_${RL} \
 				-add "${rois_dwi_dir}"/FS_SUBC_${LR} \
 				-add "${rois_dwi_dir}"/FS_SUBC_${RL} \
-				-add "${rois_dwi_dir}"/FS_INSULA_${LR} \
-				-add "${rois_dwi_dir}"/FS_INSULA_${RL} \
 				-add "${rois_dwi_dir}"/FS_CEREBELLUM_${LR} \
 				-add "${rois_dwi_dir}"/FS_CEREBELLUM_${RL} \
 				-add "${rois_dwi_dir}"/FS_BRAINSTEM \
@@ -111,7 +109,6 @@ done
 fslmaths all_src_tgt_L \
 	-add "${rois_dwi_dir}"/FS_WM_L \
 	-add "${rois_dwi_dir}"/FS_SUBC_L -add "${rois_dwi_dir}"/FS_SUBC_R \
-	-add "${rois_dwi_dir}"/FS_INSULA_L -add "${rois_dwi_dir}"/FS_INSULA_R \
 	-add "${rois_dwi_dir}"/FS_CEREBELLUM_L -add "${rois_dwi_dir}"/FS_CEREBELLUM_R \
 	-add "${rois_dwi_dir}"/FS_BRAINSTEM \
 	-add "${rois_dwi_dir}"/FS_CSFVENT \
@@ -119,7 +116,6 @@ fslmaths all_src_tgt_L \
 fslmaths all_src_tgt_R \
 	-add "${rois_dwi_dir}"/FS_WM_R \
 	-add "${rois_dwi_dir}"/FS_SUBC_L -add "${rois_dwi_dir}"/FS_SUBC_R \
-	-add "${rois_dwi_dir}"/FS_INSULA_L -add "${rois_dwi_dir}"/FS_INSULA_R \
 	-add "${rois_dwi_dir}"/FS_CEREBELLUM_L -add "${rois_dwi_dir}"/FS_CEREBELLUM_R \
 	-add "${rois_dwi_dir}"/FS_BRAINSTEM \
 	-add "${rois_dwi_dir}"/FS_CSFVENT \
