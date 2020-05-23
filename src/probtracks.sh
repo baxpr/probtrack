@@ -200,6 +200,10 @@ do_biggest.sh INDIV
 do_biggest.sh MULTI
 
 
+# Probmaps for the multi-target probtrack run, using proj_thresh
+do_probmaps.sh
+
+
 # Leave a single-volume indexed ROI image in the roi directory with this
 # set of targets in it, named by the dirname_tag. Assumes the target masks
 # do not overlap. Repeat for source ROIs.
