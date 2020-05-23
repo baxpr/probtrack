@@ -25,6 +25,13 @@ fslmaths nii_thalamus_to_DWI -thr 8100 -uthr 8199 -bin FS_THALAMUS_L
 fslmaths nii_thalamus_to_DWI -thr 8200 -uthr 8299 -bin FS_THALAMUS_R
 
 
+#L accumbens 26
+#R accumbens 58
+#L ventral DC 28
+#R ventral DC 60
+#pallidum 13 52 
+#vent 4 5 14 15 43 44
+ 
 # Re-combine aparc into the needed single-ROI masks, files labeled by ROI name
 aparc=aparc.DKTatlas+aseg_to_DWI
 
@@ -34,14 +41,22 @@ combine_rois "${aparc}"   FS_WM_LR              "2 41"
 
 combine_rois "${aparc}"   FS_BRAINSTEM          "16"
 
+combine_rois "${aparc}"   FS_CSFVENT            "4 5 14 15 24 43 44"
+
+combine_rois "${aparc}"   FS_SUBC_L             "11 12 13 17 18 26 28"
+combine_rois "${aparc}"   FS_SUBC_R             "50 51 52 53 54 58 60"
+
+combine_rois "${aparc}"   FS_INSULA_L           "1035"
+combine_rois "${aparc}"   FS_INSULA_R           "2035"
+
 combine_rois "${aparc}"   FS_CEREBELLUM_L       "7 8"
 combine_rois "${aparc}"   FS_CEREBELLUM_R       "46 47"
 
-combine_rois "${aparc}"   FS_CAUD_PUT_PALL_L    "11 12 13"
-combine_rois "${aparc}"   FS_CAUD_PUT_PALL_R    "50 51 52"
+#combine_rois "${aparc}"   FS_CAUD_PUT_PALL_L    "11 12 13"
+#combine_rois "${aparc}"   FS_CAUD_PUT_PALL_R    "50 51 52"
 
-combine_rois "${aparc}"   FS_AMYG_HIPP_L        "17 18"
-combine_rois "${aparc}"   FS_AMYG_HIPP_R        "53 54"
+#combine_rois "${aparc}"   FS_AMYG_HIPP_L        "17 18"
+#combine_rois "${aparc}"   FS_AMYG_HIPP_R        "53 54"
 	
 combine_rois "${aparc}"   FS_MOTOR_L     "1003 1017 1024"
 combine_rois "${aparc}"   FS_MOTOR_R     "2003 2017 2024"
@@ -84,66 +99,67 @@ combine_rois "${aparc}"   FS_ITEMP_R     "2006 2007 2009 2015 2016"
 
 
 
-# Subcortical mask
-fslmaths \
-	FS_BRAINSTEM \
-	-add FS_CEREBELLUM_L    -add FS_CEREBELLUM_R \
-	-add FS_CAUD_PUT_PALL_L -add FS_CAUD_PUT_PALL_R \
-	-add FS_AMYG_HIPP_L     -add FS_AMYG_HIPP_R \
-	-bin \
-	FS_CEREBELLAR_SUBCORTICAL
+# Cerebellum/subcortical mask
+#for LR in L R ; do
+#	fslmaths \
+#			 FS_CEREBELLUM_${LR} \
+#		-add FS_CAUD_PUT_PALL_${LR} \
+#		-add FS_AMYG_HIPP_${LR} \
+#		-bin \
+#		FS_CERSUBC_${LR}
+#done
 
 
-# Whole brain gray matter mask
-fslmaths FS_PFC_R -add FS_MOTOR_R -add FS_SOMATO_R -add FS_POSTPAR_R -add FS_OCC_R -add FS_TEMP_R \
-	-add FS_PFC_L -add FS_MOTOR_L -add FS_SOMATO_L -add FS_POSTPAR_L -add FS_OCC_L -add FS_TEMP_L \
-	FS_CORTEX
+# FIXME not using Whole brain gray matter mask
+#fslmaths FS_PFC_R -add FS_MOTOR_R -add FS_SOMATO_R -add FS_POSTPAR_R -add FS_OCC_R -add FS_TEMP_R \
+#	-add FS_PFC_L -add FS_MOTOR_L -add FS_SOMATO_L -add FS_POSTPAR_L -add FS_OCC_L -add FS_TEMP_L \
+#	FS_CORTEX
 
 
-# Add white matter, subcortical to gray matter to make large avoid masks
-fslmaths FS_CORTEX -add FS_WM_R -add FS_CEREBELLAR_SUBCORTICAL -bin FS_RH_LHCORTEX_AVOID
-fslmaths FS_CORTEX -add FS_WM_L -add FS_CEREBELLAR_SUBCORTICAL -bin FS_LH_RHCORTEX_AVOID
+# FIXME not using Add white matter, subcortical to gray matter to make large avoid masks
+#fslmaths FS_CORTEX -add FS_WM_R -add FS_CEREBELLAR_SUBCORTICAL -bin FS_RH_LHCORTEX_AVOID
+#fslmaths FS_CORTEX -add FS_WM_L -add FS_CEREBELLAR_SUBCORTICAL -bin FS_LH_RHCORTEX_AVOID
 
 
-# Avoid masks for specific seed regions
-for region in \
-  FS_PFC \
-  FS_MOTOR \
-  FS_SOMATO \
-  FS_POSTPAR \
-  FS_OCC \
-  FS_TEMP \
-  FS_MOFC \
-  FS_LPFC \
-  FS_ACC \
-  FS_PPC \
-  FS_PARDMN \
-  FS_AUD \
-  FS_ITEMP \
-; do
-	fslmaths FS_RH_LHCORTEX_AVOID -sub ${region}_L -thr 1 -bin ${region}_L_AVOID
-	fslmaths FS_LH_RHCORTEX_AVOID -sub ${region}_R -thr 1 -bin ${region}_R_AVOID
-done
+# FIXME not using Avoid masks for specific seed regions
+#for region in \
+#  FS_PFC \
+#  FS_MOTOR \
+#  FS_SOMATO \
+#  FS_POSTPAR \
+#  FS_OCC \
+#  FS_TEMP \
+#  FS_MOFC \
+#  FS_LPFC \
+#  FS_ACC \
+#  FS_PPC \
+#  FS_PARDMN \
+#  FS_AUD \
+#  FS_ITEMP \
+#; do
+#	fslmaths FS_RH_LHCORTEX_AVOID -sub ${region}_L -thr 1 -bin ${region}_L_AVOID
+#	fslmaths FS_LH_RHCORTEX_AVOID -sub ${region}_R -thr 1 -bin ${region}_R_AVOID
+#done
 
-# Stop and avoid masks for hemispheres
-for LR in L R ; do
-
-	fslmaths \
-			 FS_PFC_${LR} \
-		-add FS_MOTOR_${LR} \
-		-add FS_SOMATO_${LR} \
-		-add FS_POSTPAR_${LR} \
-		-add FS_OCC_${LR} \
-		-add FS_TEMP_${LR} \
-		-bin FS_${LR}HCORTEX_STOP
-
-	fslmaths \
-			 FS_${LR}HCORTEX_STOP \
-		-add FS_WM_${LR} \
-		-add FS_THALAMUS_${LR} \
-		-bin FS_${LR}H_AVOID
-
-done
+# FIXME not using Stop and avoid masks for hemispheres
+#for LR in L R ; do
+#
+#	fslmaths \
+#			 FS_PFC_${LR} \
+#		-add FS_MOTOR_${LR} \
+#		-add FS_SOMATO_${LR} \
+#		-add FS_POSTPAR_${LR} \
+#		-add FS_OCC_${LR} \
+#		-add FS_TEMP_${LR} \
+#		-bin FS_${LR}HCORTEX_STOP
+#
+#	fslmaths \
+#			 FS_${LR}HCORTEX_STOP \
+#		-add FS_WM_${LR} \
+#		-add FS_THALAMUS_${LR} \
+#		-bin FS_${LR}H_AVOID
+#
+#done
 
 
 # Clean up

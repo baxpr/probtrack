@@ -51,9 +51,85 @@ echo "    Dir:     ${track_dir}"
 echo "    Opts:    ${trackopts}"
 
 
+# Make track masks - target, avoid, stop, waypoint. Store these in the probtrack dir
+mkdir -p "${track_dir}"/TRACKMASKS
+cd "${track_dir}"/TRACKMASKS
+
+fslmaths "${bedpost_dir}"/nodif_brain_mask -mul 0 emptymask
+
+allsrcLstr=""
+allsrcRstr=""
+for source in ${source_regions} ; do
+	allsrcLstr="${allsrcLstr} -add ${rois_dwi_dir}/${source}_L"
+	allsrcRstr="${allsrcRstr} -add ${rois_dwi_dir}/${source}_R"
+done
+alltgtLstr=""
+alltgtRstr=""
+for target in ${target_regions} ; do
+	alltgtLstr="${alltgtLstr} -add ${rois_dwi_dir}/${target}_L"
+	alltgtRstr="${alltgtRstr} -add ${rois_dwi_dir}/${target}_R"
+done
+
+fslmaths emptymask ${allsrcLstr} ${alltgtLstr} -bin all_src_tgt_L
+fslmaths emptymask ${allsrcRstr} ${alltgtRstr} -bin all_src_tgt_R
+fslmaths emptymask ${alltgtLstr} -bin all_tgt_L
+fslmaths emptymask ${alltgtRstr} -bin all_tgt_R
+fslmaths all_tgt_L -add all_tgt_R -bin all_tgt_LR
+
+
+# Avoid masks for single target
+#   All tgt in this hemisphere except current target;
+#   All src, tgt, WM in opposite hemisphere
+#   All CERSUBC, brainstem in both hemispheres
+for source in ${source_regions} ; do
+	for target in ${target_regions} ; do
+		for LR in L R ; do
+			RL=$(swapLR ${LR})
+			fslmaths \
+				all_tgt_${LR} -sub "${rois_dwi_dir}"/"${target}_${LR}" -bin \
+				-add all_src_tgt_${RL} -add "${rois_dwi_dir}"/FS_WM_${RL} \
+				-add "${rois_dwi_dir}"/FS_SUBC_${LR} \
+				-add "${rois_dwi_dir}"/FS_SUBC_${RL} \
+				-add "${rois_dwi_dir}"/FS_INSULA_${LR} \
+				-add "${rois_dwi_dir}"/FS_INSULA_${RL} \
+				-add "${rois_dwi_dir}"/FS_CEREBELLUM_${LR} \
+				-add "${rois_dwi_dir}"/FS_CEREBELLUM_${RL} \
+				-add "${rois_dwi_dir}"/FS_BRAINSTEM \
+				-add "${rois_dwi_dir}"/FS_CSFVENT \
+				-bin \
+				"${source}_${LR}_to_${target}_${LR}_AVOID"
+		done
+	done
+done
+
+# Stop, waypoint masks for multi target are just all the targets, all_tgt_{L,R}
+
+# Avoid masks for multi are all src, tgt, WM in the opposite hemisphere
+# and CERSUBC, brainstem in both hemispheres
+fslmaths all_src_tgt_L \
+	-add "${rois_dwi_dir}"/FS_WM_L \
+	-add "${rois_dwi_dir}"/FS_SUBC_L -add "${rois_dwi_dir}"/FS_SUBC_R \
+	-add "${rois_dwi_dir}"/FS_INSULA_L -add "${rois_dwi_dir}"/FS_INSULA_R \
+	-add "${rois_dwi_dir}"/FS_CEREBELLUM_L -add "${rois_dwi_dir}"/FS_CEREBELLUM_R \
+	-add "${rois_dwi_dir}"/FS_BRAINSTEM \
+	-add "${rois_dwi_dir}"/FS_CSFVENT \
+	-bin multi_L_AVOID
+fslmaths all_src_tgt_R \
+	-add "${rois_dwi_dir}"/FS_WM_R \
+	-add "${rois_dwi_dir}"/FS_SUBC_L -add "${rois_dwi_dir}"/FS_SUBC_R \
+	-add "${rois_dwi_dir}"/FS_INSULA_L -add "${rois_dwi_dir}"/FS_INSULA_R \
+	-add "${rois_dwi_dir}"/FS_CEREBELLUM_L -add "${rois_dwi_dir}"/FS_CEREBELLUM_R \
+	-add "${rois_dwi_dir}"/FS_BRAINSTEM \
+	-add "${rois_dwi_dir}"/FS_CSFVENT \
+	-bin multi_R_AVOID
+
+
+# Work in the ROI dir for tracking
+cd "${rois_dwi_dir}"
+
+
 # Track each source to each individual target cortical region, in each hemisphere.
 # probtrack is run from the ROI directory to simplify the command here.
-cd "${rois_dwi_dir}"
 for source in ${source_regions} ; do
 	for target in ${target_regions} ; do
 		for LR in L R ; do
@@ -61,11 +137,11 @@ for source in ${source_regions} ; do
 			probtrackx2 \
 				--samples="${bedpost_dir}"/merged \
 				--mask="${bedpost_dir}"/nodif_brain_mask \
-				--seed="${source}_${LR}" \
-				--targetmasks="${target}_${LR}" \
-				--waypoints="${target}_${LR}" \
-				--stop="${target}_${LR}" \
-				--avoid="${target}_${LR}"_AVOID \
+				--seed="${rois_dwi_dir}"/"${source}_${LR}" \
+				--targetmasks="${rois_dwi_dir}"/"${target}_${LR}" \
+				--waypoints="${rois_dwi_dir}"/"${target}_${LR}" \
+				--stop="${rois_dwi_dir}"/"${target}_${LR}" \
+				--avoid="${track_dir}"/TRACKMASKS/"${source}_${LR}_to_${target}_${LR}_AVOID" \
 				--dir="${track_dir}/${source}_${LR}_to_${target}_${LR}" \
 				${trackopts}
 
@@ -100,9 +176,9 @@ for source in ${source_regions} ; do
 			--mask="${bedpost_dir}"/nodif_brain_mask \
 			--seed=${source}_${LR} \
 			--targetmasks=${track_dir}/TARGETS_${LR}.txt \
-			--waypoints=${dirname_tag}_${LR}HCORTEX_STOP \
-			--stop=${dirname_tag}_${LR}HCORTEX_STOP \
-			--avoid=${dirname_tag}_${RL}H_AVOID \
+			--waypoints="${track_dir}"/TRACKMASKS/all_tgt_${LR} \
+			--stop="${track_dir}"/TRACKMASKS/all_tgt_${LR} \
+			--avoid="${track_dir}"/TRACKMASKS/multi_${RL}_AVOID \
 			--dir="${track_dir}"/${source}_${LR}_to_TARGETS_${LR} \
 			${trackopts}
 
@@ -122,6 +198,10 @@ done
 # and track_dir above, they will be available in the subshell here.
 do_biggest.sh INDIV
 do_biggest.sh MULTI
+
+
+# Probmaps for the multi-target probtrack run, using proj_thresh
+do_probmaps.sh
 
 
 # Leave a single-volume indexed ROI image in the roi directory with this
@@ -151,15 +231,16 @@ done
 mv tmp.nii.gz ${dirname_tag}_sourcerois.nii.gz
 
 
-# Make PDF pages for this set of tracks, coronal slices
+# Make PDF pages for this set of tracks, coronal slices around the
+# center of mass of the target ROIs
 wkdir="${out_dir}"/makepdf
 mkdir -p "${wkdir}"
 cd "${wkdir}"
 
 pdir="${out_dir}"/PROBTRACK_"${dirname_tag}"
-vx=$(get_com.py x "${rois_dwi_dir}"/FS_CORTEX.nii.gz)
-vy=$(get_com.py y "${rois_dwi_dir}"/FS_CORTEX.nii.gz)
-vz=$(get_com.py z "${rois_dwi_dir}"/FS_CORTEX.nii.gz)
+vx=$(get_com.py x "${track_dir}"/TRACKMASKS/all_tgt_LR.nii.gz)
+vy=$(get_com.py y "${track_dir}"/TRACKMASKS/all_tgt_LR.nii.gz)
+vz=$(get_com.py z "${track_dir}"/TRACKMASKS/all_tgt_LR.nii.gz)
 deltas="-75 -65 -55 -45 -35 -25 -15 -05 +05 +15 +25 +35 +45 +55 +65 +75"
 for source in ${source_regions} ; do
 	for target in ${target_regions} ; do
