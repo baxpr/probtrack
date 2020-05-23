@@ -84,9 +84,9 @@ for source in ${source_regions} ; do
 		for LR in L R ; do
 			RL=$(swapLR ${LR})
 			fslmaths \
-				all_tgt_${LR} -sub "${target}_${LR}" -bin \
+				all_tgt_${LR} -sub "${rois_dwi_dir}"/"${target}_${LR}" -bin \
 				-add all_src_tgt_${RL} -add "${rois_dwi_dir}"/FS_WM_${RL} \
-				"${source}_to_${target}_${LR}"_AVOID
+				"${source}_${LR}_to_${target}_${LR}_AVOID"
 		done
 	done
 done
@@ -115,7 +115,7 @@ for source in ${source_regions} ; do
 				--targetmasks="${rois_dwi_dir}"/"${target}_${LR}" \
 				--waypoints="${rois_dwi_dir}"/"${target}_${LR}" \
 				--stop="${rois_dwi_dir}"/"${target}_${LR}" \
-				--avoid="${track_dir}"/TRACKMASKS/"${source}_to_${target}_${LR}"_AVOID \
+				--avoid="${track_dir}"/TRACKMASKS/"${source}_${LR}_to_${target}_${LR}_AVOID" \
 				--dir="${track_dir}/${source}_${LR}_to_${target}_${LR}" \
 				${trackopts}
 
