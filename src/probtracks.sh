@@ -51,9 +51,58 @@ echo "    Dir:     ${track_dir}"
 echo "    Opts:    ${trackopts}"
 
 
+# Make track masks - target, avoid, stop, waypoint. Store these in the probtrack dir
+mkdir -p "${track_dir}"/TRACKMASKS
+cd "${track_dir}"/TRACKMASKS
+
+fslmaths "${bedpost_dir}"/nodif_brain_mask -mul 0 emptymask
+
+allsrcL=""
+allsrcR=""
+for source in ${source_regions} ; do
+	allsrcL="${allsrcL} -add ${rois_dwi_dir}/${source}_L"
+	allsrcR="${allsrcR} -add ${rois_dwi_dir}/${source}_R"
+done
+alltgtL=""
+alltgtR=""
+for target in ${target_regions} ; do
+	alltgtL="${alltgtL} -add ${rois_dwi_dir}/${target}_L"
+	alltgtR="${alltgtR} -add ${rois_dwi_dir}/${target}_R"
+done
+
+
+fslmaths emptymask ${allsrcL} ${alltgtL} ${allsrcR} ${alltgtR} -bin all_src_tgt
+
+fslmaths all_src_tgt -add FS_WM_L -bin all_src_tgt_avoid_forR
+fslmaths all_src_tgt -add FS_WM_R -bin all_src_tgt_avoid_forL
+
+# Avoid masks for single target
+for source in ${source_regions} ; do
+	for target in ${target_regions} ; do
+		for LR in L R ; do
+			fslmaths all_src_tgt_avoid_for${LR} \
+				-sub "${source}_${LR}" -bin \
+				-sub "${target}_${LR}" -bin \
+				"${source}_${target}_${LR}"_AVOID
+		done
+	done
+done
+
+# Stop masks for multi target are just all the targets
+fslmaths emptymask ${alltgtL} -bin multi_L_STOP
+fslmaths emptymask ${alltgtR} -bin multi_R_STOP
+
+# Avoid masks for multi are the opposite hemisphere
+fslmaths emptymask ${allsrcL} ${alltgtL} -add FS_WM_L -bin multi_forR_AVOID
+fslmaths emptymask ${allsrcR} ${alltgtR} -add FS_WM_R -bin multi_forL_AVOID
+
+
+# Work in the ROI dir for tracking
+cd "${rois_dwi_dir}"
+
+
 # Track each source to each individual target cortical region, in each hemisphere.
 # probtrack is run from the ROI directory to simplify the command here.
-cd "${rois_dwi_dir}"
 for source in ${source_regions} ; do
 	for target in ${target_regions} ; do
 		for LR in L R ; do
@@ -65,7 +114,7 @@ for source in ${source_regions} ; do
 				--targetmasks="${target}_${LR}" \
 				--waypoints="${target}_${LR}" \
 				--stop="${target}_${LR}" \
-				--avoid="${target}_${LR}"_AVOID \
+				--avoid="${source}_${target}_${LR}"_AVOID \
 				--dir="${track_dir}/${source}_${LR}_to_${target}_${LR}" \
 				${trackopts}
 
