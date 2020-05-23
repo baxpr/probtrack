@@ -87,9 +87,12 @@ for source in ${source_regions} ; do
 			fslmaths \
 				all_tgt_${LR} -sub "${rois_dwi_dir}"/"${target}_${LR}" -bin \
 				-add all_src_tgt_${RL} -add "${rois_dwi_dir}"/FS_WM_${RL} \
-				-add "${rois_dwi_dir}"/FS_CERSUBC_${LR} \
-				-add "${rois_dwi_dir}"/FS_CERSUBC_${RL} \
+				-add "${rois_dwi_dir}"/FS_SUBC_${LR} \
+				-add "${rois_dwi_dir}"/FS_SUBC_${RL} \
+				-add "${rois_dwi_dir}"/FS_CEREBELLUM_${LR} \
+				-add "${rois_dwi_dir}"/FS_CEREBELLUM_${RL} \
 				-add "${rois_dwi_dir}"/FS_BRAINSTEM \
+				-add "${rois_dwi_dir}"/FS_CSFVENT \
 				-bin \
 				"${source}_${LR}_to_${target}_${LR}_AVOID"
 		done
@@ -102,15 +105,17 @@ done
 # and CERSUBC, brainstem in both hemispheres
 fslmaths all_src_tgt_L \
 	-add "${rois_dwi_dir}"/FS_WM_L \
-	-add "${rois_dwi_dir}"/FS_CERSUBC_L \
-	-add "${rois_dwi_dir}"/FS_CERSUBC_R \
+	-add "${rois_dwi_dir}"/FS_SUBC_L -add "${rois_dwi_dir}"/FS_SUBC_R \
+	-add "${rois_dwi_dir}"/FS_CEREBELLUM_L -add "${rois_dwi_dir}"/FS_CEREBELLUM_R \
 	-add "${rois_dwi_dir}"/FS_BRAINSTEM \
+	-add "${rois_dwi_dir}"/FS_CSFVENT \
 	-bin multi_L_AVOID
 fslmaths all_src_tgt_R \
 	-add "${rois_dwi_dir}"/FS_WM_R \
-	-add "${rois_dwi_dir}"/FS_CERSUBC_L \
-	-add "${rois_dwi_dir}"/FS_CERSUBC_R \
+	-add "${rois_dwi_dir}"/FS_SUBC_L -add "${rois_dwi_dir}"/FS_SUBC_R \
+	-add "${rois_dwi_dir}"/FS_CEREBELLUM_L -add "${rois_dwi_dir}"/FS_CEREBELLUM_R \
 	-add "${rois_dwi_dir}"/FS_BRAINSTEM \
+	-add "${rois_dwi_dir}"/FS_CSFVENT \
 	-bin multi_R_AVOID
 
 

@@ -25,6 +25,13 @@ fslmaths nii_thalamus_to_DWI -thr 8100 -uthr 8199 -bin FS_THALAMUS_L
 fslmaths nii_thalamus_to_DWI -thr 8200 -uthr 8299 -bin FS_THALAMUS_R
 
 
+#L accumbens 26
+#R accumbens 58
+#L ventral DC 28
+#R ventral DC 60
+#pallidum 13 52 
+#vent 4 5 14 15 43 44
+ 
 # Re-combine aparc into the needed single-ROI masks, files labeled by ROI name
 aparc=aparc.DKTatlas+aseg_to_DWI
 
@@ -34,14 +41,22 @@ combine_rois "${aparc}"   FS_WM_LR              "2 41"
 
 combine_rois "${aparc}"   FS_BRAINSTEM          "16"
 
+combine_rois "${aparc}"   FS_CSFVENT            "4 5 14 15 24 43 44"
+
+combine_rois "${aparc}"   FS_SUBC_L             "11 12 13 17 18 26 28"
+combine_rois "${aparc}"   FS_SUBC_R             "50 51 52 53 54 58 60"
+
+combine_rois "${aparc}"   FS_INSULA_L           "1035"
+combine_rois "${aparc}"   FS_INSULA_R           "2035"
+
 combine_rois "${aparc}"   FS_CEREBELLUM_L       "7 8"
 combine_rois "${aparc}"   FS_CEREBELLUM_R       "46 47"
 
-combine_rois "${aparc}"   FS_CAUD_PUT_PALL_L    "11 12 13"
-combine_rois "${aparc}"   FS_CAUD_PUT_PALL_R    "50 51 52"
+#combine_rois "${aparc}"   FS_CAUD_PUT_PALL_L    "11 12 13"
+#combine_rois "${aparc}"   FS_CAUD_PUT_PALL_R    "50 51 52"
 
-combine_rois "${aparc}"   FS_AMYG_HIPP_L        "17 18"
-combine_rois "${aparc}"   FS_AMYG_HIPP_R        "53 54"
+#combine_rois "${aparc}"   FS_AMYG_HIPP_L        "17 18"
+#combine_rois "${aparc}"   FS_AMYG_HIPP_R        "53 54"
 	
 combine_rois "${aparc}"   FS_MOTOR_L     "1003 1017 1024"
 combine_rois "${aparc}"   FS_MOTOR_R     "2003 2017 2024"
@@ -85,14 +100,14 @@ combine_rois "${aparc}"   FS_ITEMP_R     "2006 2007 2009 2015 2016"
 
 
 # Cerebellum/subcortical mask
-for LR in L R ; do
-	fslmaths \
-			 FS_CEREBELLUM_${LR} \
-		-add FS_CAUD_PUT_PALL_${LR} \
-		-add FS_AMYG_HIPP_${LR} \
-		-bin \
-		FS_CERSUBC_${LR}
-done
+#for LR in L R ; do
+#	fslmaths \
+#			 FS_CEREBELLUM_${LR} \
+#		-add FS_CAUD_PUT_PALL_${LR} \
+#		-add FS_AMYG_HIPP_${LR} \
+#		-bin \
+#		FS_CERSUBC_${LR}
+#done
 
 
 # FIXME not using Whole brain gray matter mask
