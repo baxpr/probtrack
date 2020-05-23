@@ -74,7 +74,8 @@ fslmaths emptymask ${allsrcLstr} ${alltgtLstr} -bin all_src_tgt_L
 fslmaths emptymask ${allsrcRstr} ${alltgtRstr} -bin all_src_tgt_R
 fslmaths emptymask ${alltgtLstr} -bin all_tgt_L
 fslmaths emptymask ${alltgtRstr} -bin all_tgt_R
-fslmaths all_tgt_L all_tgt_R all_tgt_LR
+fslmaths all_tgt_L -add all_tgt_R -bin all_tgt_LR
+
 
 # Avoid masks for single target
 #   All tgt in this hemisphere except current target;
