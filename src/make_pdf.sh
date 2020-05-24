@@ -86,4 +86,11 @@ for roiset in FS6 FS10 Yeo7 Yeo17 ; do
 done
 
 
+# Move pdfs to output location
+mkdir -p "${out_dir}"/PDF
+mv thaltrack_whole.pdf "${out_dir}"/PDF
+
+mkdir -p "${out_dir}"/PDF_DETAILED 
+mv thaltrack_whole_*.pdf "${out_dir}"/PDF_DETAILED
+
 

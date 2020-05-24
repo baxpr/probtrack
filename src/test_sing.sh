@@ -17,4 +17,4 @@ singularity run \
 	--project TESTPROJ \
 	--subject TESTSUBJ \
 	--session TESTSESS \
-	--outdir /OUTPUTS
+	--out_dir /OUTPUTS

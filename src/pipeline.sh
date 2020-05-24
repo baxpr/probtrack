@@ -79,7 +79,7 @@ source ${FREESURFER_HOME}/SetUpFreeSurfer.sh
 
 # ROI dirs for region masks in the two different geometries
 export rois_fs_dir=${out_dir}/ROIS_FS ; mkdir "${rois_fs_dir}"
-export rois_dwi_dir=${out_dir}/ROIS_DWI ; mkdir "${rois_dwi_dir}"
+export rois_dwi_dir=${out_dir}/ROIS ; mkdir "${rois_dwi_dir}"
 
 
 # Prep the deformation images for SPM
