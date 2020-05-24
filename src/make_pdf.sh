@@ -3,7 +3,6 @@
 # Generate PDF for QA
 
 echo Running ${0}
-thedate=$(date)
 
 wkdir="${out_dir}"/makepdf
 mkdir -p "${wkdir}"

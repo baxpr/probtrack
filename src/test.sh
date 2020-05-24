@@ -26,6 +26,7 @@ export project=TESTPROJ
 export subject=TESTSUBJ
 export session=TESTSESS
 export out_dir=/OUTPUTS
+export thedate=$(date)
 xwrapper.sh probtracks_snapshots.sh
 
 
