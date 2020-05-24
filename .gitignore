@@ -9,3 +9,5 @@ spm12_r7487
 freesurfer_license.txt
 .matlab
 matlab/startup.m
+.cache
+.config

@@ -2,6 +2,8 @@
 #
 # Snapshots for a specific tract set
 
+echo Running "${0}" for "${dirname_tag}"
+
 wkdir="${out_dir}"/makepdf
 mkdir -p "${wkdir}"
 cd "${wkdir}"
