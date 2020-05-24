@@ -130,5 +130,5 @@ From: ubuntu:18.04
 
 %runscript
 
-  xwrapper.sh "$@"
+  xwrapper.sh pipeline.sh "$@"
 
