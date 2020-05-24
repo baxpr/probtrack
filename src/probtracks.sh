@@ -92,8 +92,6 @@ for source in ${source_regions} ; do
 				-add all_src_tgt_${RL} -add "${rois_dwi_dir}"/FS_WM_${RL} \
 				-add "${rois_dwi_dir}"/FS_SUBC_${LR} \
 				-add "${rois_dwi_dir}"/FS_SUBC_${RL} \
-				-add "${rois_dwi_dir}"/FS_INSULA_${LR} \
-				-add "${rois_dwi_dir}"/FS_INSULA_${RL} \
 				-add "${rois_dwi_dir}"/FS_CEREBELLUM_${LR} \
 				-add "${rois_dwi_dir}"/FS_CEREBELLUM_${RL} \
 				-add "${rois_dwi_dir}"/FS_BRAINSTEM \
@@ -111,7 +109,6 @@ done
 fslmaths all_src_tgt_L \
 	-add "${rois_dwi_dir}"/FS_WM_L \
 	-add "${rois_dwi_dir}"/FS_SUBC_L -add "${rois_dwi_dir}"/FS_SUBC_R \
-	-add "${rois_dwi_dir}"/FS_INSULA_L -add "${rois_dwi_dir}"/FS_INSULA_R \
 	-add "${rois_dwi_dir}"/FS_CEREBELLUM_L -add "${rois_dwi_dir}"/FS_CEREBELLUM_R \
 	-add "${rois_dwi_dir}"/FS_BRAINSTEM \
 	-add "${rois_dwi_dir}"/FS_CSFVENT \
@@ -119,7 +116,6 @@ fslmaths all_src_tgt_L \
 fslmaths all_src_tgt_R \
 	-add "${rois_dwi_dir}"/FS_WM_R \
 	-add "${rois_dwi_dir}"/FS_SUBC_L -add "${rois_dwi_dir}"/FS_SUBC_R \
-	-add "${rois_dwi_dir}"/FS_INSULA_L -add "${rois_dwi_dir}"/FS_INSULA_R \
 	-add "${rois_dwi_dir}"/FS_CEREBELLUM_L -add "${rois_dwi_dir}"/FS_CEREBELLUM_R \
 	-add "${rois_dwi_dir}"/FS_BRAINSTEM \
 	-add "${rois_dwi_dir}"/FS_CSFVENT \
@@ -204,16 +200,16 @@ do_probmaps.sh
 
 # Transform all probtrack related images to FS and MNI geometry
 for source in ${source_regions} ; do
+	warpdir.sh "${track_dir}/BIGGEST_INDIV_${source}"
+	warpdir.sh "${track_dir}/BIGGEST_MULTI_${source}"
 	for LR in L R ; do
 		for target in ${target_regions} ; do
-			warp.sh "${track_dir}/${source}_${LR}_to_${target}_${LR}"
+			warpdir.sh "${track_dir}/${source}_${LR}_to_${target}_${LR}"
 		done
-		warp.sh "${track_dir}/${source}_${LR}_to_TARGETS_${LR}"
-		warp.sh "${track_dir}/BIGGEST_INDIV_${source}"
-		warp.sh "${track_dir}/BIGGEST_MULTI_${source}"
+		warpdir.sh "${track_dir}/${source}_${LR}_to_TARGETS_${LR}"
 	done
 done
-warp.sh "${track_dir}/TRACKMASKS"
+warpdir.sh "${track_dir}/TRACKMASKS"
 
 
 # Leave a single-volume indexed ROI image in the roi directory with this
@@ -282,7 +278,7 @@ for source in ${source_regions} ; do
 		convert \
 		  -size 2600x3365 xc:white \
 		  -gravity center \( "tracts_${dirname_tag}_${source}_to_${target}.png" -resize 2400x \) -geometry +0+0 -composite \
-		  -gravity North -pointsize 48 -annotate +0+150 "FS_THALAMUS to ${tgt}" \
+		  -gravity North -pointsize 48 -annotate +0+150 "FS_THALAMUS to ${target}" \
 		  -gravity SouthEast -pointsize 48 -annotate +50+50 "${thedate}" \
 		  -gravity NorthWest -pointsize 48 -annotate +50+50 "${project} ${subject} ${session}" \
 		  "tracts_${dirname_tag}_${source}_to_${target}.png"
