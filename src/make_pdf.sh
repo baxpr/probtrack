@@ -45,13 +45,11 @@ convert \
 	-gravity NorthWest -pointsize 48 -annotate +50+50 "${project} ${subject} ${session}" \
 	"coreg.png"
 
-# BIGGEST segmentation coronal slices at thal com
-# put in probtracks
-
 
 # Finalize PDF
 convert \
 	coreg.png \
+	biggest_*.png \
 	tracts_*.png \
 	thaltrack_whole.pdf
 
