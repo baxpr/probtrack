@@ -48,22 +48,22 @@ vx=$(get_com.py x "${rois_dwi_dir}"/wrFS_THALAMUS_L.nii.gz)
 vy=$(get_com.py y "${rois_dwi_dir}"/wrFS_THALAMUS_L.nii.gz)
 vz=$(get_com.py z "${rois_dwi_dir}"/wrFS_THALAMUS_L.nii.gz)
 fsleyes render --outfile coreg_mni.png \
-	--size 600 1800 \
+	--size 400 1200 \
 	--worldLoc ${vx} ${vy} ${vz} \
 	--displaySpace world \
 	--hideCursor --layout vertical \
-	--xzoom 1000 --yzoom 1000 --zzoom 1000 \
+	--xzoom 800 --yzoom 800 --zzoom 700 \
 	coreg_imgs/wrb0_mean --displayRange 0 "99%" \
 	coreg_imgs/wrcoregmask --overlayType label --outline --outlineWidth 3 --lut harvard-oxford-subcortical
 
 
 # Combine
 montage -mode concatenate coreg_dwi.png coreg_mni.png -tile 2x1 -quality 100 -background white -gravity center \
-	-border 10 -bordercoloe white -resize 600x coreg.png
+	-border 20 -bordercolor black -resize 600x coreg.png
 
 convert \
 	-size 2600x3365 xc:white \
-	-gravity center \( "coreg.png" -resize 2400x \) -geometry +0+0 -composite \
+	-gravity center \( "coreg.png" -resize 1800x \) -geometry +0+0 -composite \
 	-gravity North -pointsize 48 -annotate +0+150 "Coregistration of FS segmentation (color) and mean b=0 DWI\nNative space (left), MNI space (right)" \
 	-gravity SouthEast -pointsize 48 -annotate +50+50 "${thedate}" \
 	-gravity NorthWest -pointsize 48 -annotate +50+50 "${project} ${subject} ${session}" \
