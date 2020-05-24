@@ -16,6 +16,21 @@ export src_dir=/wkdir/src
 export PATH=${src_dir}:$PATH
 
 
+
+# PDF
+export project=TESTPROJ
+export subject=TESTSUBJ
+export session=TESTSESS
+export out_dir=/OUTPUTS
+export rois_dwi_dir=/OUTPUTS/ROIS_DWI
+export thedate=$(date)
+export matlab_dir=/wkdir/matlab/bin
+export mcr_dir=/usr/local/MATLAB/MATLAB_Runtime/v92
+xwrapper.sh make_pdf.sh
+
+exit 0
+
+
 # Probtrack snapshots
 export dirname_tag=FS6
 export track_dir=/OUTPUTS/PROBTRACK_FS6
@@ -33,15 +48,6 @@ xwrapper.sh probtracks_snapshots.sh
 exit 0
 
 
-# PDF
-export project=TESTPROJ
-export subject=TESTSUBJ
-export session=TESTSESS
-export out_dir=/OUTPUTS
-export rois_dwi_dir=/OUTPUTS/ROIS_DWI
-xwrapper.sh make_pdf.sh
-
-exit 0
 
 
 
