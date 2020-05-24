@@ -116,7 +116,7 @@ probtracks.sh "Yeo7" \
 
 
 ### Transform all the DWI space ROIs we used to FS and MNI geometry
-warp.sh "${rois_dwi_dir}"
+warpdir.sh "${rois_dwi_dir}"
 
 
 ### PDF
