@@ -17,7 +17,7 @@ data = img.get_fdata()
 data[numpy.isnan(data)] = 0
 
 # Get COM
-com_vox = scipy.ndimage.center_of_mass(img.get_fdata())
+com_vox = scipy.ndimage.center_of_mass(data)
 com_world = nibabel.affines.apply_affine(img.affine, com_vox)
 
 if axis is 'x':
