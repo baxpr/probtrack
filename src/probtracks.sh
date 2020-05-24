@@ -200,13 +200,13 @@ do_probmaps.sh
 
 # Transform all probtrack related images to FS and MNI geometry
 for source in ${source_regions} ; do
+	warpdir.sh "${track_dir}/BIGGEST_INDIV_${source}"
+	warpdir.sh "${track_dir}/BIGGEST_MULTI_${source}"
 	for LR in L R ; do
 		for target in ${target_regions} ; do
 			warpdir.sh "${track_dir}/${source}_${LR}_to_${target}_${LR}"
 		done
 		warpdir.sh "${track_dir}/${source}_${LR}_to_TARGETS_${LR}"
-		warpdir.sh "${track_dir}/BIGGEST_INDIV_${source}"
-		warpdir.sh "${track_dir}/BIGGEST_MULTI_${source}"
 	done
 done
 warpdir.sh "${track_dir}/TRACKMASKS"
