@@ -70,12 +70,20 @@ convert \
 	"coreg.png"
 
 
-# Finalize PDF
+# Finalize PDF. Main PDF only shows FS6
 convert \
 	coreg.png \
-	biggest_*.png \
-	tracts_*.png \
+	biggest_FS6*.png \
+	tracts_FS6*.png \
 	thaltrack_whole.pdf
+
+# Secondary PDFs with each ROI set separately
+for roiset in FS6 FS10 Yeo7 Yeo17 ; do
+	convert \
+		biggest_${roiset}*.png \
+		tracts_${roiset}*.png \
+		thaltrack_whole_${roiset}.pdf
+done
 
 
 
