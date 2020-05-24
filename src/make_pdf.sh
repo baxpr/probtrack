@@ -10,22 +10,34 @@ mkdir -p "${wkdir}"
 cd "${wkdir}"
 
 
-# Make an overlay ROI for coreg check
+# Make an overlay ROI for coreg check (seeds and full cortex)
 fslmaths \
-	     "${rois_dwi_dir}"/FS_THALAMUS_L \
-	-add "${rois_dwi_dir}"/FS_THALAMUS_R \
+	"${rois_dwi_dir}"/FS_THALAMUS_L -add "${rois_dwi_dir}"/FS_THALAMUS_R \
 	-mul 2 \
-	-add "${rois_dwi_dir}"/FS_CORTEX \
+	-add "${rois_dwi_dir}"/FS_PFC_L -add "${rois_dwi_dir}"/FS_PFC_R \
+	-add "${rois_dwi_dir}"/FS_MOTOR_L -add "${rois_dwi_dir}"/FS_MOTOR_R \
+	-add "${rois_dwi_dir}"/FS_SOMATO_L -add "${rois_dwi_dir}"/FS_SOMATO_R \
+	-add "${rois_dwi_dir}"/FS_POSTPAR_L -add "${rois_dwi_dir}"/FS_POSTPAR_R \
+	-add "${rois_dwi_dir}"/FS_OCC_L -add "${rois_dwi_dir}"/FS_OCC_R \
+	-add "${rois_dwi_dir}"/FS_TEMP_L -add "${rois_dwi_dir}"/FS_TEMP_R \
+	-add "${rois_dwi_dir}"/FS_INSULA_L -add "${rois_dwi_dir}"/FS_INSULA_R \
 	coregmask
+
+# Position centered on L thalamus
+vx=$(get_com.py x "${rois_dwi_dir}"/FS_THALAMUS_L.nii.gz)
+vy=$(get_com.py y "${rois_dwi_dir}"/FS_THALAMUS_L.nii.gz)
+vz=$(get_com.py z "${rois_dwi_dir}"/FS_THALAMUS_L.nii.gz)
 
 
 # Coreg verification - outline of FS cortex ROI on mean b=0 DWI
 fsleyes render --outfile coreg.png \
 	--size 1000 1000 \
+	--worldLoc ${vx} ${vy} ${vz} \
+	--displaySpace world \
 	--hideCursor --layout grid \
 	--xzoom 1000 --yzoom 1000 --zzoom 1000 \
 	"${out_dir}"/b0_mean --displayRange 0 "99%" \
-	coregmask --overlayType label --outline --outlineWidth 2 --lut harvard-oxford-cortical
+	coregmask --overlayType label --outline --outlineWidth 3 --lut harvard-oxford-subcortical
 
 
 

@@ -16,6 +16,16 @@ export src_dir=/wkdir/src
 export PATH=${src_dir}:$PATH
 
 
+# PDF
+export out_dir=/OUTPUTS
+export rois_dwi_dir=/OUTPUTS/ROIS_DWI
+xwrapper.sh make_pdf.sh
+
+exit 0
+
+
+
+
 # probmaps
 export source_regions="FS_THALAMUS"
 export target_regions="FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP"
@@ -23,26 +33,6 @@ export track_dir=/OUTPUTS/PROBTRACK_FS6
 do_probmaps.sh
 
 exit 0
-
-
-
-
-# PDF
-export out_dir=${src_dir}/testdir/OUTPUTS
-export fs_subject_dir=${src_dir}/testdir/assessors/freesurfer/SUBJECT
-export b0mean_niigz=${src_dir}/testdir/assessors/dwipre/B0_MEAN/b0_mean.nii.gz
-export rois_fs_dir=${src_dir}/testdir/OUTPUTS/ROIS_FS
-export rois_dwi_dir=${src_dir}/testdir/OUTPUTS/ROIS_DWI
-export yeo_dir=${src_dir}/external/yeo_networks
-export invdef_niigz=${src_dir}/testdir/assessors/cat12/DEF_INV/iy_t1.nii.gz
-export fs_nii_thalamus_niigz=${src_dir}/testdir/assessors/freesurfer/NII_THALAMUS/ThalamicNuclei.v10.T1.FSvoxelSpace.nii.gz
-export probtrack_samples=100
-export bedpost_dir=${src_dir}/testdir/assessors/bedpost/BEDPOSTX
-#coreg_FS_to_DWI.sh
-make_pdf.sh
-
-exit 0
-
 
 
 # whole pipeline
