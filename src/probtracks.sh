@@ -19,7 +19,7 @@
 #     FS_PFC_R.nii.gz
 #     ...
 # These ROI files must be in the same voxel/world geometry as the BEDPOST images.
-dirname_tag="${1}"
+export dirname_tag="${1}"
 export source_regions="${2}"
 export target_regions="${3}"
 
