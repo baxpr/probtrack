@@ -5,6 +5,7 @@ singularity run \
 	--home $(pwd) \
 	--bind $(pwd)/INPUTS:/INPUTS \
 	--bind $(pwd)/OUTPUTS:/OUTPUTS \
+	--bind $(pwd)/freesurfer_license.txt:/usr/local/freesurfer/.license \
 	baxpr-thaltrack-whole-master-v1.0.0.simg \
 	--fs_subject_dir /INPUTS/SUBJECT \
 	--fs_nii_thalamus_niigz /INPUTS/ThalamicNuclei.v10.T1.FSvoxelSpace.nii.gz \
