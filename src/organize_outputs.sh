@@ -2,27 +2,24 @@
 #
 # Organize outputs for XNAT
 
-COREG_MAT
-	DWI_to_FS.mat
-	FS_to_DWI.mat
+# We already have:
+#    PDF
+#    PDF_DETAILED
+#    ROIS
 
-PROBTRACK
-	PROBTRACK_*
+cd "${out_dir}"
 
-ROIS
+mkdir -p COREG_MAT
+mv DWI_to_FS.mat FS_to_DWI.mat COREG_MAT
 
-ROIS_FS
+mkdir -p PROBTRACKS
+mv PROBTRACK_* PROBTRACKS
 
-b0_mean_to_FS.nii.gz ?  (we have it below)
-b0_mean_to_FS_fast_wmedge.nii.gz ?
-b0_mean_to_FS_init.mat ?
+mkdir -p B0_MEAN
+mv makepdf/coreg_imgs/b0_mean.nii.gz B0_MEAN
+mv makepdf/coreg_imgs/rb0_mean.nii.gz B0_MEAN
+mv makepdf/coreg_imgs/wrb0_mean.nii.gz B0_MEAN
 
-
-norm_to_DWI.nii.gz ? (make norm/rnorm/wrnorm set if we will keep)
-
-
-B0_MEAN
-	makepdf/coreg_imgs/b0_mean.nii.gz
-	makepdf/coreg_imgs/rb0_mean.nii.gz
-	makepdf/coreg_imgs/wrb0_mean.nii.gz
+mkdir NORM
+mv norm_to_DWI.nii.gz
 
