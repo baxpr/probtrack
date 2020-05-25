@@ -127,3 +127,7 @@ warpdir.sh "${rois_dwi_dir}"
 ### PDF
 make_pdf.sh
 
+
+### Organize outputs for XNAT
+organize_outputs.sh
+

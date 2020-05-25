@@ -21,5 +21,5 @@ mv makepdf/coreg_imgs/rb0_mean.nii.gz B0_MEAN
 mv makepdf/coreg_imgs/wrb0_mean.nii.gz B0_MEAN
 
 mkdir NORM
-mv norm_to_DWI.nii.gz
+mv norm_to_DWI.nii.gz NORM
 
