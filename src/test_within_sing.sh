@@ -30,4 +30,4 @@ singularity shell \
 	--bind freesurfer_license.txt:/usr/local/freesurfer/.license \
 	--bind $(pwd)/INPUTS:/INPUTS \
 	--bind $(pwd)/OUTPUTS:/OUTPUTS \
-	baxpr-thaltrack-whole-master-latest.simg
+	baxpr-thaltrack-whole-master-v1.1.2.simg
