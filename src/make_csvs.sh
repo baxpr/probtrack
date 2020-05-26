@@ -10,8 +10,8 @@ echo "   Dir:     ${track_dir}"
 
 
 # Fraction of seeds reaching each target, over whole source ROI
-mkdir -p "${out_dir}"/CSV
-csv_file="${out_dir}"/CSV/seedfractions.csv
+mkdir -p "${out_dir}"/STATS
+csv_file="${out_dir}"/STATS/seedfractions.csv
 > csv_file
 echo "probtrack_dir,source,target,tracks_to_target,total_tracks,tracks_to_target_fraction" > csv_file
 
