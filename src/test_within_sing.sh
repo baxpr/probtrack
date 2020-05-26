@@ -11,6 +11,9 @@ xwrapper.sh pipeline.sh \
 	--fwddef_niigz /INPUTS/y_t1.nii.gz \
 	--bedpost_dir /INPUTS/BEDPOSTX \
 	--probtrack_samples 100 \
+	--dirname_tag "FS6" \
+	--source_regions "FS_THALAMUS" \
+	--target_regions "FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP" \
 	--project TESTPROJ \
 	--subject TESTSUBJ \
 	--session TESTSESS \

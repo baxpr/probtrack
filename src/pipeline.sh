@@ -12,6 +12,9 @@ export src_dir=/opt/thaltrack-whole/src
 export matlab_dir=/opt/thaltrack-whole/matlab/bin
 export mcr_dir=/usr/local/MATLAB/MATLAB_Runtime/v92
 export probtrack_samples=5000
+export dirname_tag="FS6"
+export source_regions="FS_THALAMUS"
+export target_regions="FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP"
 
 # Parse options
 while [[ $# -gt 0 ]]
@@ -38,6 +41,12 @@ do
 			export invdef_niigz="$2"; shift; shift ;;
 		--probtrack_samples)
 			export probtrack_samples="$2"; shift; shift ;;
+		--dirname_tag)
+			export dirname_tag="$2"; shift; shift ;;
+		--source_regions)
+			export source_regions="$2"; shift; shift ;;
+		--target_regions)
+			export target_regions="$2"; shift; shift ;;
 		--out_dir)
 			export out_dir="$2"; shift; shift ;;
 		--src_dir)
@@ -93,31 +102,13 @@ gunzip -f "${out_dir}"/iy_invdef.nii.gz
 coreg_FS_to_DWI.sh
 
 
-### Extract region masks from DWI-space DKT atlas after resampling
+### Make DWI native space region masks from freesurfer and Yeo segmentations
 make_FS_rois.sh
-
-
-### Warp Yeo ROI images to DWI space and extract individual ROIs
 make_Yeo_rois.sh
 
 
-### Probtracks for various ROI sets
-probtracks.sh "FS6" \
-"FS_THALAMUS" \
-"FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP"
-
-probtracks.sh "FS10" \
-"FS_THALAMUS" \
-"FS_MOFC FS_LPFC FS_ACC FS_PPC FS_PARDMN FS_AUD FS_ITEMP FS_MOTOR FS_SOMATO FS_OCC"
-
-probtracks.sh "Yeo7" \
-"FS_THALAMUS" \
-"Yeo7_N1 Yeo7_N2 Yeo7_N3 Yeo7_N4 Yeo7_N5 Yeo7_N6 Yeo7_N7"
-
-probtracks.sh "Yeo17" \
-"FS_THALAMUS" \
-"Yeo17_N01 Yeo17_N02 Yeo17_N03 Yeo17_N04 Yeo17_N05 Yeo17_N06 Yeo17_N07 Yeo17_N08 Yeo17_N09 \
-Yeo17_N10 Yeo17_N11 Yeo17_N12 Yeo17_N13 Yeo17_N14 Yeo17_N15 Yeo17_N16 Yeo17_N17"
+### Probtracks for the requested ROI set
+probtracks.sh
 
 
 ### Transform all the DWI space ROIs we used to FS and MNI geometry

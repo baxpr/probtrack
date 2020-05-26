@@ -70,27 +70,11 @@ convert \
 	"coreg.png"
 
 
-# Finalize PDF. Main PDF only shows FS6
-convert \
-	coreg.png \
-	biggest_FS6*.png \
-	tracts_FS6*.png \
-	thaltrack_whole.pdf
-
-# Secondary PDFs with each ROI set separately
-for roiset in FS6 FS10 Yeo7 Yeo17 ; do
-	convert \
-		biggest_${roiset}*.png \
-		tracts_${roiset}*.png \
-		thaltrack_whole_${roiset}.pdf
-done
-
-
-# Move pdfs to output location
+# Finalize PDF
 mkdir -p "${out_dir}"/PDF
-mv thaltrack_whole.pdf "${out_dir}"/PDF
-
-mkdir -p "${out_dir}"/PDF_DETAILED 
-mv thaltrack_whole_*.pdf "${out_dir}"/PDF_DETAILED
-
+convert \
+	biggest_*.png \
+	coreg.png \
+	tracts_*.png \
+	"${out_dir}"/PDF/thaltrack_whole.pdf
 

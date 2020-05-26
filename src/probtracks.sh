@@ -2,16 +2,9 @@
 #
 # Probtracks for specified sets of source and target ROIs
 #
-# Call as
-#    probtracks.sh <dirname_tag> <source_roi_list> <target_roi_list>
-#
-# Example (the quotes are critical):
-#    probtracks.sh FS6 \
-#        "FS_THALAMUS" \
-#        "FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP"
-#
 # dirname_tag is used to name the output directory
-# source_roi_list and target_roi_list are space-separated. Corresponding files must 
+#
+# source_regions and target_region are space-separated. Corresponding files must 
 # exist in ${rois_dwi_dir} as created by make_FS_rois.sh, e.g.
 #     FS_THALAMUS_L.nii.gz
 #     FS_THALAMUS_R.nii.gz
@@ -19,9 +12,7 @@
 #     FS_PFC_R.nii.gz
 #     ...
 # These ROI files must be in the same voxel/world geometry as the BEDPOST images.
-export dirname_tag="${1}"
-export source_regions="${2}"
-export target_regions="${3}"
+
 
 # Options for all tracking
 trackopts="--nsamples=${probtrack_samples} --loopcheck --onewaycondition --verbose=0 --forcedir --modeuler --pd --os2t --s2tastext --opd --ompl"
