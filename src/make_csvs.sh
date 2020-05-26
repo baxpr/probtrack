@@ -10,9 +10,10 @@ echo "   Dir:     ${track_dir}"
 
 
 # Fraction of seeds reaching each target, over whole source ROI
-csv_file=seedfractions.csv
+mkdir -p "${out_dir}"/CSV
+csv_file="${out_dir}"/CSV/seedfractions.csv
 > csv_file
-echo "source,target,tracks_to_target,total_tracks,tracks_to_target_fraction" > csv_file
+echo "probtrack_dir,source,target,tracks_to_target,total_tracks,tracks_to_target_fraction" > csv_file
 
 for source in ${source_regions} ; do
 	for LR in L R ; do
@@ -28,7 +29,7 @@ for source in ${source_regions} ; do
 			let totalcount=$(fslstats seedtotal -M)
 			let targetcount=$(fslstats seeds_to_${target}_${LR} -M)
 			let targetfrac=$(echo "${targetcount}/${totalcount}" | bc -l)
-			echo "${source}_${LR},${target}_${LR},${targetcount},${totalcount},${targetfrac}" > csv_file			
+			echo "${source}_${LR}_to_TARGETS_${LR},${source}_${LR},${target}_${LR},${targetcount},${totalcount},${targetfrac}" > csv_file			
 		done
 		
 	done
