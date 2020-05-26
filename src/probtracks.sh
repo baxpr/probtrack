@@ -2,7 +2,7 @@
 #
 # Probtracks for specified sets of source and target ROIs
 #
-# dirname_tag is used to name the output directory
+# dirname_tag is used to name the output files
 #
 # source_regions and target_region are space-separated. Corresponding files must 
 # exist in ${rois_dwi_dir} as created by make_FS_rois.sh, e.g.
@@ -18,7 +18,7 @@
 trackopts="--nsamples=${probtrack_samples} --loopcheck --onewaycondition --verbose=0 --forcedir --modeuler --pd --os2t --s2tastext --opd --ompl"
 
 # Root dir for all tracking output folders
-export track_dir=${out_dir}/"PROBTRACK_${dirname_tag}"
+export track_dir="${out_dir}"/PROBTRACKS
 mkdir -p "${track_dir}"
 
 # Copy some helpful info to the track dir
