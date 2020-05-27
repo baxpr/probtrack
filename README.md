@@ -41,7 +41,7 @@ Entrypoint is `src/pipeline.sh`. Pipeline is:
     PROBTRACKS                        Tractography results
         BIGGEST_MULTI_<source>            Segmentation from find_the_biggest, multi-target run
         BIGGEST_INDIV_<source>            Same, but from combined single-target runs
-        PROBMAPS_MULTI_<source>           Voxlewise fraction of streamlines to each target, multi-target run
+        PROBMAPS_MULTI_<source>           Fraction of streamlines to each target (proj_thresh), multi-target run
         PROBMAPS_INDIV_<source>           Same, but from combined single-target runs
         <source>_to_<target>              Tractography from source to target
         <source>_to_TARGETS_<LR>          Tractography from source to all targets (multi-target run)
