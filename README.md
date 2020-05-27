@@ -2,7 +2,14 @@
 
 Entrypoint is `src/pipeline.sh`. Pipeline is:
 
-- Generate lobar source/target ROIs from Freesurfer segmentation, and network ROIs from Yeo segmentation.
+- Rigid body registration of the mean b=0 image to the Freesurfer T1 (norm) image.
+
+- Generate lobar source/target ROIs from Freesurfer segmentation, and network ROIs from Yeo segmentation, in the diffusion image geometry.
+
+- Probabilistic tractography with probtrackx2, from the specified source ROI to the specified target ROIs. This is done two ways: INDIV, with a separate run of probtrackx2 for each source/target pair; and MULTI, with a single run of probtrackx2 for each source to all targets. All tractography is performed in a single hemisphere. "Target", "Stop", and "Waypoint" masks are all set to the target ROI(s). The "Exclude" mask consists of white matter plus all source and target ROIs in the opposite hemisphere; plus cerebellum, brainstem, ventricles, CSF, hippocampus, amygdala, accumbens, ventral DC, caudate, putamen, and pallidum in the same hemisphere; plus any non-used target ROIs in the same hemisphere (for INDIV runs).
+
+- All output images are transformed to Freesurfer subject geometry using the above rigid body transform, and to MNI space using the supplied forward warp.
+
 
 ## Inputs
 
