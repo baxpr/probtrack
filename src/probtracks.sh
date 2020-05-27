@@ -186,9 +186,9 @@ do_biggest.sh MULTI
 
 
 # Probmaps for the multi-target probtrack run, using proj_thresh
-do_probmaps.sh
+do_probmaps_INDIV.sh
+do_probmaps_MULTI.sh
 
-# FIXME probmaps for the indiv runs
 
 # Get stats to CSV format
 make_csvs_INDIV.sh
@@ -200,10 +200,12 @@ for source in ${source_regions} ; do
 	warpdir.sh "${track_dir}/BIGGEST_INDIV_${source}"
 	warpdir.sh "${track_dir}/BIGGEST_MULTI_${source}"
 	for LR in L R ; do
+		warpdir.sh "${track_dir}/PROBTRACKS_INDIV_${source}_${LR}"
+		warpdir.sh "${track_dir}/PROBTRACKS_MULTI_${source}_${LR}"
+		warpdir.sh "${track_dir}/${source}_${LR}_to_TARGETS_${LR}"
 		for target in ${target_regions} ; do
 			warpdir.sh "${track_dir}/${source}_${LR}_to_${target}_${LR}"
 		done
-		warpdir.sh "${track_dir}/${source}_${LR}_to_TARGETS_${LR}"
 	done
 done
 warpdir.sh "${track_dir}/TRACKMASKS"

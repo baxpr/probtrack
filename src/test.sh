@@ -16,6 +16,18 @@ export src_dir=/wkdir/src
 export PATH=${src_dir}:$PATH
 
 
+
+# probmaps
+export source_regions="FS_THALAMUS"
+export target_regions="FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP"
+export track_dir=/OUTPUTS/PROBTRACKS
+do_probmaps_INDIV.sh
+do_probmaps_MULTI.sh
+
+exit 0
+
+
+
 # csvs
 export out_dir=/OUTPUTS
 export track_dir=/OUTPUTS/PROBTRACKS
@@ -62,16 +74,6 @@ exit 0
 
 
 
-
-
-
-# probmaps
-export source_regions="FS_THALAMUS"
-export target_regions="FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP"
-export track_dir=/OUTPUTS/PROBTRACK_FS6
-do_probmaps.sh
-
-exit 0
 
 
 # whole pipeline
