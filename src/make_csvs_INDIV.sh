@@ -30,7 +30,8 @@ for source in ${source_regions} ; do
 		
 		nvox="$(fslstats ${rois_dwi_dir}/${source}_${LR} -V | awk '{print $1}')"
 		
-		# Per region ratios of seed counts
+		# Per region ratios of seed counts. Build a line for the CSV file with a combo
+		# of shell script and python
 		for target in ${target_regions} ; do
 			csv_line="${source}_${LR}_to_${target}_${LR},${source}_${LR},${nvox},${target}_${LR}"
 			bit="$(csv_line.py ${rois_dwi_dir}/${source}_${LR}.nii.gz \
