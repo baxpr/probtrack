@@ -22,7 +22,7 @@ export track_dir="${out_dir}"/PROBTRACKS
 mkdir -p "${track_dir}"
 
 # Copy some helpful info to the track dir
-cp "${src_dir}"/README_probtrack_results.txt "${track_dir}"
+cp "${src_dir}"/README_image_files.txt "${track_dir}"
 
 # Include a couple necessary functions from another file
 source functions.sh

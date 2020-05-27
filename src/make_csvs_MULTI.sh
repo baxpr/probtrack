@@ -34,5 +34,7 @@ for source in ${source_regions} ; do
 			echo ${csv_line} >> "${csv_file}"			
 		done
 		
+		rm seedtotal.nii.gz
+		
 	done
 done

@@ -120,6 +120,7 @@ probtracks.sh
 
 ### Transform all the DWI space ROIs we used to FS and MNI geometry
 warpdir.sh "${rois_dwi_dir}"
+cp "${src_dir}"/README_image_files.txt "${rois_dwi_dir}"
 
 
 ### PDF

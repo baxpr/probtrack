@@ -43,5 +43,7 @@ for source in ${source_regions} ; do
 			echo ${csv_line} >> "${csv_file}"			
 		done
 		
+		rm tmp_emptymask.nii.gz tmp_total.nii.gz
+		
 	done
 done
