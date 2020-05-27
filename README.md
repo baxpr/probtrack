@@ -10,6 +10,7 @@
     fwddef_niigz              Fordward deformation to MNI space: DEF_FWD resource of cat12
     invdef_niigz              Inverse deformation: DEF_INV resource of cat12
     probtrack_samples         Number of streamlines to seed per voxel
+    probtrack_options         Any desired of --loopcheck --onewaycondition --verbose=0 --modeuler --pd
 
     project                   Labels for use with XNAT. Only used on the report pages.
     subject
@@ -18,8 +19,8 @@
     out_dir                   Output directory in the container (defaults to /OUTPUTS)
 
     src_dir                   (optional) Location of codebase and matlab installation in the 
-    matlab_dir                    container, if a different codebase is to be used.
-    mcr_dir                       Only for testing purposes.
+    matlab_dir                    container, if a different codebase is to be used. Only used
+    mcr_dir                       for testing purposes.
 
 
 
