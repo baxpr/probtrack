@@ -3,12 +3,12 @@
 
 ## Inputs
 
-    fs_subject_dir            Freesurfer SUBJECT directory: SUBJECT resource of freesurfer_dev
-    fs_nii_thalamus_niigz     Freesurfer thalamus segmentation: NII_THALAMUS resource of freesurfer_dev
-    b0mean_niigz              Mean b=0 image from DWI scan: B0_MEAN resource of dwipre
-    bedpost_dir               BEDPOSTX directory: BEDPOSTX resource of ybedpostx
-    fwddef_niigz              Fordward deformation to MNI space: DEF_FWD resource of cat12
-    invdef_niigz              Inverse deformation: DEF_INV resource of cat12
+    fs_subject_dir            Freesurfer SUBJECT directory:       SUBJECT resource of freesurfer_dev
+    fs_nii_thalamus_niigz     Freesurfer thalamus segmentation:   NII_THALAMUS resource of freesurfer_dev
+    b0mean_niigz              Mean b=0 image from DWI scan:       B0_MEAN resource of dwipre
+    bedpost_dir               BEDPOSTX directory:                 BEDPOSTX resource of ybedpostx
+    fwddef_niigz              Fordward deformation to MNI space:  DEF_FWD resource of cat12
+    invdef_niigz              Inverse deformation:                DEF_INV resource of cat12
     probtrack_samples         Number of streamlines to seed per voxel
     probtrack_options         Any desired of --loopcheck --onewaycondition --verbose=0 --modeuler --pd
 
