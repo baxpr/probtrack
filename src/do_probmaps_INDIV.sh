@@ -13,20 +13,41 @@ echo "   Dir:     ${track_dir}"
 # files are, so we copy the desired set of seeds_to files to a working dir
 # and run proj_thresh within that dir, then clean up.
 for source in ${source_regions} ; do
-	for LR in L R ; do
 
-		pmap_dir="${track_dir}/PROBMAPS_INDIV_${source}_${LR}"
-		mkdir -p "${pmap_dir}"/seeds_to
+	# Both hemispheres probmaps stored in same dir
+	pmap_dir="${track_dir}/PROBMAPS_INDIV_${source}"
+	mkdir -p "${pmap_dir}"/seeds_to
+
+	for LR in L R ; do
 		
+		# Collect separate seed images
 		for target in ${target_regions} ; do
-			cp "${track_dir}/${source}_${LR}_to_${target}_${LR}"/seeds_to_"${target}"_"${LR}".nii.gz "${pmap_dir}"/seeds_to
+			cp "${track_dir}/${source}_${LR}_to_${target}_${LR}"/seeds_to_"${target}"_${LR}.nii.gz "${pmap_dir}"/seeds_to
 		done
 		
+		# Make probmaps
 		cd "${pmap_dir}"/seeds_to
 		proj_thresh seeds_to_*_${LR}.nii.gz 0 > "${pmap_dir}"/proj_thresh.log
-		mv *proj_seg*.nii.gz total.nii.gz "${pmap_dir}"
-		rm -fr "${pmap_dir}"/seeds_to
+		mv *proj_seg*.nii.gz "${pmap_dir}"
+		mv total.nii.gz "${pmap_dir}"/total_${LR}.nii.gz
 		
 	done
+
+	# Combine two hemispheres. proj_thresh puts NaN in non-seed voxels
+	# so that has to be handled
+	cd "${pmap_dir}"
+	fslmaths total_L -add total_R total_LR
+	for target in ${target_regions} ; do
+		for LR in L R ; do
+			fslmaths seeds_to_"${target}"_${LR}_proj_seg_thr_0 -nan seeds_to_"${target}"_${LR}_proj_seg_thr_0
+		done
+		fslmaths seeds_to_"${target}"_L_proj_seg_thr_0 \
+			-add seeds_to_"${target}"_R_proj_seg_thr_0 \
+			seeds_to_"${target}"_LR_proj_seg_thr_0
+	done
+
+	# Clean up
+	rm -fr "${pmap_dir}"/seeds_to
+	
 done	
 
