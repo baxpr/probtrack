@@ -26,3 +26,18 @@
 
 ## Outputs
 
+    PDF
+	ROIS
+	PROBTRACKS
+	    BIGGEST_MULTI_<source>
+	    BIGGEST_INDIV_<source>
+		PROBMAPS_MULTI_<source>
+		PROBMAPS_INDIV_<source>
+		<source>_to_<target>
+		<source>_to_TARGETS_<LR>
+		TRACKMASKS
+		TARGETS_<LR>.txt
+	COREG_MAT
+	B0_MEAN
+	NORM
+	
