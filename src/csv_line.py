@@ -28,15 +28,14 @@ segall_data      = segall_img.get_fdata()
 insource = source_data > 0
 
 # Total and target-specific streamline counts in source region
-seedallcount = numpy.sum(seedall_data[insource])
 seedtargetcount = numpy.sum(seedtarget_data[insource])
+seedallcount = numpy.sum(seedall_data[insource])
 seedfrac = numpy.round(seedtargetcount/seedallcount,4)
 
 # Total and target-specific counts of voxels with assigned segmentation
-segallcount = numpy.sum(segall_data[insource]>0)
 segtargetcount = numpy.sum(segtarget_data[insource]>0)
+segallcount = numpy.sum(segall_data[insource]>0)
 segfrac = numpy.round(segtargetcount/segallcount,4)
 
 print("{0},{1},{2},{3},{4},{5}".format(seedtargetcount,seedallcount,seedfrac,
     segtargetcount,segallcount,segfrac))
-
