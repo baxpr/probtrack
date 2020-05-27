@@ -15,7 +15,7 @@
 
 
 # Options for all tracking
-trackopts="--nsamples=${probtrack_samples} --loopcheck --onewaycondition --verbose=0 --forcedir --modeuler --pd --os2t --s2tastext --opd --ompl"
+trackopts="--nsamples=${probtrack_samples} ${probtrack_options} --forcedir --opd --ompl --s2tastext --os2t"
 
 # Root dir for all tracking output folders
 export track_dir="${out_dir}"/PROBTRACKS

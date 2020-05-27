@@ -12,6 +12,7 @@ export src_dir=/opt/thaltrack-whole/src
 export matlab_dir=/opt/thaltrack-whole/matlab/bin
 export mcr_dir=/usr/local/MATLAB/MATLAB_Runtime/v92
 export probtrack_samples=5000
+export probtrack_options="--loopcheck --onewaycondition --verbose=0 --modeuler --pd"
 export dirname_tag="FS6"
 export source_regions="FS_THALAMUS"
 export target_regions="FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP"
@@ -41,6 +42,8 @@ do
 			export invdef_niigz="$2"; shift; shift ;;
 		--probtrack_samples)
 			export probtrack_samples="$2"; shift; shift ;;
+		--probtrack_options)
+			export probtrack_options="$2"; shift; shift ;;
 		--dirname_tag)
 			export dirname_tag="$2"; shift; shift ;;
 		--source_regions)
