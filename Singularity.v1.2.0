@@ -1,6 +1,11 @@
 Bootstrap: docker
 From: ubuntu:18.04
 
+%help
+Diffusion tractography with whole-thalamus seeds.
+Codebase: /opt/thaltrack-whole
+Info: /opt/thaltrack-whole/README.md
+
 
 %setup
   mkdir -p ${SINGULARITY_ROOTFS}/opt/thaltrack-whole
