@@ -8,7 +8,7 @@ Entrypoint is `src/pipeline.sh`. Pipeline is:
 
 - Probabilistic tractography with probtrackx2, from the specified source ROI to the specified target ROIs. This is done two ways: INDIV, with a separate run of probtrackx2 for each source/target pair; and MULTI, with a single run of probtrackx2 for each source to all targets. All tractography is performed in a single hemisphere. "Target", "Stop", and "Waypoint" masks are all set to the target ROI(s). The "Exclude" mask consists of white matter plus all source and target ROIs in the opposite hemisphere; plus cerebellum, brainstem, ventricles, CSF, hippocampus, amygdala, accumbens, ventral DC, caudate, putamen, and pallidum in the same hemisphere; plus any non-used target ROIs in the same hemisphere (for INDIV runs).
 
-- Tranformation of all output images to Freesurfer subject geometry using the above rigid body transform, and to MNI space using the supplied forward warp.
+- Transformation of all output images to Freesurfer subject geometry using the above rigid body transform, and to MNI space using the supplied forward warp.
 
 
 ## Inputs
