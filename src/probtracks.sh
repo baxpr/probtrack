@@ -200,8 +200,8 @@ for source in ${source_regions} ; do
 	warpdir.sh "${track_dir}/BIGGEST_INDIV_${source}"
 	warpdir.sh "${track_dir}/BIGGEST_MULTI_${source}"
 	for LR in L R ; do
-		warpdir.sh "${track_dir}/PROBTRACKS_INDIV_${source}_${LR}"
-		warpdir.sh "${track_dir}/PROBTRACKS_MULTI_${source}_${LR}"
+		warpdir.sh "${track_dir}/PROBMAPS_INDIV_${source}_${LR}"
+		warpdir.sh "${track_dir}/PROBMAPS_MULTI_${source}_${LR}"
 		warpdir.sh "${track_dir}/${source}_${LR}_to_TARGETS_${LR}"
 		for target in ${target_regions} ; do
 			warpdir.sh "${track_dir}/${source}_${LR}_to_${target}_${LR}"
