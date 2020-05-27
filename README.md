@@ -1,5 +1,8 @@
 # Diffusion tractography with whole-thalamus seeds
 
+Entrypoint is `src/pipeline.sh`. Pipeline is:
+
+- Generate lobar source/target ROIs from Freesurfer segmentation, and network ROIs from Yeo segmentation.
 
 ## Inputs
 
@@ -26,18 +29,20 @@
 
 ## Outputs
 
-    PDF
-	ROIS
-	PROBTRACKS
-	    BIGGEST_MULTI_<source>
-	    BIGGEST_INDIV_<source>
-		PROBMAPS_MULTI_<source>
-		PROBMAPS_INDIV_<source>
-		<source>_to_<target>
-		<source>_to_TARGETS_<LR>
-		TRACKMASKS
-		TARGETS_<LR>.txt
-	COREG_MAT
-	B0_MEAN
-	NORM
+    PDF                               Summary and QA reference
+	ROIS                              Regions of interest from Freesurfer and Yeo segmentations
+	PROBTRACKS                        Tractography results
+	    BIGGEST_MULTI_<source>            Segmentation from find_the_biggest, multi-target run
+	    BIGGEST_INDIV_<source>            Same, but from combined single-target runs
+		PROBMAPS_MULTI_<source>           Voxlewise fraction of streamlines to each target, multi-target run
+		PROBMAPS_INDIV_<source>           Same, but from combined single-target runs
+		<source>_to_<target>              Tractography from source to target
+		<source>_to_TARGETS_<LR>          Tractography from source to all targets (multi-target run)
+		TRACKMASKS                        Masks used during tractography
+		TARGETS_<LR>.txt                  List of target regions
+	STATS_MULTI                           Statistics, fractional volumes for each target (multi-target run)
+	STATS_INDIV                           Same, but from combined single-target runs
+	COREG_MAT                             Transforms between Freesurfer and diffusion native spaces
+	B0_MEAN                               Mean b=0 image from diffusion images
+	NORM                                  Freesurfer "norm" image (preprocessed T1)
 	
