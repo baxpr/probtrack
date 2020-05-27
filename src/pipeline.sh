@@ -81,6 +81,7 @@ echo "dirname_tag:             ${dirname_tag}"
 echo "source_regions:          ${source_regions}"
 echo "target_regions:          ${target_regions}"
 echo "probtrack_samples:       ${probtrack_samples}"
+echo "probtrack_options:       ${probtrack_options}"
 echo "out_dir:                 ${out_dir}"
 
 
