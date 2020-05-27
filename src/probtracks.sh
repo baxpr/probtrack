@@ -188,6 +188,12 @@ do_biggest.sh MULTI
 # Probmaps for the multi-target probtrack run, using proj_thresh
 do_probmaps.sh
 
+# FIXME probmaps for the indiv runs
+
+# Get stats to CSV format
+make_csvs_INDIV.sh
+make_csvs_MULTI.sh
+
 
 # Transform all probtrack related images to FS and MNI geometry
 for source in ${source_regions} ; do
