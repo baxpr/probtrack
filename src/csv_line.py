@@ -24,6 +24,10 @@ seedall_data     = seedall_img.get_fdata()
 segtarget_data   = segtarget_img.get_fdata()
 segall_data      = segall_img.get_fdata()
 
+# Verify that image geometry affines match
+if numpy.any(source_img.affine != seedall_img.affine):
+    raise Exception('Affine mismatch between source and seeds')
+
 # Source region voxel indices
 insource = source_data > 0
 

@@ -26,7 +26,8 @@ for source in ${source_regions} ; do
 		for target in ${target_regions} ; do
 			addstr="${addstr} -add ${track_dir}/${source}_${LR}_to_${target}_${LR}/seeds_to_${target}_${LR}"
 		done
-		fslmaths tmp_emptymask ${addstr} tmp_total
+		fslmaths tmp_emptymask ${addstr} tmp_total_${source}_${LR}
+		#echo "${addstr}" > tmp_addstr_${source}_${LR}.txt
 		
 		nvox="$(fslstats ${rois_dwi_dir}/${source}_${LR} -V | awk '{print $1}')"
 		
@@ -36,14 +37,14 @@ for source in ${source_regions} ; do
 			csv_line="${source}_${LR}_to_${target}_${LR},${source}_${LR},${nvox},${target}_${LR}"
 			bit="$(csv_line.py ${rois_dwi_dir}/${source}_${LR}.nii.gz \
 				${track_dir}/${source}_${LR}_to_${target}_${LR}/seeds_to_${target}_${LR}.nii.gz \
-				${out_dir}/tmp_total.nii.gz \
+				${out_dir}/tmp_total_${source}_${LR}.nii.gz \
 				${track_dir}/BIGGEST_INDIV_${source}/seg_${target}_${LR}.nii.gz \
 				${track_dir}/BIGGEST_INDIV_${source}/seg_all_${LR}.nii.gz)"
 			csv_line="${csv_line},${bit}"
 			echo ${csv_line} >> "${csv_file}"			
 		done
 		
-		rm tmp_emptymask.nii.gz tmp_total.nii.gz
+		rm tmp_emptymask.nii.gz tmp_total_${source}_${LR}.nii.gz
 		
 	done
 done
