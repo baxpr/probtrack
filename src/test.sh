@@ -16,6 +16,20 @@ export src_dir=/wkdir/src
 export PATH=${src_dir}:$PATH
 
 
+# csvs
+export out_dir=/OUTPUTS
+export track_dir=/OUTPUTS/PROBTRACKS
+export source_regions="FS_THALAMUS"
+export target_regions="FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP"
+export rois_dwi_dir=/OUTPUTS/ROIS
+export bedpost_dir=/INPUTS/BEDPOSTX
+make_csvs_INDIV.sh
+make_csvs_MULTI.sh
+
+exit 0
+
+
+
 
 # probmaps
 export source_regions="FS_THALAMUS"
@@ -28,17 +42,6 @@ exit 0
 
 
 
-# csvs
-export out_dir=/OUTPUTS
-export track_dir=/OUTPUTS/PROBTRACKS
-export source_regions="FS_THALAMUS"
-export target_regions="FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP"
-export rois_dwi_dir=/OUTPUTS/ROIS
-export bedpost_dir=/INPUTS/BEDPOSTX
-make_csvs_INDIV.sh
-make_csvs_MULTI.sh
-
-exit 0
 
 
 
