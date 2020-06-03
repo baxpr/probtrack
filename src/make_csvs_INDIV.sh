@@ -29,7 +29,7 @@ for source in ${source_regions} ; do
 		fslmaths tmp_emptymask ${addstr} tmp_total_${source}_${LR}
 		#echo "${addstr}" > tmp_addstr_${source}_${LR}.txt
 		
-		nvox="$(fslstats ${rois_dwi_dir}/${source}_${LR} -V | awk '{print $1}')"
+		nvox="$(fslstats ${rois_fs_dir}/${source}_${LR} -V | awk '{print $1}')"
 		
 		# Per region ratios of seed counts. Build a line for the CSV file with a combo
 		# of shell script and python
@@ -38,8 +38,8 @@ for source in ${source_regions} ; do
 				${source}_${LR}_to_${target}_${LR} \
 				${source}_${LR} \
 				${target}_${LR} \
-				${rois_dwi_dir}/${source}_${LR}.nii.gz \
-				${rois_dwi_dir}/${target}_${LR}.nii.gz \
+				${rois_fs_dir}/${source}_${LR}.nii.gz \
+				${rois_fs_dir}/${target}_${LR}.nii.gz \
 				${track_dir}/${source}_${LR}_to_${target}_${LR}/seeds_to_${target}_${LR}.nii.gz \
 				${out_dir}/tmp_total_${source}_${LR}.nii.gz \
 				${track_dir}/BIGGEST_INDIV_${source}/seg_${target}_${LR}.nii.gz \

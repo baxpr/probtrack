@@ -1,13 +1,12 @@
 #!/bin/bash
 #
-# Warp MNI space Yeo network maps to subject FS geometry, then apply coreg
-# and resample to DWI geometry
+# Warp MNI space Yeo network maps to subject FS geometry
 
 echo Running ${0}
 
 # Set up
 source functions.sh
-cd "${rois_dwi_dir}"
+cd "${rois_fs_dir}"
 
 
 # Copy Yeo network templates to working directory and unzip
@@ -26,21 +25,9 @@ gunzip -fk "${out_dir}"/nu.nii.gz
 gzip "${out_dir}"/uYeo{7,17}_split.nii
 mv "${out_dir}"/uYeo{7,17}_split.nii.gz "${rois_fs_dir}"
 
-# Resample Yeo FS-space ROI images to DWI space (transform obtained from coreg_FS_to_DWI.sh)
-# Force to short datatype to avoid rounding error that affects later -thr and -uthr
-flirtopts="-applyxfm -init ${out_dir}/FS_to_DWI.mat -paddingsize 0.0 -interp nearestneighbour -ref ${out_dir}/b0_mean.nii.gz"
-flirt ${flirtopts} \
-	-in "${rois_fs_dir}"/uYeo7_split \
-	-datatype short \
-	-out uYeo7_split_to_DWI
-flirt ${flirtopts} \
-	-in "${rois_fs_dir}"/uYeo17_split \
-	-datatype short \
-	-out uYeo17_split_to_DWI
-
 
 # Re-combine into the needed single-ROI masks, files labeled by ROI name
-yeo7=uYeo7_split_to_DWI
+yeo7=uYeo7_split
 
 combine_rois "${yeo7}"   Yeo7_N1_L      "101"
 combine_rois "${yeo7}"   Yeo7_N2_L      "102"
@@ -59,7 +46,7 @@ combine_rois "${yeo7}"   Yeo7_N6_R      "206"
 combine_rois "${yeo7}"   Yeo7_N7_R      "207"
 
 
-yeo17=uYeo17_split_to_DWI
+yeo17=uYeo17_split
 
 combine_rois "${yeo17}"   Yeo17_N01_L     "101"
 combine_rois "${yeo17}"   Yeo17_N02_L     "102"
@@ -97,88 +84,3 @@ combine_rois "${yeo17}"   Yeo17_N15_R     "215"
 combine_rois "${yeo17}"   Yeo17_N16_R     "216"
 combine_rois "${yeo17}"   Yeo17_N17_R     "217"
 
-
-# Whole brain gray matter mask. Note that Yeo7 and Yeo17 cover the same voxels
-#fslmaths uYeo7_split_to_DWI -bin Yeo_CORTEX
-
-
-# Add white matter, subcortical to gray matter to make large avoid masks
-# Pull in the white matter, cerebellum, subcortical regions from make_FS_rois.sh 
-# because Yeo does not provide these 
-#fslmaths Yeo_CORTEX -add FS_WM_R -add FS_CEREBELLAR_SUBCORTICAL -bin Yeo7_RH_LHCORTEX_AVOID
-#fslmaths Yeo_CORTEX -add FS_WM_L -add FS_CEREBELLAR_SUBCORTICAL -bin Yeo7_LH_RHCORTEX_AVOID
-#cp Yeo7_RH_LHCORTEX_AVOID.nii.gz Yeo17_RH_LHCORTEX_AVOID.nii.gz
-#cp Yeo7_LH_RHCORTEX_AVOID.nii.gz Yeo17_LH_RHCORTEX_AVOID.nii.gz
-
-
-# Avoid masks for all Yeo seed regions
-#for region in \
-#  Yeo7_N1 Yeo7_N2 Yeo7_N3 Yeo7_N4 Yeo7_N5 Yeo7_N6 Yeo7_N7 \
-#; do
-#	fslmaths Yeo7_RH_LHCORTEX_AVOID -sub ${region}_L -thr 1 -bin ${region}_L_AVOID
-#	fslmaths Yeo7_LH_RHCORTEX_AVOID -sub ${region}_R -thr 1 -bin ${region}_R_AVOID
-#done
-
-#for region in \
-#  Yeo17_N01 Yeo17_N02 Yeo17_N03 Yeo17_N04 Yeo17_N05 Yeo17_N06 \
-#  Yeo17_N07 Yeo17_N08 Yeo17_N09 Yeo17_N10 Yeo17_N11 Yeo17_N12 \
-#  Yeo17_N13 Yeo17_N14 Yeo17_N15 Yeo17_N16 Yeo17_N17 \
-#; do
-#	fslmaths Yeo17_RH_LHCORTEX_AVOID -sub ${region}_L -thr 1 -bin ${region}_L_AVOID
-#	fslmaths Yeo17_LH_RHCORTEX_AVOID -sub ${region}_R -thr 1 -bin ${region}_R_AVOID
-#done
-
-
-
-  
-# Stop and avoid masks for hemispheres
-#for LR in L R ; do
-#
-#	fslmaths \
-#			 Yeo7_N1_${LR} \
-#		-add Yeo7_N2_${LR} \
-#		-add Yeo7_N3_${LR} \
-#		-add Yeo7_N4_${LR} \
-#		-add Yeo7_N5_${LR} \
-#		-add Yeo7_N6_${LR} \
-#		-add Yeo7_N7_${LR} \
-#		-bin Yeo7_${LR}HCORTEX_STOP
-#
-#	fslmaths \
-#			 Yeo7_${LR}HCORTEX_STOP \
-#		-add FS_WM_${LR} \
-#		-add FS_THALAMUS_${LR} \
-#		-bin Yeo7_${LR}H_AVOID
-#
-#done
-
-
-#for LR in L R ; do
-#
-#	fslmaths \
-#			 Yeo17_N01_${LR} \
-#		-add Yeo17_N02_${LR} \
-#		-add Yeo17_N03_${LR} \
-#		-add Yeo17_N04_${LR} \
-#		-add Yeo17_N05_${LR} \
-#		-add Yeo17_N06_${LR} \
-#		-add Yeo17_N07_${LR} \
-#		-add Yeo17_N08_${LR} \
-#		-add Yeo17_N09_${LR} \
-#		-add Yeo17_N10_${LR} \
-#		-add Yeo17_N11_${LR} \
-#		-add Yeo17_N12_${LR} \
-#		-add Yeo17_N13_${LR} \
-#		-add Yeo17_N14_${LR} \
-#		-add Yeo17_N15_${LR} \
-#		-add Yeo17_N16_${LR} \
-#		-add Yeo17_N17_${LR} \
-#		-bin Yeo17_${LR}HCORTEX_STOP
-#
-#	fslmaths \
-#			 Yeo17_${LR}HCORTEX_STOP \
-#		-add FS_WM_${LR} \
-#		-add FS_THALAMUS_${LR} \
-#		-bin Yeo17_${LR}H_AVOID
-#
-#done

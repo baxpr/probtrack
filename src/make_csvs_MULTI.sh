@@ -22,7 +22,7 @@ for source in ${source_regions} ; do
 
 		# Total voxelwise streamline count and ROI voxel count
 		fsladd seedtotal seeds_to_*_${LR}.nii.gz
-		nvox="$(fslstats ${rois_dwi_dir}/${source}_${LR} -V | awk '{print $1}')"
+		nvox="$(fslstats ${rois_fs_dir}/${source}_${LR} -V | awk '{print $1}')"
 		
 		# Per region ratios of seed counts
 		for target in ${target_regions} ; do
@@ -30,8 +30,8 @@ for source in ${source_regions} ; do
 				${source}_${LR}_to_TARGETS_${LR} \
 				${source}_${LR} \
 				${target}_${LR} \
-				${rois_dwi_dir}/${source}_${LR}.nii.gz \
-				${rois_dwi_dir}/${target}_${LR}.nii.gz \
+				${rois_fs_dir}/${source}_${LR}.nii.gz \
+				${rois_fs_dir}/${target}_${LR}.nii.gz \
 				seeds_to_${target}_${LR}.nii.gz \
 				seedtotal.nii.gz \
 				${track_dir}/BIGGEST_MULTI_${source}/seg_${target}_${LR}.nii.gz \
