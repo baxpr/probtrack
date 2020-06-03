@@ -1,6 +1,10 @@
-function warpdir(warp_dir,out_dir)
+function warpdir(warp_dir,out_dir,prefix)
 
-gzs = dir(fullfile(warp_dir,'*.nii.gz'));
+if nargin<3
+	prefix = '';
+end
+
+gzs = dir(fullfile(warp_dir,[prefix '*.nii.gz']));
 gzs = cellstr(char(gzs.name));
 
 for g = 1:numel(gzs)

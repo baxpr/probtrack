@@ -21,13 +21,12 @@ for source in ${source_regions} ; do
 		cd ${out_dir}
 
 		# Total voxelwise streamline count and ROI voxel count
-		fslmaths "${bedpost_dir}"/nodif_brain_mask -mul 0 tmp_emptymask
+		fslmaths "${rois_fs_dir}"/FS_WM_LR -mul 0 tmp_emptymask
 		addstr=""
 		for target in ${target_regions} ; do
 			addstr="${addstr} -add ${track_dir}/${source}_${LR}_to_${target}_${LR}/seeds_to_${target}_${LR}"
 		done
 		fslmaths tmp_emptymask ${addstr} tmp_total_${source}_${LR}
-		#echo "${addstr}" > tmp_addstr_${source}_${LR}.txt
 		
 		nvox="$(fslstats ${rois_fs_dir}/${source}_${LR} -V | awk '{print $1}')"
 		
