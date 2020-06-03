@@ -1,9 +1,13 @@
 #!/bin/bash
 #
 # find_the_biggest hard segmentation
-
+#
 # Supply INDIV or MULTI to use the individual probtrack results, or the single
-# multi-target probtrack result, respectively
+# multi-target probtrack result, respectively.
+#
+# Segmentation is performed for FS native space images seeds_to_X, and separately
+# for MNI space images wseeds_to_X. This avoids interpolating the segmentations.
+
 bigtag="${1}"
 
 
@@ -39,6 +43,29 @@ for source in ${source_regions} ; do
 	done
 done
 
+
+# Repeat for MNI space seed maps
+for source in ${source_regions} ; do
+	for LR in L R ; do
+		bigstr=""
+		for target in ${target_regions} ; do
+			case ${bigtag} in
+				INDIV)
+					bigstr="${bigstr} ${source}_${LR}_to_${target}_${LR}/wseeds_to_${target}_${LR}" ;;
+				MULTI)
+					bigstr="${bigstr} ${source}_${LR}_to_TARGETS_${LR}/wseeds_to_${target}_${LR}" ;;
+				*)
+					echo "Unknown bigtag ${bigtag}"
+					exit 1
+					;;
+			esac
+		done
+		find_the_biggest ${bigstr} "BIGGEST_${bigtag}_${source}"/wseg_all_${LR} \
+			> "BIGGEST_${bigtag}_${source}"/find_the_biggest_w${LR}.log
+	done
+done
+
+
 # Make separate binary ROI images for each target from the segmentation.
 # Also make a text file mapping the numbers in seg_all*.nii.gz to regions.
 for source in ${source_regions} ; do
@@ -53,13 +80,19 @@ for source in ${source_regions} ; do
 				"BIGGEST_${bigtag}_${source}"/seg_all_${LR} \
 				-thr ${ind} -uthr ${ind} -bin \
 				"BIGGEST_${bigtag}_${source}/seg_${target}_${LR}"
+			fslmaths \
+				"BIGGEST_${bigtag}_${source}"/wseg_all_${LR} \
+				-thr ${ind} -uthr ${ind} -bin \
+				"BIGGEST_${bigtag}_${source}/wseg_${target}_${LR}"
 		done
 	done
 done
+
 
 # Combine left and right segs for each source into a single L+R image.
 for source in ${source_regions} ; do
 	cd "${track_dir}/BIGGEST_${bigtag}_${source}"
 	fslmaths seg_all_L -add seg_all_R seg_all_LR
+	fslmaths wseg_all_L -add wseg_all_R wseg_all_LR
 done
 

@@ -24,6 +24,7 @@ export target_regions="FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP"
 export rois_fs_dir=/OUTPUTS/ROIS_FS
 export matlab_dir=/wkdir/matlab/bin
 export mcr_dir=/usr/local/MATLAB/MATLAB_Runtime/v92
+export out_dir=/OUTPUTS
 test_warps.sh
 
 exit 0

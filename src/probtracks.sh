@@ -178,6 +178,18 @@ for source in ${source_regions} ; do
 done
 
 
+# Warp probtrack output images to MNI space
+for source in ${source_regions} ; do
+	for LR in L R ; do
+		warpdir.sh "${track_dir}/${source}_${LR}_to_TARGETS_${LR}"
+		for target in ${target_regions} ; do
+			warpdir.sh "${track_dir}/${source}_${LR}_to_${target}_${LR}"
+		done
+	done
+done
+warpdir.sh "${track_dir}/TRACKMASKS"
+
+
 # Segmentation for all targets, for each combo of source+hemisphere. First
 # using the results from the individual probtrack runs, then using the result
 # from the multi-target run. Because we exported source_regions, target_regions,
@@ -194,22 +206,6 @@ do_probmaps_MULTI.sh
 # Get stats to CSV format
 make_csvs_INDIV.sh
 make_csvs_MULTI.sh
-
-
-# Transform all probtrack related images to FS and MNI geometry
-for source in ${source_regions} ; do
-	warpdir.sh "${track_dir}/BIGGEST_INDIV_${source}"
-	warpdir.sh "${track_dir}/BIGGEST_MULTI_${source}"
-	warpdir.sh "${track_dir}/PROBMAPS_INDIV_${source}"
-	warpdir.sh "${track_dir}/PROBMAPS_MULTI_${source}"
-	for LR in L R ; do
-		warpdir.sh "${track_dir}/${source}_${LR}_to_TARGETS_${LR}"
-		for target in ${target_regions} ; do
-			warpdir.sh "${track_dir}/${source}_${LR}_to_${target}_${LR}"
-		done
-	done
-done
-warpdir.sh "${track_dir}/TRACKMASKS"
 
 
 # Leave a single-volume indexed ROI image in the roi directory with this
