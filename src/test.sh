@@ -16,6 +16,19 @@ export src_dir=/wkdir/src
 export PATH=${src_dir}:$PATH
 
 
+# End of probtracks
+export track_dir=/OUTPUTS/PROBTRACKS
+export dirname_tag="FS6"
+export source_regions="FS_THALAMUS"
+export target_regions="FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP"
+export rois_fs_dir=/OUTPUTS/ROIS_FS
+export matlab_dir=/wkdir/matlab/bin
+export mcr_dir=/usr/local/MATLAB/MATLAB_Runtime/v92
+test_warps.sh
+
+exit 0
+
+
 
 # csvs
 export out_dir=/OUTPUTS
