@@ -16,7 +16,7 @@
 trackopts="--nsamples=${probtrack_samples} ${probtrack_options} --forcedir --opd --ompl --s2tastext --os2t"
 
 # Masks are in FS space so we also need to use the transform to DWI
-trackopts="${trackopts} --xfm ${out_dir}/FS_to_DWI.mat"
+trackopts="${trackopts} --xfm=${out_dir}/FS_to_DWI.mat"
 
 # Root dir for all tracking output folders
 export track_dir="${out_dir}"/PROBTRACKS
@@ -47,7 +47,7 @@ echo "    Opts:    ${trackopts}"
 mkdir -p "${track_dir}"/TRACKMASKS
 cd "${track_dir}"/TRACKMASKS
 
-fslmaths "${bedpost_dir}"/nodif_brain_mask -mul 0 emptymask
+fslmaths "${rois_fs_dir}"/FS_WM_LR -mul 0 emptymask
 
 allsrcLstr=""
 allsrcRstr=""

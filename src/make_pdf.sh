@@ -11,42 +11,48 @@ cd "${wkdir}"
 
 # Images we'll need for coreg verification
 mkdir coreg_imgs
-cp "${out_dir}"/b0_mean.nii.gz coreg_imgs
 
 # Make an overlay ROI for coreg check (seeds and full cortex)
 fslmaths \
-	"${rois_dwi_dir}"/FS_THALAMUS_L -add "${rois_dwi_dir}"/FS_THALAMUS_R \
+	"${rois_fs_dir}"/FS_THALAMUS_L -add "${rois_fs_dir}"/FS_THALAMUS_R \
 	-mul 2 \
-	-add "${rois_dwi_dir}"/FS_PFC_L -add "${rois_dwi_dir}"/FS_PFC_R \
-	-add "${rois_dwi_dir}"/FS_MOTOR_L -add "${rois_dwi_dir}"/FS_MOTOR_R \
-	-add "${rois_dwi_dir}"/FS_SOMATO_L -add "${rois_dwi_dir}"/FS_SOMATO_R \
-	-add "${rois_dwi_dir}"/FS_POSTPAR_L -add "${rois_dwi_dir}"/FS_POSTPAR_R \
-	-add "${rois_dwi_dir}"/FS_OCC_L -add "${rois_dwi_dir}"/FS_OCC_R \
-	-add "${rois_dwi_dir}"/FS_TEMP_L -add "${rois_dwi_dir}"/FS_TEMP_R \
-	-add "${rois_dwi_dir}"/FS_INSULA_L -add "${rois_dwi_dir}"/FS_INSULA_R \
+	-add "${rois_fs_dir}"/FS_PFC_L -add "${rois_fs_dir}"/FS_PFC_R \
+	-add "${rois_fs_dir}"/FS_MOTOR_L -add "${rois_fs_dir}"/FS_MOTOR_R \
+	-add "${rois_fs_dir}"/FS_SOMATO_L -add "${rois_fs_dir}"/FS_SOMATO_R \
+	-add "${rois_fs_dir}"/FS_POSTPAR_L -add "${rois_fs_dir}"/FS_POSTPAR_R \
+	-add "${rois_fs_dir}"/FS_OCC_L -add "${rois_fs_dir}"/FS_OCC_R \
+	-add "${rois_fs_dir}"/FS_TEMP_L -add "${rois_fs_dir}"/FS_TEMP_R \
+	-add "${rois_fs_dir}"/FS_INSULA_L -add "${rois_fs_dir}"/FS_INSULA_R \
 	coreg_imgs/coregmask
 
+# b=0 image transformed to FS space using inverse matrix from 
+# coreg_FS_to_DWI.sh. The forward matrix was used for probtrack.
+flirtopts="-applyxfm -init ${out_dir}/DWI_to_FS.mat -ref ${out_dir}/norm.nii.gz"
+flirt ${flirtopts} \
+	-in "${out_dir}"/b0_mean \
+	-out coreg_imgs/b0_mean_to_FS
+
 # Get into MNI space
-warpdir.sh "${wkdir}"/coreg_imgs
+warponlydir.sh "${wkdir}"/coreg_imgs
 
 
 # Coreg verification - outline of FS cortex ROI on mean b=0 DWI. Center on L thal
-vx=$(get_com.py x "${rois_dwi_dir}"/FS_THALAMUS_L.nii.gz)
-vy=$(get_com.py y "${rois_dwi_dir}"/FS_THALAMUS_L.nii.gz)
-vz=$(get_com.py z "${rois_dwi_dir}"/FS_THALAMUS_L.nii.gz)
+vx=$(get_com.py x "${rois_fs_dir}"/FS_THALAMUS_L.nii.gz)
+vy=$(get_com.py y "${rois_fs_dir}"/FS_THALAMUS_L.nii.gz)
+vz=$(get_com.py z "${rois_fs_dir}"/FS_THALAMUS_L.nii.gz)
 fsleyes render --outfile coreg_dwi.png \
 	--size 600 1800 \
 	--worldLoc ${vx} ${vy} ${vz} \
 	--displaySpace world \
 	--hideCursor --layout vertical \
 	--xzoom 1000 --yzoom 1000 --zzoom 1000 \
-	coreg_imgs/b0_mean --displayRange 0 "99%" \
+	coreg_imgs/b0_mean_to_FS --displayRange 0 "99%" \
 	coreg_imgs/coregmask --overlayType label --outline --outlineWidth 3 --lut harvard-oxford-subcortical
 
 # Repeat for MNI space
-vx=$(get_com.py x "${rois_dwi_dir}"/wrFS_THALAMUS_L.nii.gz)
-vy=$(get_com.py y "${rois_dwi_dir}"/wrFS_THALAMUS_L.nii.gz)
-vz=$(get_com.py z "${rois_dwi_dir}"/wrFS_THALAMUS_L.nii.gz)
+vx=$(get_com.py x "${rois_fs_dir}"/wrFS_THALAMUS_L.nii.gz)
+vy=$(get_com.py y "${rois_fs_dir}"/wrFS_THALAMUS_L.nii.gz)
+vz=$(get_com.py z "${rois_fs_dir}"/wrFS_THALAMUS_L.nii.gz)
 fsleyes render --outfile coreg_mni.png \
 	--size 400 1200 \
 	--worldLoc ${vx} ${vy} ${vz} \

@@ -1,6 +1,6 @@
 function warpdir(warp_dir,out_dir)
 
-gzs = dir(fullfile(warp_dir,'r*.nii.gz'));
+gzs = dir(fullfile(warp_dir,'*.nii.gz'));
 gzs = cellstr(char(gzs.name));
 
 for g = 1:numel(gzs)

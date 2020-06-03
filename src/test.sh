@@ -16,6 +16,29 @@ export src_dir=/wkdir/src
 export PATH=${src_dir}:$PATH
 
 
+# One probtracks
+export out_dir=/OUTPUTS
+export src_dir=/wkdir/src
+export track_dir=/OUTPUTS/PROBTRACKS
+export dirname_tag="FS6"
+export source_regions="FS_THALAMUS"
+export target_regions="FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP"
+export rois_dwi_dir=/OUTPUTS/ROIS_DWI
+export rois_fs_dir=/OUTPUTS/ROIS_FS
+export bedpost_dir=/INPUTS/BEDPOSTX
+export probtrack_samples=100
+export probtrack_options="--loopcheck --onewaycondition --verbose=0 --modeuler --pd"
+export matlab_dir=/wkdir/matlab/bin
+
+probtracks.sh "FS6" \
+"FS_THALAMUS" \
+"FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP"
+
+
+exit 0
+
+
+
 # csvs
 export out_dir=/OUTPUTS
 export track_dir=/OUTPUTS/PROBTRACKS
@@ -111,14 +134,6 @@ export bedpost_dir=${src_dir}/testdir/assessors/bedpost/BEDPOSTX
 
 
 
-
-
-# One probtracks
-probtracks.sh "Yeo7" \
-"FS_THALAMUS" \
-"Yeo7_N1 Yeo7_N2 Yeo7_N3 Yeo7_N4 Yeo7_N5 Yeo7_N6 Yeo7_N7"
-
-exit 0
 
 
 # Just through ROIs
