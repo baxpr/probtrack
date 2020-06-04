@@ -151,7 +151,7 @@ make_csvs.sh MULTI
 # do not overlap. Repeat for source ROIs.
 cd "${rois_fs_dir}"
 csv_file="${dirname_tag}_targetrois-label.csv"
-fslmaths "${bedpost_dir}"/nodif_brain_mask -thr 0 -uthr 0 tmp
+fslmaths "${rois_fs_dir}"/FS_WM_LR -mul 0 tmp
 let ind=0
 > "${csv_file}"
 for target in ${target_regions} ; do
@@ -162,7 +162,7 @@ done
 mv tmp.nii.gz ${dirname_tag}_targetrois.nii.gz
 
 csv_file="${dirname_tag}_sourcerois-label.csv"
-fslmaths "${bedpost_dir}"/nodif_brain_mask -thr 0 -uthr 0 tmp
+fslmaths "${rois_fs_dir}"/FS_WM_LR -mul 0 tmp
 let ind=0
 > "${csv_file}"
 for source in ${source_regions} ; do
