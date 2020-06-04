@@ -31,7 +31,7 @@ for source in ${source_regions} ; do
 			--displaySpace world \
 			--size 600 600 --hideCursor --hideLabels --hidex --hidez --yzoom 2200 \
 			--worldLoc ${vx} $((${vy}+${delta})) ${vz} \
-			"${out_dir}/norm_to_DWI" --interpolation none \
+			"${out_dir}/norm" --interpolation none \
 			"${track_dir}/BIGGEST_MULTI_${source}/seg_all_LR" --cmap random
 
 		mstr="${mstr} ${of}"
@@ -71,9 +71,9 @@ for source in ${source_regions} ; do
 				--displaySpace world \
 				--size 600 600 --hideCursor --hideLabels --hidex --hidez --yzoom 1200 \
 				--worldLoc ${vx} $((${vy}+${delta})) ${vz} \
-				"${out_dir}/norm_to_DWI" --interpolation none \
-				"${rois_dwi_dir}/${target}_L" --cmap blue \
-				"${rois_dwi_dir}/${target}_R" --cmap blue \
+				"${out_dir}/norm" --interpolation none \
+				"${rois_fs_dir}/${target}_L" --cmap blue \
+				"${rois_fs_dir}/${target}_R" --cmap blue \
 				"${track_dir}/${source}_L_to_${target}_L/fdt_paths_75pct" --cmap red-yellow \
 				"${track_dir}/${source}_R_to_${target}_R/fdt_paths_75pct" --cmap red-yellow
 

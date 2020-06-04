@@ -6,34 +6,19 @@ echo Running ${0}
 
 # Set up
 source functions.sh
-cd "${rois_dwi_dir}"
+cd "${rois_fs_dir}"
 
-
-# Resample FS ROI images to DWI space (transform obtained from coreg_FS_to_DWI.sh)
+# Get FS space aparc in .nii format
 mri_convert "${fs_subject_dir}/mri/aparc.DKTatlas+aseg.mgz" aparc.DKTatlas+aseg.nii.gz
-flirtopts="-applyxfm -init ${out_dir}/FS_to_DWI.mat -paddingsize 0.0 -interp nearestneighbour -ref ${out_dir}/b0_mean.nii.gz"
-flirt ${flirtopts} \
-	-in aparc.DKTatlas+aseg \
-	-out aparc.DKTatlas+aseg_to_DWI
-flirt ${flirtopts} \
-	-in "${fs_nii_thalamus_niigz}" \
-	-out nii_thalamus_to_DWI
 
 
 # Create single-ROI masks for FS thalamus using thal segmentation output
-fslmaths nii_thalamus_to_DWI -thr 8100 -uthr 8199 -bin FS_THALAMUS_L
-fslmaths nii_thalamus_to_DWI -thr 8200 -uthr 8299 -bin FS_THALAMUS_R
+fslmaths "${fs_nii_thalamus_niigz}" -thr 8100 -uthr 8199 -bin FS_THALAMUS_L
+fslmaths "${fs_nii_thalamus_niigz}" -thr 8200 -uthr 8299 -bin FS_THALAMUS_R
 
-
-#L accumbens 26
-#R accumbens 58
-#L ventral DC 28
-#R ventral DC 60
-#pallidum 13 52 
-#vent 4 5 14 15 43 44
  
 # Re-combine aparc into the needed single-ROI masks, files labeled by ROI name
-aparc=aparc.DKTatlas+aseg_to_DWI
+aparc=aparc.DKTatlas+aseg
 
 combine_rois "${aparc}"   FS_WM_L               "2"
 combine_rois "${aparc}"   FS_WM_R               "41"
@@ -98,71 +83,6 @@ combine_rois "${aparc}"   FS_ITEMP_L     "1006 1007 1009 1015 1016"
 combine_rois "${aparc}"   FS_ITEMP_R     "2006 2007 2009 2015 2016"
 
 
-
-# Cerebellum/subcortical mask
-#for LR in L R ; do
-#	fslmaths \
-#			 FS_CEREBELLUM_${LR} \
-#		-add FS_CAUD_PUT_PALL_${LR} \
-#		-add FS_AMYG_HIPP_${LR} \
-#		-bin \
-#		FS_CERSUBC_${LR}
-#done
-
-
-# FIXME not using Whole brain gray matter mask
-#fslmaths FS_PFC_R -add FS_MOTOR_R -add FS_SOMATO_R -add FS_POSTPAR_R -add FS_OCC_R -add FS_TEMP_R \
-#	-add FS_PFC_L -add FS_MOTOR_L -add FS_SOMATO_L -add FS_POSTPAR_L -add FS_OCC_L -add FS_TEMP_L \
-#	FS_CORTEX
-
-
-# FIXME not using Add white matter, subcortical to gray matter to make large avoid masks
-#fslmaths FS_CORTEX -add FS_WM_R -add FS_CEREBELLAR_SUBCORTICAL -bin FS_RH_LHCORTEX_AVOID
-#fslmaths FS_CORTEX -add FS_WM_L -add FS_CEREBELLAR_SUBCORTICAL -bin FS_LH_RHCORTEX_AVOID
-
-
-# FIXME not using Avoid masks for specific seed regions
-#for region in \
-#  FS_PFC \
-#  FS_MOTOR \
-#  FS_SOMATO \
-#  FS_POSTPAR \
-#  FS_OCC \
-#  FS_TEMP \
-#  FS_MOFC \
-#  FS_LPFC \
-#  FS_ACC \
-#  FS_PPC \
-#  FS_PARDMN \
-#  FS_AUD \
-#  FS_ITEMP \
-#; do
-#	fslmaths FS_RH_LHCORTEX_AVOID -sub ${region}_L -thr 1 -bin ${region}_L_AVOID
-#	fslmaths FS_LH_RHCORTEX_AVOID -sub ${region}_R -thr 1 -bin ${region}_R_AVOID
-#done
-
-# FIXME not using Stop and avoid masks for hemispheres
-#for LR in L R ; do
-#
-#	fslmaths \
-#			 FS_PFC_${LR} \
-#		-add FS_MOTOR_${LR} \
-#		-add FS_SOMATO_${LR} \
-#		-add FS_POSTPAR_${LR} \
-#		-add FS_OCC_${LR} \
-#		-add FS_TEMP_${LR} \
-#		-bin FS_${LR}HCORTEX_STOP
-#
-#	fslmaths \
-#			 FS_${LR}HCORTEX_STOP \
-#		-add FS_WM_${LR} \
-#		-add FS_THALAMUS_${LR} \
-#		-bin FS_${LR}H_AVOID
-#
-#done
-
-
 # Clean up
-mv aparc.DKTatlas+aseg.nii.gz "${rois_fs_dir}"
 cp "${fs_nii_thalamus_niigz}" "${rois_fs_dir}"
 

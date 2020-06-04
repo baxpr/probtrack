@@ -16,6 +16,9 @@ data = img.get_fdata()
 # numpy can't handle SPM's nan voxels, so fix 'em
 data[numpy.isnan(data)] = 0
 
+# COM unweighted
+data[data>0] = 1
+
 # Get COM
 com_vox = scipy.ndimage.center_of_mass(data)
 com_world = nibabel.affines.apply_affine(img.affine, com_vox)

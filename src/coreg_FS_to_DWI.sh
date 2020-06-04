@@ -14,9 +14,8 @@ done
 cp "${b0mean_niigz}" b0_mean.nii.gz
 
 
-# Make WM image to initialize epi_reg. epi_reg bug means we must use 
-# the b0_mean_to_FS_fast_wmseg filename
-combine_rois aparc.DKTatlas+aseg  b0_mean_to_FS_fast_wmseg  "2 41"
+# Make WM image to initialize epi_reg.
+combine_rois aparc.DKTatlas+aseg  FS_WM  "2 41"
 
 
 # Register b=0 to FS T1 using FS white matter mask
@@ -25,7 +24,7 @@ epi_reg \
 	--t1=nu \
 	--t1brain=norm \
 	--out=b0_mean_to_FS \
-	--wmseg=b0_mean_to_FS_fast_wmseg
+	--wmseg=FS_WM
 mv b0_mean_to_FS.mat DWI_to_FS.mat
 convert_xfm -omat FS_to_DWI.mat -inverse DWI_to_FS.mat
 
