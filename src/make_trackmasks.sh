@@ -4,6 +4,7 @@
 
 echo Running "${0}"
 
+source functions.sh
 
 mkdir -p "${track_dir}"/TRACKMASKS
 cd "${track_dir}"/TRACKMASKS
