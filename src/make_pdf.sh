@@ -52,9 +52,9 @@ fsleyes render --outfile coreg_fs.png \
 	coreg_imgs/coregmask --overlayType label --outline --outlineWidth 3 --lut harvard-oxford-subcortical
 
 # Repeat for MNI space
-vx=$(get_com.py x "${rois_fs_dir}"/wrFS_THALAMUS_L.nii.gz)
-vy=$(get_com.py y "${rois_fs_dir}"/wrFS_THALAMUS_L.nii.gz)
-vz=$(get_com.py z "${rois_fs_dir}"/wrFS_THALAMUS_L.nii.gz)
+vx=$(get_com.py x "${rois_fs_dir}"/wFS_THALAMUS_L.nii.gz)
+vy=$(get_com.py y "${rois_fs_dir}"/wFS_THALAMUS_L.nii.gz)
+vz=$(get_com.py z "${rois_fs_dir}"/wFS_THALAMUS_L.nii.gz)
 fsleyes render --outfile coreg_mni.png \
 	--size 400 1200 \
 	--worldLoc ${vx} ${vy} ${vz} \
