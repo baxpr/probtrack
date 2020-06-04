@@ -6,6 +6,16 @@ import sys
 import nibabel
 import numpy
 
+# If asked for the CSV header line, give it and exit
+if sys.argv[1] is 'header':
+    print('probtrack_dir,source,source_voxels,source_mm3,target,target_voxels,target_mm3,' +
+    'target_tracks,total_tracks,target_tracks_fraction,target_seg_voxels,total_seg_voxels,' +
+    'target_seg_voxels_fraction')
+    exit()
+
+
+# Otherwise grab all the image inputs and do the computations    
+
 track_dir         = sys.argv[1]
 source_name       = sys.argv[2]
 target_name       = sys.argv[3]

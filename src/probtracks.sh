@@ -43,75 +43,8 @@ echo "    Dir:     ${track_dir}"
 echo "    Opts:    ${trackopts}"
 
 
-# Make track masks - target, avoid, stop, waypoint. Store these in the probtrack dir
-mkdir -p "${track_dir}"/TRACKMASKS
-cd "${track_dir}"/TRACKMASKS
-
-fslmaths "${rois_fs_dir}"/FS_WM_LR -mul 0 emptymask
-
-allsrcLstr=""
-allsrcRstr=""
-for source in ${source_regions} ; do
-	allsrcLstr="${allsrcLstr} -add ${rois_fs_dir}/${source}_L"
-	allsrcRstr="${allsrcRstr} -add ${rois_fs_dir}/${source}_R"
-done
-alltgtLstr=""
-alltgtRstr=""
-for target in ${target_regions} ; do
-	alltgtLstr="${alltgtLstr} -add ${rois_fs_dir}/${target}_L"
-	alltgtRstr="${alltgtRstr} -add ${rois_fs_dir}/${target}_R"
-done
-
-fslmaths emptymask ${allsrcLstr} ${alltgtLstr} -bin all_src_tgt_L
-fslmaths emptymask ${allsrcRstr} ${alltgtRstr} -bin all_src_tgt_R
-fslmaths emptymask ${alltgtLstr} -bin all_tgt_L
-fslmaths emptymask ${alltgtRstr} -bin all_tgt_R
-fslmaths all_tgt_L -add all_tgt_R -bin all_tgt_LR
-
-rm emptymask.nii.gz
-
-
-# Avoid masks for single target
-#   All tgt in this hemisphere except current target;
-#   All src, tgt, WM in opposite hemisphere
-#   All CERSUBC, brainstem in both hemispheres
-for source in ${source_regions} ; do
-	for target in ${target_regions} ; do
-		for LR in L R ; do
-			RL=$(swapLR ${LR})
-			fslmaths \
-				all_tgt_${LR} -sub "${rois_fs_dir}"/"${target}_${LR}" -bin \
-				-add all_src_tgt_${RL} -add "${rois_fs_dir}"/FS_WM_${RL} \
-				-add "${rois_fs_dir}"/FS_SUBC_${LR} \
-				-add "${rois_fs_dir}"/FS_SUBC_${RL} \
-				-add "${rois_fs_dir}"/FS_CEREBELLUM_${LR} \
-				-add "${rois_fs_dir}"/FS_CEREBELLUM_${RL} \
-				-add "${rois_fs_dir}"/FS_BRAINSTEM \
-				-add "${rois_fs_dir}"/FS_CSFVENT \
-				-bin \
-				"${source}_${LR}_to_${target}_${LR}_AVOID"
-		done
-	done
-done
-
-# Stop, waypoint masks for multi target are just all the targets, all_tgt_{L,R}
-
-# Avoid masks for multi are all src, tgt, WM in the opposite hemisphere
-# and CERSUBC, brainstem in both hemispheres
-fslmaths all_src_tgt_L \
-	-add "${rois_fs_dir}"/FS_WM_L \
-	-add "${rois_fs_dir}"/FS_SUBC_L -add "${rois_fs_dir}"/FS_SUBC_R \
-	-add "${rois_fs_dir}"/FS_CEREBELLUM_L -add "${rois_fs_dir}"/FS_CEREBELLUM_R \
-	-add "${rois_fs_dir}"/FS_BRAINSTEM \
-	-add "${rois_fs_dir}"/FS_CSFVENT \
-	-bin multi_L_AVOID
-fslmaths all_src_tgt_R \
-	-add "${rois_fs_dir}"/FS_WM_R \
-	-add "${rois_fs_dir}"/FS_SUBC_L -add "${rois_fs_dir}"/FS_SUBC_R \
-	-add "${rois_fs_dir}"/FS_CEREBELLUM_L -add "${rois_fs_dir}"/FS_CEREBELLUM_R \
-	-add "${rois_fs_dir}"/FS_BRAINSTEM \
-	-add "${rois_fs_dir}"/FS_CSFVENT \
-	-bin multi_R_AVOID
+# Make stop, waypoint, etc masks for tracking for this ROI set
+make_trackmasks.sh
 
 
 # Work in the ROI dir for tracking
@@ -195,18 +128,22 @@ warpdir.sh "${track_dir}/TRACKMASKS" 0
 # using the results from the individual probtrack runs, then using the result
 # from the multi-target run. Because we exported source_regions, target_regions,
 # and track_dir above, they will be available in the subshell here.
-do_biggest.sh INDIV
-do_biggest.sh MULTI
+do_biggest.sh INDIV native
+do_biggest.sh MULTI native
+do_biggest.sh INDIV MNI
+do_biggest.sh MULTI MNI
 
 
-# Probmaps for the multi-target probtrack run, using proj_thresh
-do_probmaps_INDIV.sh
-do_probmaps_MULTI.sh
+# Probmaps, using proj_thresh
+do_probmaps.sh INDIV native
+do_probmaps.sh MULTI native
+do_probmaps.sh INDIV MNI
+do_probmaps.sh MULTI MNI
 
 
 # Get stats to CSV format
-make_csvs_INDIV.sh
-make_csvs_MULTI.sh
+make_csvs.sh INDIV
+make_csvs.sh MULTI
 
 
 # Leave a single-volume indexed ROI image in the roi directory with this
