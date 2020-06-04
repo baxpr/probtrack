@@ -1,12 +1,11 @@
-Prefixes of output image files are "r" for images resampled to the Freesurfer 
-T1 space (e.g. same geometry as nu, norm images), and "wr" for images resampled 
-to MNI space. All resampling uses nearest neighbor interpolation.
+In general, images are in the Freesurfer T1 space (e.g. same geometry as 
+nu, norm images). However, image files with a "w" prefix have been resampled 
+to MNI space via trilinear or nearest neighbor interpolation.
 
 Example for a probtracks output (PROBTRACKS resource):
 
-fdt_paths.nii.gz       Original probtracks output in DWI space
-rfdt_paths.nii.gz      Transformed to Freesurfer T1 space (nu, norm)
-wrfdt_paths.nii.gz     Transformed to MNI space
+fdt_paths.nii.gz       Original probtracks output in FS 1mm space
+wrfdt_paths.nii.gz     Transformed to MNI space (1.5mm "TPM" geometry)
 
 
 
@@ -16,3 +15,4 @@ Example for a multi-target probtracks output (ROIS resource):
 
 FS6_targetrois.nii.gz        Multi-ROI image
 FS6_targetrois-label.csv     Names corresponding to each numerical label
+

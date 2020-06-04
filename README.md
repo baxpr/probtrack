@@ -4,11 +4,11 @@ Entrypoint is `src/pipeline.sh`. Pipeline is:
 
 - Rigid body registration of the mean b=0 image to the Freesurfer T1 (norm) image.
 
-- Generation of lobar source/target ROIs from Freesurfer segmentation, and network ROIs from Yeo segmentation, in the diffusion image geometry.
+- Generation of lobar source/target ROIs from Freesurfer segmentation, and network ROIs from Yeo segmentation, in the Freesurfer image geometry.
 
-- Probabilistic tractography with probtrackx2, from the specified source ROI to the specified target ROIs. This is done two ways: INDIV, with a separate run of probtrackx2 for each source/target pair; and MULTI, with a single run of probtrackx2 for each source to all targets. All tractography is performed in a single hemisphere. "Target", "Stop", and "Waypoint" masks are all set to the target ROI(s). The "Exclude" mask consists of white matter plus all source and target ROIs in the opposite hemisphere; plus cerebellum, brainstem, ventricles, CSF, hippocampus, amygdala, accumbens, ventral DC, caudate, putamen, and pallidum in the same hemisphere; plus any non-used target ROIs in the same hemisphere (for INDIV runs).
+- Probabilistic tractography with probtrackx2, from the specified source ROI to the specified target ROIs. This is done two ways: INDIV, with a separate run of probtrackx2 for each source/target pair; and MULTI, with a single run of probtrackx2 for each source to all targets. All tractography is performed in a single hemisphere. "Target", "Stop", and "Waypoint" masks are all set to the target ROI(s). The "Exclude" mask consists of white matter plus all source and target ROIs in the opposite hemisphere; plus cerebellum, brainstem, ventricles, CSF, hippocampus, amygdala, accumbens, ventral DC, caudate, putamen, and pallidum in the same hemisphere; plus any non-used target ROIs in the same hemisphere (for INDIV runs). Tractography is performed in the Freesurfer geometry via "-xfm" option.
 
-- Transformation of all output images to Freesurfer subject geometry using the above rigid body transform, and to MNI space using the supplied forward warp.
+- Transformation of all output images to MNI space using the supplied forward warp.
 
 
 ## Inputs
@@ -17,7 +17,7 @@ Entrypoint is `src/pipeline.sh`. Pipeline is:
     fs_nii_thalamus_niigz     Freesurfer thalamus segmentation:   NII_THALAMUS resource of freesurfer_dev
     b0mean_niigz              Mean b=0 image from DWI scan:       B0_MEAN resource of dwipre
     bedpost_dir               BEDPOSTX directory:                 BEDPOSTX resource of ybedpostx
-    fwddef_niigz              Fordward deformation to MNI space:  DEF_FWD resource of cat12
+    fwddef_niigz              Forward deformation to MNI space:   DEF_FWD resource of cat12
     invdef_niigz              Inverse deformation:                DEF_INV resource of cat12
     probtrack_samples         Number of streamlines to seed per voxel
     probtrack_options         Any desired of --loopcheck --onewaycondition --verbose=0 --modeuler --pd
@@ -37,7 +37,7 @@ Entrypoint is `src/pipeline.sh`. Pipeline is:
 ## Outputs
 
     PDF                               Summary and QA reference
-    ROIS                              Regions of interest from Freesurfer and Yeo segmentations
+    ROIS_FS                           Regions of interest from Freesurfer and Yeo segmentations
     PROBTRACKS                        Tractography results
         BIGGEST_MULTI_<source>            Segmentation from find_the_biggest, multi-target run
         BIGGEST_INDIV_<source>            Same, but from combined single-target runs
@@ -51,5 +51,4 @@ Entrypoint is `src/pipeline.sh`. Pipeline is:
     STATS_INDIV                       Same, but from combined single-target runs
     COREG_MAT                         Transforms between Freesurfer and diffusion native spaces
     B0_MEAN                           Mean b=0 image from diffusion images
-    NORM                              Freesurfer "norm" image (preprocessed T1)
     
