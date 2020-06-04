@@ -14,15 +14,15 @@ mkdir coreg_imgs
 
 # Make an overlay ROI for coreg check (seeds and full cortex)
 fslmaths \
-	"${rois_fs_dir}"/FS_THALAMUS_L -add "${rois_fs_dir}"/FS_THALAMUS_R \
+	"${rois_fs_dir}"/FS_THALAMUS_L     -add "${rois_fs_dir}"/FS_THALAMUS_R \
 	-mul 2 \
-	-add "${rois_fs_dir}"/FS_PFC_L -add "${rois_fs_dir}"/FS_PFC_R \
-	-add "${rois_fs_dir}"/FS_MOTOR_L -add "${rois_fs_dir}"/FS_MOTOR_R \
-	-add "${rois_fs_dir}"/FS_SOMATO_L -add "${rois_fs_dir}"/FS_SOMATO_R \
+	-add "${rois_fs_dir}"/FS_PFC_L     -add "${rois_fs_dir}"/FS_PFC_R \
+	-add "${rois_fs_dir}"/FS_MOTOR_L   -add "${rois_fs_dir}"/FS_MOTOR_R \
+	-add "${rois_fs_dir}"/FS_SOMATO_L  -add "${rois_fs_dir}"/FS_SOMATO_R \
 	-add "${rois_fs_dir}"/FS_POSTPAR_L -add "${rois_fs_dir}"/FS_POSTPAR_R \
-	-add "${rois_fs_dir}"/FS_OCC_L -add "${rois_fs_dir}"/FS_OCC_R \
-	-add "${rois_fs_dir}"/FS_TEMP_L -add "${rois_fs_dir}"/FS_TEMP_R \
-	-add "${rois_fs_dir}"/FS_INSULA_L -add "${rois_fs_dir}"/FS_INSULA_R \
+	-add "${rois_fs_dir}"/FS_OCC_L     -add "${rois_fs_dir}"/FS_OCC_R \
+	-add "${rois_fs_dir}"/FS_TEMP_L    -add "${rois_fs_dir}"/FS_TEMP_R \
+	-add "${rois_fs_dir}"/FS_INSULA_L  -add "${rois_fs_dir}"/FS_INSULA_R \
 	coreg_imgs/coregmask
 
 # b=0 image transformed to FS space using inverse matrix from 
@@ -33,14 +33,16 @@ flirt ${flirtopts} \
 	-out coreg_imgs/b0_mean_to_FS
 
 # Get into MNI space
-warponlydir.sh "${wkdir}"/coreg_imgs
-
+gunzip coreg_imgs/*.nii.gz
+"${matlab_dir}"/run_spm12.sh "${mcr_dir}" function warp "${out_dir}/y_fwddef.nii" "${wkdir}"/coreg_imgs/coregmask.nii 0
+"${matlab_dir}"/run_spm12.sh "${mcr_dir}" function warp "${out_dir}/y_fwddef.nii" "${wkdir}"/coreg_imgs/b0_mean_to_FS.nii 1
+gzip coreg_imgs/*.nii
 
 # Coreg verification - outline of FS cortex ROI on mean b=0 DWI. Center on L thal
 vx=$(get_com.py x "${rois_fs_dir}"/FS_THALAMUS_L.nii.gz)
 vy=$(get_com.py y "${rois_fs_dir}"/FS_THALAMUS_L.nii.gz)
 vz=$(get_com.py z "${rois_fs_dir}"/FS_THALAMUS_L.nii.gz)
-fsleyes render --outfile coreg_dwi.png \
+fsleyes render --outfile coreg_fs.png \
 	--size 600 1800 \
 	--worldLoc ${vx} ${vy} ${vz} \
 	--displaySpace world \
@@ -59,12 +61,12 @@ fsleyes render --outfile coreg_mni.png \
 	--displaySpace world \
 	--hideCursor --layout vertical \
 	--xzoom 800 --yzoom 800 --zzoom 700 \
-	coreg_imgs/wrb0_mean --displayRange 0 "99%" \
-	coreg_imgs/wrcoregmask --overlayType label --outline --outlineWidth 3 --lut harvard-oxford-subcortical
+	coreg_imgs/wb0_mean_to_FS --displayRange 0 "99%" \
+	coreg_imgs/wcoregmask --overlayType label --outline --outlineWidth 3 --lut harvard-oxford-subcortical
 
 
 # Combine
-montage -mode concatenate coreg_dwi.png coreg_mni.png -tile 2x1 -quality 100 -background white -gravity center \
+montage -mode concatenate coreg_fs.png coreg_mni.png -tile 2x1 -quality 100 -background white -gravity center \
 	-border 20 -bordercolor black -resize 600x coreg.png
 
 convert \

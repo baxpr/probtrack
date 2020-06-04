@@ -5,9 +5,8 @@ if nargin<4
 end
 
 if nargin<3
-	interp = '0';
+	interp = 0;
 end
-interp = str2num(interp);
 
 gzs = dir(fullfile(warp_dir,[prefix '*.nii.gz']));
 gzs = cellstr(char(gzs.name));

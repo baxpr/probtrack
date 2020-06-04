@@ -5,6 +5,10 @@ function warp(fwddef_nii,src_nii,interp)
 %   fwddef_nii    Forward deformation from CAT12
 %   src_nii       Native space image (CAT12 T1 aligned)
 
+if ischar(interp)
+	interp = str2num(interp);
+end
+
 clear matlabbatch
 
 matlabbatch{1}.spm.util.defs.comp{1}.def = {fwddef_nii};
