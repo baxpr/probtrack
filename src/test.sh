@@ -16,6 +16,25 @@ export src_dir=/wkdir/src
 export PATH=${src_dir}:$PATH
 
 
+# probmaps and csvs
+export out_dir=/OUTPUTS
+export src_dir=/wkdir/src
+export track_dir=/OUTPUTS/PROBTRACKS
+export dirname_tag="FS6"
+export source_regions="FS_THALAMUS"
+export target_regions="FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP"
+export rois_fs_dir=/OUTPUTS/ROIS_FS
+export bedpost_dir=/INPUTS/BEDPOSTX
+export matlab_dir=/wkdir/matlab/bin
+do_probmaps.sh INDIV native
+do_probmaps.sh MULTI native
+do_probmaps.sh INDIV MNI
+do_probmaps.sh MULTI MNI
+make_csvs.sh INDIV
+make_csvs.sh MULTI
+
+exit 0
+
 
 
 # One probtracks

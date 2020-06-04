@@ -34,7 +34,7 @@ echo "   Dir:     ${track_dir}"
 for source in ${source_regions} ; do
 
 	# Both hemispheres probmaps stored in same dir
-	pmap_dir="${track_dir}/PROBMAPS_${biggest}_${source}"
+	pmap_dir="${track_dir}/PROBMAPS_${bigtag}_${source}"
 	mkdir -p "${pmap_dir}"/${pfx}seeds_to
 
 	for LR in L R ; do
@@ -48,7 +48,8 @@ for source in ${source_regions} ; do
 				done ;;
 			MULTI)
 				seed_dir="${track_dir}/${source}_${LR}_to_TARGETS_${LR}"
-				cp "${seed_dir}/${pfx}seeds_to_*_${LR}.nii.gz" "${pmap_dir}"/${pfx}seeds_to
+				cp "${seed_dir}"/${pfx}seeds_to_*_${LR}.nii.gz "${pmap_dir}"/${pfx}seeds_to
+				;;
 			*)
 				echo "Unknown bigtag ${bigtag}"
 				exit 1

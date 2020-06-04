@@ -36,7 +36,7 @@ echo "   Dir:     ${track_dir}"
 # then we call it.
 cd "${track_dir}"
 for source in ${source_regions} ; do
-	mkdir "BIGGEST_${bigtag}_${source}"
+	mkdir -p "BIGGEST_${bigtag}_${source}"
 	for LR in L R ; do
 		bigstr=""
 		for target in ${target_regions} ; do
