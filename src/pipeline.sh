@@ -119,7 +119,7 @@ probtracks.sh
 
 
 ### Transform all the ROIs we used to MNI geometry
-warpdir.sh "${rois_fs_dir}"
+warpdir.sh "${rois_fs_dir}" 0
 cp "${src_dir}"/README_image_files.txt "${rois_fs_dir}"
 
 

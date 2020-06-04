@@ -178,16 +178,17 @@ for source in ${source_regions} ; do
 done
 
 
-# Warp probtrack output images to MNI space
+# Warp probtrack output images to MNI space. seeds_to_X with linear,
+# masks with nearest neighbor interpolation
 for source in ${source_regions} ; do
 	for LR in L R ; do
-		warpdir.sh "${track_dir}/${source}_${LR}_to_TARGETS_${LR}"
+		warpdir.sh "${track_dir}/${source}_${LR}_to_TARGETS_${LR}" 1
 		for target in ${target_regions} ; do
-			warpdir.sh "${track_dir}/${source}_${LR}_to_${target}_${LR}"
+			warpdir.sh "${track_dir}/${source}_${LR}_to_${target}_${LR}" 1
 		done
 	done
 done
-warpdir.sh "${track_dir}/TRACKMASKS"
+warpdir.sh "${track_dir}/TRACKMASKS" 0
 
 
 # Segmentation for all targets, for each combo of source+hemisphere. First
