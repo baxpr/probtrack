@@ -10,10 +10,10 @@ xwrapper.sh pipeline.sh \
 	--invdef_niigz /INPUTS/iy_t1.nii.gz \
 	--fwddef_niigz /INPUTS/y_t1.nii.gz \
 	--bedpost_dir /INPUTS/BEDPOSTX \
-	--probtrack_samples 100 \
-	--dirname_tag "FS6" \
+	--probtrack_samples 50 \
+	--dirname_tag "Yeo7" \
 	--source_regions "FS_THALAMUS" \
-	--target_regions "FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP" \
+	--target_regions "Yeo7_N1 Yeo7_N2 Yeo7_N3 Yeo7_N4 Yeo7_N5 Yeo7_N6 Yeo7_N7" \
 	--project TESTPROJ \
 	--subject TESTSUBJ \
 	--session TESTSESS \
@@ -30,4 +30,4 @@ singularity shell \
 	--bind freesurfer_license.txt:/usr/local/freesurfer/.license \
 	--bind $(pwd)/INPUTS:/INPUTS \
 	--bind $(pwd)/OUTPUTS:/OUTPUTS \
-	baxpr-thaltrack-whole-master-v2.0.1.simg
+	baxpr-thaltrack-whole-master-v3.0.2.simg

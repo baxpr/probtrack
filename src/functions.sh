@@ -37,3 +37,26 @@ function combine_rois () {
 }
 
 
+# Same, but don't rely on exact integer values
+function combine_rois_approx () {
+	local in_niigz="${1}"
+	local out_niigz="${2}"
+	local vals="${3}"
+		
+	local addstr=""
+	for v in $vals ; do
+
+		# Get min and max thresholds from vals
+		minv=$(echo "$v - 0.5" | bc -l)
+		maxv=$(echo "$v + 0.5" | bc -l)
+		
+		# Apply thresholds
+		fslmaths "${in_niigz}" -thr "${minv}" -uthr "${maxv}" -bin tmp_"${v}"
+		addstr="${addstr} -add tmp_${v}"
+
+	done
+	fslmaths "${in_niigz}" -thr 0 -uthr 0 ${addstr} -bin "${out_niigz}"
+	rm -f tmp_*.nii.gz
+}
+
+
