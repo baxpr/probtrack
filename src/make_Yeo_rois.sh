@@ -25,6 +25,9 @@ gunzip -fk "${out_dir}"/nu.nii.gz
 gzip "${out_dir}"/uYeo{7,17}_split.nii
 mv "${out_dir}"/uYeo{7,17}_split.nii.gz "${rois_fs_dir}"
 
+# Remove NaN
+fslmaths uYeo7_split.nii.gz -nan uYeo7_split.nii.gz
+fslmaths uYeo17_split.nii.gz -nan uYeo17_split.nii.gz
 
 # Re-combine into the needed single-ROI masks, files labeled by ROI name
 yeo7=uYeo7_split

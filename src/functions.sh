@@ -49,6 +49,7 @@ function combine_rois_approx () {
 		# Get min and max thresholds from vals
 		minv=$(echo "$v - 0.5" | bc -l)
 		maxv=$(echo "$v + 0.5" | bc -l)
+		echo Min $minv Max $maxv
 		
 		# Apply thresholds
 		fslmaths "${in_niigz}" -thr "${minv}" -uthr "${maxv}" -bin tmp_"${v}"
