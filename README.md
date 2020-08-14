@@ -56,18 +56,30 @@ Entrypoint is `src/pipeline.sh`. Pipeline is:
 
 ### CSV/STATS Outputs
 
-- `probtrack_dir`
-- `source`
+- `probtrack_dir`: Location in `PROBTRACKS` output where the files used to compute this row's stats are located
+
+- `source`: The source ROI
+
 - `source_voxels`
+
 - `source_mm3`
+
 - `target`
+
 - `target_voxels`
+
 - `target_mm3`
+
 - `target_tracks`
+
 - `total_tracks`
+
 - `target_tracks_fraction`
+
 - `target_seg_voxels`
+
 - `total_seg_voxels`
+
 - `target_seg_voxels_fraction`
 
 
