@@ -52,3 +52,22 @@ Entrypoint is `src/pipeline.sh`. Pipeline is:
     COREG_MAT                         Transforms between Freesurfer and diffusion native spaces
     B0_MEAN                           Mean b=0 image from diffusion images
     
+
+
+### CSV/STATS Outputs
+
+- `probtrack_dir`
+- `source`
+- `source_voxels`
+- `source_mm3`
+- `target`
+- `target_voxels`
+- `target_mm3`
+- `target_tracks`
+- `total_tracks`
+- `target_tracks_fraction`
+- `target_seg_voxels`
+- `total_seg_voxels`
+- `target_seg_voxels_fraction`
+
+

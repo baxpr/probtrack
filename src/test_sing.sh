@@ -1,7 +1,7 @@
 #!/bin/bash
 
 singularity run \
-	--cleanenv \
+	--cleanenv --contain \
 	--home $(pwd) \
 	--bind $(pwd)/INPUTS:/INPUTS \
 	--bind $(pwd)/OUTPUTS:/OUTPUTS \
@@ -14,9 +14,9 @@ singularity run \
 	--fwddef_niigz /INPUTS/y_t1.nii.gz \
 	--bedpost_dir /INPUTS/BEDPOSTX \
 	--probtrack_samples 50 \
-	--dirname_tag "Yeo7" \
+	--dirname_tag "FS6" \
 	--source_regions "FS_THALAMUS" \
-	--target_regions "Yeo7_N1 Yeo7_N2 Yeo7_N3 Yeo7_N4 Yeo7_N5 Yeo7_N6 Yeo7_N7" \
+	--target_regions "FS_PFC FS_MOTOR FS_SOMATO FS_POSTPAR FS_OCC FS_TEMP" \
 	--project TESTPROJ \
 	--subject TESTSUBJ \
 	--session TESTSESS \
