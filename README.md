@@ -58,7 +58,7 @@ Entrypoint is `src/pipeline.sh`. Pipeline is:
 
 Each row of a STATS CSV output contains information about one source/target ROI pair.
 
-- `probtrack_dir`: Location in `PROBTRACKS` output where the files used to compute this row's stats are located
+- `probtrack_dir`: Directory in `PROBTRACKS` output where the files used to compute this row's stats are located
 
 - `source`: Name of the source (seed) ROI
 
