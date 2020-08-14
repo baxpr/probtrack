@@ -72,7 +72,7 @@ Each row of a STATS CSV output contains information about one source/target ROI 
 
 - `target_mm3`: Volume of the target ROI in mm^3
 
-- `target_tracks`: Number of tracks from the source ROI that reached this target (distance-corrected if --pd option was used). This is the sum of streamline counts over this _single_ seeds_to_target image, and over the entire source ROI.
+- `target_tracks`: Number of tracks from the source ROI that reached this target (distance-corrected if --pd option was used). This is the sum of streamline counts in this _single_ seeds_to_target image, over the entire source ROI.
 
 - `total_tracks`: Total number of tracks from the source (distance-corrected if --pd option was used). This is the sum of streamline counts over _all_ seeds_to_target images and over the entire source ROI.
 
