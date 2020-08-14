@@ -72,15 +72,15 @@ Each row of a STATS CSV output contains information about one source/target ROI 
 
 - `target_mm3`: Volume of the target ROI in mm^3
 
-- `target_tracks`: Number of tracks from the source ROI that reached this target (distance-corrected if --pd option was used)
+- `target_tracks`: Number of tracks from the source ROI that reached this target (distance-corrected if --pd option was used). This is the sum of streamline counts over this _single_ seeds_to_target image, and over the entire source ROI.
 
-- `total_tracks`: Total number of tracks from the source (distance-corrected if --pd option was used)
+- `total_tracks`: Total number of tracks from the source (distance-corrected if --pd option was used). This is the sum of streamline counts over _all_ seeds_to_target images and over the entire source ROI.
 
-- `target_tracks_fraction`: Fraction of `total_tracks` that reached this target ROI
+- `target_tracks_fraction`: Fraction of `total_tracks` that reached this target ROI. This is just the ratio of the two previous.
 
 - `target_seg_voxels`: Number of source ROI voxels that were assigned to this target ROI by find_the_biggest
 
 - `total_seg_voxels`: Total number of source ROI voxels that were assigned to _any_ ROI by find_the_biggest
 
-- `target_seg_voxels_fraction`: Fraction of `total_seg_voxels` that were assigned to this target ROI by find_the_biggest
+- `target_seg_voxels_fraction`: Fraction of `total_seg_voxels` that were assigned to this target ROI by find_the_biggest. This is just the ratio of the two previous.
 
